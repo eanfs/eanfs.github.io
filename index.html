@@ -123,16 +123,16 @@
             
             <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
             
-            九月 01, 2019
+            八月 30, 2019
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2019/09/01/es-transform-data/" title="使用elasticdump 导出index数据" class="posttitle">使用elasticdump 导出index数据</a></h3>
+            <a href="/2019/08/30/k8s-command-tips/" title="Kubernetes 命令行使用" class="posttitle">Kubernetes 命令行使用</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                2.6k
+                2k
             </span>
             
             
@@ -145,13 +145,16 @@
         </p>
         
         
+        <ul class="animated fadeInDown post-tags-list"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/k8s-tips/">k8s tips</a></li></ul>
+        
         <div class="md-content animated fadeIn">
             
-            <p>下面是导出index数据的脚本</p>
-<p>elasticsearch_data_transfer_test.sh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/...</span></pre></td></tr></table></figure>
+            <h3 id="手动启用CronJob"><a href="#手动启用CronJob" class="headerlink" title="手动启用CronJob"></a>手动启用CronJob</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create job --from=cronjob/&lt;cronjob-name&gt; &lt;job-name&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create...</span></pre></td></tr></table></figure></li></ul>
             
-            <span class="read-more"><a href="/2019/09/01/es-transform-data/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2019/08/30/k8s-command-tips/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -172,57 +175,6 @@
 
     <div id="primary">
         
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
-            
-            八月 30, 2019
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2019/08/30/k8s-command-tips/" title="Kubernetes 命令行使用" class="posttitle">Kubernetes 命令行使用</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        2k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        2 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/k8s-tips/">k8s tips</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="手动启用CronJob"><a href="#手动启用CronJob" class="headerlink" title="手动启用CronJob"></a>手动启用CronJob</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create job --from=cronjob/&lt;cronjob-name&gt; &lt;job-name&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create job --from=cronjob/flink-job-task flink-job-task-1024</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="清理Node上运行的Pods"><a href="#清理Node上运行的Pods" class="headerlink" title="清理Node上运行的Pods"></a>清理Node上运行的Pods</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl drain &lt;node-name&gt; --delete-local-data --force --ignore-daemonsets...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2019/08/30/k8s-command-tips/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -328,21 +280,21 @@
                   <b>「 </b>SPRING SECURITY<b> 」</b>
                 </a>
             
-            一月 01, 2018
+            五月 27, 2019
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2018/01/01/Spring-Security/laoxu/Architecture-Overview/" title="【老徐】Spring Security(一) —— Architecture Overview" class="posttitle">【老徐】Spring Security(一) —— Architecture Overview</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/05/27/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" title="【龙飞】Spring Security OAuth2 自定义 token Exception" class="posttitle">【龙飞】Spring Security OAuth2 自定义 token Exception</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        27k
+                        29k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        24 mins.
+                        27 mins.
                     </span>
                 
                 
@@ -351,9 +303,16 @@
         
         <div class="md-content animated fadeIn">
             
-                <p>摘要: 原创出处 <a href="https://www.cnkirito.moe/spring-security-1/" target="_blank" rel="noopener">https://www.cnkirito.moe/spring-security-1/</a> 「老徐」欢迎转载，保留摘要，谢谢！</p>
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/05/27/Spring-Security-Oauth2-自定义token-Exception/" target="_blank" rel="noopener">http://niocoder.com/2018/05/27/Spring-Security-Oauth2-自定义token-Exception/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
 <ul>
-<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/Architecture-Overview/" target="_blank" rel="noopener">1 核心组件</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" target="_blank" rel="noopener">1.1 自定义登录失败异常信息</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" target="_blank" rel="noopener">1.2 自定义Token异常信息 ##</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" target="_blank" rel="noopener">1.3 效果如下</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" target="_blank" rel="noopener">2. 代码下载</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" target="_blank" rel="noopener">3. 推荐文章</a></li>
 </ul>
 <hr>
 <p></p>
@@ -361,17 +320,370 @@
 <p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
 <ol>
 <li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
-<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
-<li><strong>新的</strong>源码解析文章<strong>实时</strong>收...</li></ol></blockquote>
+<li>RocketMQ...</li></ol></blockquote>
             
-            <span class="read-more"><a href="/2018/01/01/Spring-Security/laoxu/Architecture-Overview/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2019/05/27/Spring-Security/longfei/Spring-Security-OAuth2-custom-token-Exception/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Spring Security">
+                  <b>「 </b>SPRING SECURITY<b> 」</b>
+                </a>
+            
+            五月 21, 2019
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/05/21/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" title="【龙飞】Spring Security OAuth2 permitAll() 方法小记" class="posttitle">【龙飞】Spring Security OAuth2 permitAll() 方法小记</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        22k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        20 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/05/21/Spring-Security-Oauth2-permitAll()方法小记/" target="_blank" rel="noopener">http://niocoder.com/2018/05/21/Spring-Security-Oauth2-permitAll()方法小记/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">1. 前言</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">2. 解决思路</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">3. 代码修改</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">3.1 添加PermitAuthenticationFilter类</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">3.2 添加PermitAllSecurityConfig配置</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">3.3 修改MerryyouResourceServerConfig，增加对制定路径的授权</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" target="_blank" rel="noopener">3.4 修改测试类SecurityOauth2Test...</a></li></ul></li></ul>
+            
+            <span class="read-more"><a href="/2019/05/21/Spring-Security/longfei/Spring-Security-OAuth2-permitAll-method-notes/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Spring Security">
+                  <b>「 </b>SPRING SECURITY<b> 」</b>
+                </a>
+            
+            五月 16, 2019
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/05/16/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" title="【龙飞】使用 Spring MVC 测试 Spring Security OAuth2 API" class="posttitle">【龙飞】使用 Spring MVC 测试 Spring Security OAuth2 API</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        28k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        25 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/05/16/使用Spring-MVC测试Spring-Security-Oauth2-API/" target="_blank" rel="noopener">http://niocoder.com/2018/05/16/使用Spring-MVC测试Spring-Security-Oauth2-API/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">1.1 修改pom.xml</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">1.2 修改MerryyouResourceServerConfig配置</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">1.3 增加/user和/forbidden请求映射</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">1.4 增加测试类SecurityOauth2Test</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">2. 代码下载</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" target="_blank" rel="noopener">3. 推荐文章</a></li>
+</ul>
+<hr>
+<p></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源...</strong></p></blockquote>
+            
+            <span class="read-more"><a href="/2019/05/16/Spring-Security/longfei/Use-Spring-MVC-to-test-the-Spring-Security-OAuth2-API/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Spring Security">
+                  <b>「 </b>SPRING SECURITY<b> 」</b>
+                </a>
+            
+            四月 29, 2019
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/04/29/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" title="【龙飞】Spring Boot 2.0 整合 Spring Security OAuth2" class="posttitle">【龙飞】Spring Boot 2.0 整合 Spring Security OAuth2</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        20k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        18 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/04/29/Spring-Boot-2.0-整合-Spring-Security-Oauth2/" target="_blank" rel="noopener">http://niocoder.com/2018/04/29/Spring-Boot-2.0-整合-Spring-Security-Oauth2/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">1.1 修改pom.xml</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">1.2 新增SecurityConfig配置</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">1.3 修改MerryyouAuthorizationServerConfig</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">1.4 修改application.yml</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">1.5 效果如下</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">2. 代码下载</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">3. 参考</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" target="_blank" rel="noopener">4. 推荐文章</a></li>
+</ul>
+<hr>
+<p></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微...</strong></p></blockquote>
+            
+            <span class="read-more"><a href="/2019/04/29/Spring-Security/longfei/Spring-Boot-2.0-integrates-Spring-Security-OAuth2/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Spring Security">
+                  <b>「 </b>SPRING SECURITY<b> 」</b>
+                </a>
+            
+            三月 18, 2019
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/03/18/Spring-Security/longfei/The-project-of-actual-combat/" title="【龙飞】Spring Security 源码分析十六：Spring Security 项目实战" class="posttitle">【龙飞】Spring Security 源码分析十六：Spring Security 项目实战</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        33k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        30 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/03/18/Spring-Security源码分析十六-Spring-Security项目实战/" target="_blank" rel="noopener">http://niocoder.com/2018/03/18/Spring-Security源码分析十六-Spring-Security项目实战/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">1.1 技术栈</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">1.2 效果图</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">1.3 部分代码</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">1.4 启动方式</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">2. 代码下载</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-project-of-actual-combat/" target="_blank" rel="noopener">3. 推荐文章</a></li>
+</ul>
+<hr>
+<p></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / ...</li></ol></blockquote>
+            
+            <span class="read-more"><a href="/2019/03/18/Spring-Security/longfei/The-project-of-actual-combat/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Spring Security">
+                  <b>「 </b>SPRING SECURITY<b> 」</b>
+                </a>
+            
+            三月 06, 2019
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/03/06/Spring-Security/longfei/Page-permission-control/" title="【龙飞】Spring Security 源码分析十五：Spring Security 页面权限控制" class="posttitle">【龙飞】Spring Security 源码分析十五：Spring Security 页面权限控制</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        17k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        16 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/03/06/Spring-Security源码分析十五-Spring-Security权限控制/" target="_blank" rel="noopener">http://niocoder.com/2018/03/06/Spring-Security源码分析十五-Spring-Security权限控制/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">1.1 freemarker中使用security标签</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">1.2 常用的Security标签</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">2. 代码下载</a></li>
+</ul>
+<hr>
+<p></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT...</li></ol></blockquote>
+            
+            <span class="read-more"><a href="/2019/03/06/Spring-Security/longfei/Page-permission-control/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Spring Security">
+                  <b>「 </b>SPRING SECURITY<b> 」</b>
+                </a>
+            
+            二月 02, 2019
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2019/02/02/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" title="【龙飞】Spring Security 源码分析十四：Spring Social 绑定与解绑" class="posttitle">【龙飞】Spring Security 源码分析十四：Spring Social 绑定与解绑</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        37k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        34 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>摘要: 原创出处 <a href="http://niocoder.com/2018/02/02/Spring-Security源码分析十四-Spring-Social绑定与解绑/" target="_blank" rel="noopener">http://niocoder.com/2018/02/02/Spring-Security源码分析十四-Spring-Social绑定与解绑/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" target="_blank" rel="noopener">1.1 UserConnection</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" target="_blank" rel="noopener">1.2 社交登录注册实现</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" target="_blank" rel="noopener">1.3 绑定与解绑实现</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" target="_blank" rel="noopener">2. 代码下载</a></li>
+</ul>
+<hr>
+<p></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT /...</li></ol></blockquote>
+            
+            <span class="read-more"><a href="/2019/02/02/Spring-Security/longfei/Spring-Social-binding-and-unbinding/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
 
 
     </div>
+    
+    <div id="pager"><a href="/page/2/" class="more" data-loading="加载中..." data-load-more="Load more">Load more</a></div>
     
 </div>
 <div id="preview"></div>

@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【老徐】Spring Security(五) —— 动手实现一个 IP_Login - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 https://www.cnkirito.moe/spring-security-5/ 「老徐」欢迎转载，保留摘要，谢谢！
+
+5 动手实现一个IP_Login
+
+
+
+
+🙂🙂🙂,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">【老徐】Spring Security(五) —— 动手实现一个 IP_Login</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                一月 05, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2018/01/05/Spring-Security/laoxu/IP_Login/" title="【老徐】Spring Security(五) —— 动手实现一个 IP_Login">【老徐】Spring Security(五) —— 动手实现一个 IP_Login</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    28k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    26 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="https://www.cnkirito.moe/spring-security-5/" target="_blank" rel="noopener">https://www.cnkirito.moe/spring-security-5/</a> 「老徐」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/IP_Login/" target="_blank" rel="noopener">5 动手实现一个IP_Login</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<p>在开始这篇文章之前，我们似乎应该思考下为什么需要搞清楚Spring Security的内部工作原理？按照第二篇文章中的配置，一个简单的表单认证不就达成了吗？更有甚者，为什么我们不自己写一个表单认证，用过滤器即可完成，大费周章引入Spring Security，看起来也并没有方便多少。对的，在引入Spring Security之前，我们得首先想到，是什么需求让我们引入了Spring Security，以及为什么是Spring Security，而不是shiro等等其他安全框架。我的理解是有如下几点：</p>
+<p>1 在前文的介绍中，Spring Security支持防止csrf攻击，session-fixation protection，支持表单认证，basic认证，rememberMe…等等一些特性，有很多是开箱即用的功能，而大多特性都可以通过配置灵活的变更，这是它的强大之处。</p>
+<p>2 Spring Security的兄弟的项目Spring Security SSO，OAuth2等支持了多种协议，而这些都是基于Spring Security的，方便了项目的扩展。</p>
+<p>3 SpringBoot的支持，更加保证了Spring Security的开箱即用。</p>
+<p>4 为什么需要理解其内部工作原理?一个有自我追求的程序员都不会满足于浅尝辄止，如果一个开源技术在我们的日常工作中十分常用，那么我偏向于阅读其源码，这样可以让我们即使排查不期而至的问题，也方便日后需求扩展。</p>
+<p>5 Spring及其子项目的官方文档是我见过的最良心的文档！<del>相比较于Apache的部分文档</del></p>
+<p>这一节，为了对之前分析的Spring Security源码和组件有一个清晰的认识，介绍一个使用IP完成登录的简单demo。</p>
+<h2 id="5-动手实现一个IP-Login"><a href="#5-动手实现一个IP-Login" class="headerlink" title="5 动手实现一个IP_Login"></a>5 动手实现一个IP_Login</h2><h3 id="5-1-定义需求"><a href="#5-1-定义需求" class="headerlink" title="5.1 定义需求"></a>5.1 定义需求</h3><p>在表单登录中，一般使用数据库中配置的用户表，权限表，角色表，权限组表…这取决于你的权限粒度，但本质都是借助了一个持久化存储，维护了用户的角色权限，而后给出一个/login作为登录端点，使用表单提交用户名和密码，而后完成登录后可自由访问受限页面。</p>
+<p>在我们的IP登录demo中，也是类似的，使用IP地址作为身份，内存中的一个ConcurrentHashMap维护IP地址和权限的映射，如果在认证时找不到相应的权限，则认为认证失败。</p>
+<p>实际上，在表单登录中，用户的IP地址已经被存放在Authentication.getDetails()中了，完全可以只重写一个AuthenticationProvider认证这个IP地址即可，但是，本demo是为了厘清Spring Security内部工作原理而设置，为了设计到更多的类，我完全重写了IP过滤器。</p>
+<h3 id="5-2-设计概述"><a href="#5-2-设计概述" class="headerlink" title="5.2 设计概述"></a>5.2 设计概述</h3><p>我们的参考完全是表单认证，在之前章节中，已经了解了表单认证相关的核心流程，将此图再贴一遍：</p>
+<p><a href="http://kirito.iocoder.cn/2011121410543010.jpg" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/2011121410543010.jpg" alt="http://kirito.iocoder.cn/2011121410543010.jpg"></a><a href="http://kirito.iocoder.cn/2011121410543010.jpg" target="_blank" rel="noopener">http://kirito.iocoder.cn/2011121410543010.jpg</a></p>
+<p>在IP登录的demo中，使用IpAuthenticationProcessingFilter拦截IP登录请求，同样使用ProviderManager作为全局AuthenticationManager接口的实现类，将ProviderManager内部的DaoAuthenticationProvider替换为IpAuthenticationProvider，而UserDetailsService则使用一个ConcurrentHashMap代替。更详细一点的设计：</p>
+<ol>
+<li>IpAuthenticationProcessingFilter–&gt;UsernamePasswordAuthenticationFilter</li>
+<li>IpAuthenticationToken–&gt;UsernamePasswordAuthenticationToken</li>
+<li>ProviderManager–&gt;ProviderManager</li>
+<li>IpAuthenticationProvider–&gt;DaoAuthenticationProvider</li>
+<li>ConcurrentHashMap–&gt;UserDetailsService</li>
+</ol>
+<h3 id="5-3-IpAuthenticationToken"><a href="#5-3-IpAuthenticationToken" class="headerlink" title="5.3 IpAuthenticationToken"></a>5.3 IpAuthenticationToken</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IpAuthenticationToken</span> <span class="keyword">extends</span> <span class="title">AbstractAuthenticationToken</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String ip;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getIp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ip;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIp</span><span class="params">(String ip)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ip = ip;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">IpAuthenticationToken</span><span class="params">(String ip)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">this</span>.ip = ip;</span><br><span class="line">        <span class="keyword">super</span>.setAuthenticated(<span class="keyword">false</span>);<span class="comment">//注意这个构造方法是认证时使用的</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">IpAuthenticationToken</span><span class="params">(String ip, Collection&lt;? extends GrantedAuthority&gt; authorities)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(authorities);</span><br><span class="line">        <span class="keyword">this</span>.ip = ip;</span><br><span class="line">        <span class="keyword">super</span>.setAuthenticated(<span class="keyword">true</span>);<span class="comment">//注意这个构造方法是认证成功后使用的</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getCredentials</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getPrincipal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.ip;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两个构造方法需要引起我们的注意，这里设计的用意是模仿的UsernamePasswordAuthenticationToken，第一个构造器是用于认证之前，传递给认证器使用的，所以只有IP地址，自然是未认证；第二个构造器用于认证成功之后，封装认证用户的信息，此时需要将权限也设置到其中，并且setAuthenticated(true)。这样的设计在诸多的Token类设计中很常见。</p>
+<h3 id="5-4-IpAuthenticationProcessingFilter"><a href="#5-4-IpAuthenticationProcessingFilter" class="headerlink" title="5.4 IpAuthenticationProcessingFilter"></a>5.4 IpAuthenticationProcessingFilter</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IpAuthenticationProcessingFilter</span> <span class="keyword">extends</span> <span class="title">AbstractAuthenticationProcessingFilter</span> </span>&#123;</span><br><span class="line">    <span class="comment">//使用/ipVerify该端点进行ip认证</span></span><br><span class="line">    IpAuthenticationProcessingFilter() &#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="keyword">new</span> AntPathRequestMatcher(<span class="string">"/ipVerify"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> AuthenticationException, IOException, ServletException </span>&#123;</span><br><span class="line">        <span class="comment">//获取host信息</span></span><br><span class="line">        String host = request.getRemoteHost();</span><br><span class="line">        <span class="comment">//交给内部的AuthenticationManager去认证，实现解耦</span></span><br><span class="line">        <span class="keyword">return</span> getAuthenticationManager().authenticate(<span class="keyword">new</span> IpAuthenticationToken(host));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>AbstractAuthenticationProcessingFilter这个过滤器在前面一节介绍过，是UsernamePasswordAuthenticationFilter的父类，我们的IpAuthenticationProcessingFilter也继承了它</li>
+<li>构造器中传入了/ipVerify作为IP登录的端点</li>
+<li>attemptAuthentication()方法中加载请求的IP地址，之后交给内部的AuthenticationManager去认证</li>
+</ol>
+<h3 id="5-5-IpAuthenticationProvider"><a href="#5-5-IpAuthenticationProvider" class="headerlink" title="5.5 IpAuthenticationProvider"></a>5.5 IpAuthenticationProvider</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IpAuthenticationProvider</span> <span class="keyword">implements</span> <span class="title">AuthenticationProvider</span> </span>&#123;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">static</span> Map&lt;String, SimpleGrantedAuthority&gt; ipAuthorityMap = <span class="keyword">new</span> ConcurrenHashMap();</span><br><span class="line">    <span class="comment">//维护一个ip白名单列表，每个ip对应一定的权限</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        ipAuthorityMap.put(<span class="string">"127.0.0.1"</span>, <span class="keyword">new</span> SimpleGrantedAuthority(<span class="string">"ADMIN"</span>));</span><br><span class="line">        ipAuthorityMap.put(<span class="string">"10.236.69.103"</span>, <span class="keyword">new</span> SimpleGrantedAuthority(<span class="string">"ADMIN"</span>));</span><br><span class="line">        ipAuthorityMap.put(<span class="string">"10.236.69.104"</span>, <span class="keyword">new</span> SimpleGrantedAuthority(<span class="string">"FRIEND"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">        IpAuthenticationToken ipAuthenticationToken = (IpAuthenticationToken) authentication;</span><br><span class="line">        String ip = ipAuthenticationToken.getIp();</span><br><span class="line">        SimpleGrantedAuthority simpleGrantedAuthority = ipAuthorityMap.get(ip);</span><br><span class="line">        <span class="comment">//不在白名单列表中</span></span><br><span class="line">        <span class="keyword">if</span> (simpleGrantedAuthority == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//封装权限信息，并且此时身份已经被认证</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> IpAuthenticationToken(ip, Arrays.asList(simpleGrantedAuthority));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只支持IpAuthenticationToken该身份</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(Class&lt;?&gt; authentication)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (IpAuthenticationToken.class</span><br><span class="line">                .isAssignableFrom(authentication));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>return new IpAuthenticationToken(ip, Arrays.asList(simpleGrantedAuthority));</code>使用了IpAuthenticationToken的第二个构造器，返回了一个已经经过认证的IpAuthenticationToken。</p>
+<h3 id="5-6-配置WebSecurityConfigAdapter"><a href="#5-6-配置WebSecurityConfigAdapter" class="headerlink" title="5.6 配置WebSecurityConfigAdapter"></a>5.6 配置WebSecurityConfigAdapter</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ip认证者配置</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">IpAuthenticationProvider <span class="title">ipAuthenticationProvider</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> IpAuthenticationProvider();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置封装ipAuthenticationToken的过滤器</span></span><br><span class="line">    <span class="function">IpAuthenticationProcessingFilter <span class="title">ipAuthenticationProcessingFilter</span><span class="params">(AuthenticationManager authenticationManager)</span> </span>&#123;</span><br><span class="line">        IpAuthenticationProcessingFilter ipAuthenticationProcessingFilter = <span class="keyword">new</span> IpAuthenticationProcessingFilter();</span><br><span class="line">        <span class="comment">//为过滤器添加认证器</span></span><br><span class="line">        ipAuthenticationProcessingFilter.setAuthenticationManager(authenticationManager);</span><br><span class="line">        <span class="comment">//重写认证失败时的跳转页面</span></span><br><span class="line">        ipAuthenticationProcessingFilter.setAuthenticationFailureHandler(<span class="keyword">new</span> SimpleUrlAuthenticationFailureHandler(<span class="string">"/ipLogin?error"</span>));</span><br><span class="line">        <span class="keyword">return</span> ipAuthenticationProcessingFilter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置登录端点</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">LoginUrlAuthenticationEntryPoint <span class="title">loginUrlAuthenticationEntryPoint</span><span class="params">()</span></span>&#123;</span><br><span class="line">        LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = <span class="keyword">new</span> LoginUrlAuthenticationEntryPoint</span><br><span class="line">                (<span class="string">"/ipLogin"</span>);</span><br><span class="line">        <span class="keyword">return</span> loginUrlAuthenticationEntryPoint;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http</span><br><span class="line">            .authorizeRequests()</span><br><span class="line">                .antMatchers(<span class="string">"/"</span>, <span class="string">"/home"</span>).permitAll()</span><br><span class="line">                .antMatchers(<span class="string">"/ipLogin"</span>).permitAll()</span><br><span class="line">                .anyRequest().authenticated()</span><br><span class="line">                .and()</span><br><span class="line">            .logout()</span><br><span class="line">                .logoutSuccessUrl(<span class="string">"/"</span>)</span><br><span class="line">                .permitAll()</span><br><span class="line">                .and()</span><br><span class="line">            .exceptionHandling()</span><br><span class="line">                .accessDeniedPage(<span class="string">"/ipLogin"</span>)</span><br><span class="line">                .authenticationEntryPoint(loginUrlAuthenticationEntryPoint())</span><br><span class="line">        ;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//注册IpAuthenticationProcessingFilter  注意放置的顺序 这很关键</span></span><br><span class="line">        http.addFilterBefore(ipAuthenticationProcessingFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        auth.authenticationProvider(ipAuthenticationProvider());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>WebSecurityConfigAdapter提供了我们很大的便利，不需要关注AuthenticationManager什么时候被创建，只需要使用其暴露的<code>configure(AuthenticationManagerBuilder auth)</code>便可以添加我们自定义的ipAuthenticationProvider。剩下的一些细节，注释中基本都写了出来。</p>
+<h3 id="5-7-配置SpringMVC"><a href="#5-7-配置SpringMVC" class="headerlink" title="5.7 配置SpringMVC"></a>5.7 配置SpringMVC</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addViewController(<span class="string">"/home"</span>).setViewName(<span class="string">"home"</span>);</span><br><span class="line">        registry.addViewController(<span class="string">"/"</span>).setViewName(<span class="string">"home"</span>);</span><br><span class="line">        registry.addViewController(<span class="string">"/hello"</span>).setViewName(<span class="string">"hello"</span>);</span><br><span class="line">        registry.addViewController(<span class="string">"/ip"</span>).setViewName(<span class="string">"ipHello"</span>);</span><br><span class="line">        registry.addViewController(<span class="string">"/ipLogin"</span>).setViewName(<span class="string">"ipLogin"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>页面的具体内容和表单登录基本一致，可以在文末的源码中查看。</p>
+<h3 id="5-8-运行效果"><a href="#5-8-运行效果" class="headerlink" title="5.8 运行效果"></a>5.8 运行效果</h3><h3 id="成功的流程"><a href="#成功的流程" class="headerlink" title="成功的流程"></a>成功的流程</h3><ul>
+<li><code>http://127.0.0.1:8080/</code>访问首页，其中here链接到的地址为：<code>http://127.0.0.1:8080/hello</code></li>
+</ul>
+<p><a href="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144410.png" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144410.png" alt="首页"></a>首页</p>
+<ul>
+<li>点击here，由于<code>http://127.0.0.1:8080/hello</code>是受保护资源，所以跳转到了校验IP的页面。此时若点击Sign In by IP按钮，将会提交到/ipVerify端点，进行IP的认证。</li>
+</ul>
+<p><a href="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144520.png" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144520.png" alt="登录"></a>登录</p>
+<ul>
+<li>登录校验成功之后，页面被成功重定向到了原先访问的</li>
+</ul>
+<p><a href="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144800.png" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144800.png" alt="受保护的hello页"></a>受保护的hello页</p>
+<h3 id="失败的流程"><a href="#失败的流程" class="headerlink" title="失败的流程"></a>失败的流程</h3><ul>
+<li>注意此时已经注销了上次的登录，并且，使用了localhost(localhost和127.0.0.1是两个不同的IP地址，我们的内存中只有127.0.0.1的用户,没有localhost的用户)</li>
+</ul>
+<p><a href="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144949.png" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002144949.png" alt="首页"></a>首页</p>
+<ul>
+<li><p>点击here后，由于没有认证过，依旧跳转到登录页面</p>
+<p><a href="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002145344.png" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002145344.png" alt="登录"></a>登录</p>
+</li>
+<li><p>此时，我们发现使用localhost，并没有认证成功，符合我们的预期</p>
+</li>
+</ul>
+<p><a href="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002145209.png" target="_blank" rel="noopener"><img src="http://kirito.iocoder.cn/QQ%E5%9B%BE%E7%89%8720171002145209.png" alt="认证失败"></a>认证失败</p>
+<h3 id="5-9-总结"><a href="#5-9-总结" class="headerlink" title="5.9 总结"></a>5.9 总结</h3><p>一个简单的使用Spring Security来进行验证IP地址的登录demo就已经完成了，这个demo主要是为了更加清晰地阐释Spring Security内部工作的原理设置的，其本身没有实际的项目意义，认证IP其实也不应该通过Spring Security的过滤器去做，退一步也应该交给Filter去做（这个Filter不存在于Spring Security的过滤器链中），而真正项目中，如果真正要做黑白名单这样的功能，一般选择在网关层或者nginx的扩展模块中做。再次特地强调下，怕大家误解。</p>
+<p>最后祝大家国庆玩的开心~</p>
+<p>本节的代码可以在github中下载源码：<a href="https://github.com/lexburner/spring-security-ipLogin" target="_blank" rel="noopener">https://github.com/lexburner/spring-security-ipLogin</a></p>
+<h1 id="666-彩蛋"><a href="#666-彩蛋" class="headerlink" title="666. 彩蛋"></a>666. 彩蛋</h1><p>如果你对 Spring Security 感兴趣，欢迎加入我的知识一起交流。</p>
+<p><img src="http://www.iocoder.cn/images/Architecture/2017_12_29/01.png" alt="知识星球"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-动手实现一个IP-Login"><span class="toc-number">1.</span> <span class="toc-text">5 动手实现一个IP_Login</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-定义需求"><span class="toc-number">1.1.</span> <span class="toc-text">5.1 定义需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-设计概述"><span class="toc-number">1.2.</span> <span class="toc-text">5.2 设计概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-IpAuthenticationToken"><span class="toc-number">1.3.</span> <span class="toc-text">5.3 IpAuthenticationToken</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-IpAuthenticationProcessingFilter"><span class="toc-number">1.4.</span> <span class="toc-text">5.4 IpAuthenticationProcessingFilter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-IpAuthenticationProvider"><span class="toc-number">1.5.</span> <span class="toc-text">5.5 IpAuthenticationProvider</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-配置WebSecurityConfigAdapter"><span class="toc-number">1.6.</span> <span class="toc-text">5.6 配置WebSecurityConfigAdapter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-配置SpringMVC"><span class="toc-number">1.7.</span> <span class="toc-text">5.7 配置SpringMVC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-8-运行效果"><span class="toc-number">1.8.</span> <span class="toc-text">5.8 运行效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成功的流程"><span class="toc-number">1.9.</span> <span class="toc-text">成功的流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#失败的流程"><span class="toc-number">1.10.</span> <span class="toc-text">失败的流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-9-总结"><span class="toc-number">1.11.</span> <span class="toc-text">5.9 总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#666-彩蛋"><span class="toc-number"></span> <span class="toc-text">666. 彩蛋</span></a>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

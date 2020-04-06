@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【龙飞】Spring Security 源码分析十五：Spring Security 页面权限控制 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 http://niocoder.com/2018/03/06/Spring-Security源码分析十五-Spring-Security权限控制/ 「龙飞」欢迎转载，保留摘要，谢谢,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">【龙飞】Spring Security 源码分析十五：Spring Security 页面权限控制</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                三月 06, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/03/06/Spring-Security/longfei/Page-permission-control/" title="【龙飞】Spring Security 源码分析十五：Spring Security 页面权限控制">【龙飞】Spring Security 源码分析十五：Spring Security 页面权限控制</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    17k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    16 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="http://niocoder.com/2018/03/06/Spring-Security源码分析十五-Spring-Security权限控制/" target="_blank" rel="noopener">http://niocoder.com/2018/03/06/Spring-Security源码分析十五-Spring-Security权限控制/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">1.1 freemarker中使用security标签</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">1.2 常用的Security标签</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Page-permission-control/" target="_blank" rel="noopener">2. 代码下载</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<blockquote>
+<p>Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。它提供了一组可以在Spring应用上下文中配置的Bean，充分利用了Spring IoC，DI（控制反转Inversion of Control ,DI:Dependency Injection 依赖注入）和AOP（面向切面编程）功能，为应用系统提供声明式的安全访问控制功能，减少了为企业系统安全控制编写大量重复代码的工作。</p>
+</blockquote>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>在<a href="https://longfeizheng.github.io/2018/01/30/Spring-Security%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%8D%81%E4%B8%89-Spring-Security%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" target="_blank" rel="noopener">Spring Security源码分析十三：Spring Security 基于表达式的权限控制</a>中，我们只是在后台增加了权限控制，并未在页面做任何处理，与之对应的按钮和链接还是会显示在页面上，用户体验较差。本章使用<code>Spring Security</code>标签库来包裹需要保护的内容。</p>
+<h2 id="1-1-freemarker中使用security标签"><a href="#1-1-freemarker中使用security标签" class="headerlink" title="1.1 freemarker中使用security标签"></a>1.1 freemarker中使用security标签</h2><h3 id="1-1-1-增加security标签库依赖"><a href="#1-1-1-增加security标签库依赖" class="headerlink" title="1.1.1 增加security标签库依赖"></a>1.1.1 增加security标签库依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jstl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.embed<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat-embed-jasper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-security-taglibs<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-2-添加ClassPathTldsLoader类加载security-tld"><a href="#1-1-2-添加ClassPathTldsLoader类加载security-tld" class="headerlink" title="1.1.2 添加ClassPathTldsLoader类加载security.tld"></a>1.1.2 添加ClassPathTldsLoader类加载security.tld</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassPathTldsLoader</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SECURITY_TLD = <span class="string">"/META-INF/security.tld"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">private</span> List&lt;String&gt; classPathTlds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ClassPathTldsLoader</span><span class="params">(String... classPathTlds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">if</span>(classPathTlds.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.classPathTlds = Arrays.asList(SECURITY_TLD);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.classPathTlds = Arrays.asList(classPathTlds);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> FreeMarkerConfigurer freeMarkerConfigurer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadClassPathTlds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        freeMarkerConfigurer.getTaglibFactory().setClasspathTlds(classPathTlds);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-3-定义ClassPathTldsLoader-Bean"><a href="#1-1-3-定义ClassPathTldsLoader-Bean" class="headerlink" title="1.1.3 定义ClassPathTldsLoader Bean"></a>1.1.3 定义ClassPathTldsLoader Bean</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"> <span class="meta">@ConditionalOnMissingBean</span>(ClassPathTldsLoader.class)</span><br><span class="line"> <span class="function"><span class="keyword">public</span> ClassPathTldsLoader <span class="title">classPathTldsLoader</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">new</span> ClassPathTldsLoader();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-4-页面中使用标签"><a href="#1-1-4-页面中使用标签" class="headerlink" title="1.1.4 页面中使用标签"></a>1.1.4 页面中使用标签</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 引入标签--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">#assign</span>  <span class="attr">sec</span>=<span class="string">JspTaglibs[</span>"<span class="attr">http:</span>//<span class="attr">www.springframework.org</span>/<span class="attr">security</span>/<span class="attr">tags</span>"] /&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>主页<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Spring Security Demo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- freemarker使用security标签格式如下--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">@sec.authorize</span> <span class="attr">access</span>=<span class="string">"hasRole('ROLE_ADMIN')"</span>&gt;</span></span><br><span class="line">    you can see this</span><br><span class="line">    <span class="tag">&lt;/<span class="name">@sec.authorize</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">@sec.authorize</span> <span class="attr">access</span>=<span class="string">"isAnonymous()"</span>&gt;</span></span><br><span class="line">    you can see isAnonymous</span><br><span class="line">    <span class="tag">&lt;/<span class="name">@sec.authorize</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-常用的Security标签"><a href="#1-2-常用的Security标签" class="headerlink" title="1.2 常用的Security标签"></a>1.2 常用的Security标签</h2><h3 id="1-2-1-authorize"><a href="#1-2-1-authorize" class="headerlink" title="1.2.1 authorize"></a>1.2.1 authorize</h3><p><code>authorize</code>用于判断用户是否具有对应权限，从而控制其限制的内容，包含以下属性。</p>
+<h4 id="access"><a href="#access" class="headerlink" title="access"></a>access</h4><p><code>access</code>属性需要使用表达式来判断权限，当表达式的返回结果为true时表示拥有对应的权限。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">@sec.authorize</span> <span class="attr">access</span>=<span class="string">"hasRole('ROLE_ADMIN')"</span>&gt;</span></span><br><span class="line">此内容仅对在授予权限列表中拥有“ROLE_ADMIN”权限的用户可见</span><br><span class="line"><span class="tag">&lt;/<span class="name">@sec.authorize</span>&gt;</span></span><br><span class="line">--------------------------</span><br><span class="line"><span class="tag">&lt;<span class="name">@sec.authorize</span> <span class="attr">access</span>=<span class="string">"hasPermission(#domain,'read') or hasPermission(#domain,'write')"</span>&gt;</span></span><br><span class="line">只有具有读取或写入权限的用户才能看到此内容，该用户被发现为名为“domain”的请求属性。</span><br><span class="line"><span class="tag">&lt;/<span class="name">@sec.authorize</span>&gt;</span></span><br><span class="line">-----------------------------</span><br><span class="line"><span class="tag">&lt;<span class="name">@sec.authorize</span> <span class="attr">url</span>=<span class="string">"/admin"</span>&gt;</span></span><br><span class="line">此内容仅对有权将请求发送到“/ admin”链接的用户可见</span><br><span class="line"><span class="tag">&lt;/<span class="name">@sec.authorize</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-authentication"><a href="#1-2-2-authentication" class="headerlink" title="1.2.2 authentication"></a>1.2.2 authentication</h3><p><code>authentication</code>标签用来代表当前<code>Authentication</code>对象，主要用于获取当前<code>Authentication</code>的相关信息。包含以下属性。</p>
+<h4 id="1-2-2-1-property"><a href="#1-2-2-1-property" class="headerlink" title="1.2.2.1 property"></a>1.2.2.1 property</h4><p> property属性只允许指定Authentication所拥有的属性。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--获取当前用户的用户名--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">@sec:authentication</span> <span class="attr">property</span>=<span class="string">"principal.username"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-2-2-var属性"><a href="#1-2-2-2-var属性" class="headerlink" title="1.2.2.2 var属性"></a>1.2.2.2 var属性</h4><p>  var属性用于指定一个属性名，这样当获取到了authentication的相关信息后会将其以var指定的属性名进行存放，默认是存放在pageConext中。可以通过scope属性进行指定。此外，当指定了var属性后，authentication标签不会将获取到的信息在页面上进行展示，如需展示用户应该通过var指定的属性进行展示，或去掉var属性。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">@sec.authentication</span> <span class="attr">property</span>=<span class="string">"principal.username"</span> <span class="attr">scope</span>=<span class="string">"session"</span> <span class="attr">var</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">$&#123;username &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-3-accesscontrollist"><a href="#1-2-3-accesscontrollist" class="headerlink" title="1.2.3 accesscontrollist"></a>1.2.3 accesscontrollist</h3><p>该标签只有在与<code>spring security</code>的acl模块一起使用时才有效。它会检查指定域对象的必需权限的逗号分隔列表。如果当前用户拥有所有这些权限，则会评估标签正文。如果他们不这样做，它将被跳过。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">@sec.accesscontrollist</span> <span class="attr">hasPermission</span>=<span class="string">"1,2"</span> <span class="attr">domainObject</span>=<span class="string">"$&#123;someObject&#125;"</span>&gt;</span></span><br><span class="line">如果用户具有给定对象上的值“1”或“2”表示的所有权限，则会显示此信息</span><br><span class="line"><span class="tag">&lt;/<span class="name">@sec.accesscontrollist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-代码下载"><a href="#2-代码下载" class="headerlink" title="2. 代码下载"></a>2. 代码下载</h1><p>从我的 github 中下载，<a href="https://github.com/longfeizheng/logback" target="_blank" rel="noopener">https://github.com/longfeizheng/logback</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-前言"><span class="toc-number">1.</span> <span class="toc-text">1. 前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-freemarker中使用security标签"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 freemarker中使用security标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-增加security标签库依赖"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1.1 增加security标签库依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-添加ClassPathTldsLoader类加载security-tld"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.1.2 添加ClassPathTldsLoader类加载security.tld</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-3-定义ClassPathTldsLoader-Bean"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.1.3 定义ClassPathTldsLoader Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-4-页面中使用标签"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.1.4 页面中使用标签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-常用的Security标签"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 常用的Security标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-authorize"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 authorize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-authentication"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 authentication</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-accesscontrollist"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 accesscontrollist</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-代码下载"><span class="toc-number">2.</span> <span class="toc-text">2. 代码下载</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

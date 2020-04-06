@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【龙飞】Spring Security 源码分析一：Spring Security 认证过程 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 http://niocoder.com/2018/01/02/Spring-Security源码分析一-Spring-Security认证过程/ 「龙飞」欢迎转载，保留摘要，谢谢！,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">【龙飞】Spring Security 源码分析一：Spring Security 认证过程</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                一月 02, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/01/02/Spring-Security/longfei/The-authentication-process/" title="【龙飞】Spring Security 源码分析一：Spring Security 认证过程">【龙飞】Spring Security 源码分析一：Spring Security 认证过程</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    42k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    38 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="http://niocoder.com/2018/01/02/Spring-Security源码分析一-Spring-Security认证过程/" target="_blank" rel="noopener">http://niocoder.com/2018/01/02/Spring-Security源码分析一-Spring-Security认证过程/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">1. 类图</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">2. 概述</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">2.1 AuthenticationManager</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">2.2 ProviderManager</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">2.3 验证逻辑</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">3. Authentication</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">4. ProviderManager</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">5. AuthenticationProvider</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">5.1 DaoAuthenticationProvider</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">5.2 AbstractUserDetailsAuthenticationProvider</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">5.3 UserDetailsService</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">5.4 JdbcUserDetailsManager</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">5.5 InMemoryUserDetailsManager</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">6. 总结</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/The-authentication-process/" target="_blank" rel="noopener">7. 时序图</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<blockquote>
+<p>Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。它提供了一组可以在Spring应用上下文中配置的Bean，充分利用了Spring IoC，DI（控制反转Inversion of Control ,DI:Dependency Injection 依赖注入）和AOP（面向切面编程）功能，为应用系统提供声明式的安全访问控制功能，减少了为企业系统安全控制编写大量重复代码的工作。 </p>
+</blockquote>
+<h1 id="1-类图"><a href="#1-类图" class="headerlink" title="1. 类图"></a>1. 类图</h1><p>为了方便理解Spring Security认证流程，特意画了如下的类图，包含相关的核心认证类<br><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-classdiagram.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-classdiagram.png" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-classdiagram.png" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-classdiagram.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-classdiagram.png"></a></p>
+<h1 id="2-概述"><a href="#2-概述" class="headerlink" title="2. 概述"></a>2. 概述</h1><p>核心验证器</p>
+<h2 id="2-1-AuthenticationManager"><a href="#2-1-AuthenticationManager" class="headerlink" title="2.1 AuthenticationManager"></a>2.1 AuthenticationManager</h2><p>该对象提供了认证方法的入口，接收一个<code>Authentiaton</code>对象作为参数;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthenticationManager</span> </span>&#123;</span><br><span class="line">	<span class="function">Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-ProviderManager"><a href="#2-2-ProviderManager" class="headerlink" title="2.2 ProviderManager"></a>2.2 ProviderManager</h2><p>它是 <code>AuthenticationManager</code> 的一个实现类，提供了基本的认证逻辑和方法；它包含了一个 <code>List&lt;AuthenticationProvider&gt;</code> 对象，通过 AuthenticationProvider 接口来扩展出不同的认证提供者(当<code>Spring Security</code>默认提供的实现类不能满足需求的时候可以扩展<code>AuthenticationProvider</code> 覆盖<code>supports(Class&lt;?&gt; authentication)</code>方法)；</p>
+<h2 id="2-3-验证逻辑"><a href="#2-3-验证逻辑" class="headerlink" title="2.3 验证逻辑"></a>2.3 验证逻辑</h2><p><code>AuthenticationManager</code> 接收 <code>Authentication</code> 对象作为参数，并通过 <code>authenticate(Authentication)</code> 方法对其进行验证；<code>AuthenticationProvider</code>实现类用来支撑对 <code>Authentication</code> 对象的验证动作；<code>UsernamePasswordAuthenticationToken</code>实现了 <code>Authentication</code>主要是将用户输入的用户名和密码进行封装，并供给 <code>AuthenticationManager</code> 进行验证；验证完成以后将返回一个认证成功的 <code>Authentication</code> 对象；</p>
+<h1 id="3-Authentication"><a href="#3-Authentication" class="headerlink" title="3. Authentication"></a>3. Authentication</h1><p><code>Authentication</code>对象中的主要方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Authentication</span> <span class="keyword">extends</span> <span class="title">Principal</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">	<span class="comment">//#1.权限结合，可使用AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_ADMIN")返回字符串权限集合</span></span><br><span class="line">	Collection&lt;? extends GrantedAuthority&gt; getAuthorities();</span><br><span class="line">	<span class="comment">//#2.用户名密码认证时可以理解为密码</span></span><br><span class="line">	<span class="function">Object <span class="title">getCredentials</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//#3.认证时包含的一些信息。</span></span><br><span class="line">	<span class="function">Object <span class="title">getDetails</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//#4.用户名密码认证时可理解时用户名</span></span><br><span class="line">	<span class="function">Object <span class="title">getPrincipal</span><span class="params">()</span></span>;</span><br><span class="line">	#5.是否被认证，认证为true	</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isAuthenticated</span><span class="params">()</span></span>;</span><br><span class="line">	#6.设置是否能被认证</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setAuthenticated</span><span class="params">(<span class="keyword">boolean</span> isAuthenticated)</span> <span class="keyword">throws</span> IllegalArgumentException</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-ProviderManager"><a href="#4-ProviderManager" class="headerlink" title="4. ProviderManager"></a>4. ProviderManager</h1><p><code>ProviderManager</code>是<code>AuthenticationManager</code>的实现类，提供了基本认证实现逻辑和流程；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">		<span class="comment">//#1.获取当前的Authentication的认证类型</span></span><br><span class="line">		Class&lt;? extends Authentication&gt; toTest = authentication.getClass();</span><br><span class="line">		AuthenticationException lastException = <span class="keyword">null</span>;</span><br><span class="line">		Authentication result = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">boolean</span> debug = logger.isDebugEnabled();</span><br><span class="line">		<span class="comment">//#2.遍历所有的providers使用supports方法判断该provider是否支持当前的认证类型，不支持的话继续遍历</span></span><br><span class="line">		<span class="keyword">for</span> (AuthenticationProvider provider : getProviders()) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!provider.supports(toTest)) &#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (debug) &#123;</span><br><span class="line">				logger.debug(<span class="string">"Authentication attempt using "</span></span><br><span class="line">						+ provider.getClass().getName());</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				#3.支持的话调用provider的authenticat方法认证</span><br><span class="line">				result = provider.authenticate(authentication);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">					#4.认证通过的话重新生成Authentication对应的Token</span><br><span class="line">					copyDetails(authentication, result);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span> (AccountStatusException e) &#123;</span><br><span class="line">				prepareException(e, authentication);</span><br><span class="line">				<span class="comment">// SEC-546: Avoid polling additional providers if auth failure is due to</span></span><br><span class="line">				<span class="comment">// invalid account status</span></span><br><span class="line">				<span class="keyword">throw</span> e;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span> (InternalAuthenticationServiceException e) &#123;</span><br><span class="line">				prepareException(e, authentication);</span><br><span class="line">				<span class="keyword">throw</span> e;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span> (AuthenticationException e) &#123;</span><br><span class="line">				lastException = e;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (result == <span class="keyword">null</span> &amp;&amp; parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="comment">// Allow the parent to try.</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				#5.如果#1 没有验证通过，则使用父类型AuthenticationManager进行验证</span><br><span class="line">				result = parent.authenticate(authentication);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span> (ProviderNotFoundException e) &#123;</span><br><span class="line">				<span class="comment">// ignore as we will throw below if no other exception occurred prior to</span></span><br><span class="line">				<span class="comment">// calling parent and the parent</span></span><br><span class="line">				<span class="comment">// may throw ProviderNotFound even though a provider in the child already</span></span><br><span class="line">				<span class="comment">// handled the request</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span> (AuthenticationException e) &#123;</span><br><span class="line">				lastException = e;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		#6. 是否擦出敏感信息</span><br><span class="line">		<span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (eraseCredentialsAfterAuthentication</span><br><span class="line">					&amp;&amp; (result <span class="keyword">instanceof</span> CredentialsContainer)) &#123;</span><br><span class="line">				<span class="comment">// Authentication is complete. Remove credentials and other secret data</span></span><br><span class="line">				<span class="comment">// from authentication</span></span><br><span class="line">				((CredentialsContainer) result).eraseCredentials();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			eventPublisher.publishAuthenticationSuccess(result);</span><br><span class="line">			<span class="keyword">return</span> result;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Parent was null, or didn't authenticate (or throw an exception).</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (lastException == <span class="keyword">null</span>) &#123;</span><br><span class="line">			lastException = <span class="keyword">new</span> ProviderNotFoundException(messages.getMessage(</span><br><span class="line">					<span class="string">"ProviderManager.providerNotFound"</span>,</span><br><span class="line">					<span class="keyword">new</span> Object[] &#123; toTest.getName() &#125;,</span><br><span class="line">					<span class="string">"No AuthenticationProvider found for &#123;0&#125;"</span>));</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		prepareException(lastException, authentication);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">throw</span> lastException;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>遍历所有的 Providers，然后依次执行该 Provider 的验证方法<ul>
+<li>如果某一个 Provider 验证成功，则跳出循环不再执行后续的验证；</li>
+<li>如果验证成功，会将返回的 result 既 Authentication 对象进一步封装为 Authentication Token；<br>比如 UsernamePasswordAuthenticationToken、RememberMeAuthenticationToken 等；这些 Authentication Token 也都继承自 Authentication 对象；</li>
+</ul>
+</li>
+<li>如果 #1 没有任何一个 Provider 验证成功，则试图使用其 parent Authentication Manager 进行验证；</li>
+<li>是否需要擦除密码等敏感信息；</li>
+</ol>
+<h1 id="5-AuthenticationProvider"><a href="#5-AuthenticationProvider" class="headerlink" title="5. AuthenticationProvider"></a>5. AuthenticationProvider</h1><p><code>ProviderManager</code> 通过 <code>AuthenticationProvider</code> 扩展出更多的验证提供的方式；而 <code>AuthenticationProvider</code> 本身也就是一个接口，从类图中我们可以看出它的实现类<code>AbstractUserDetailsAuthenticationProvider</code>和<code>AbstractUserDetailsAuthenticationProvider</code>的子类<code>DaoAuthenticationProvider</code>。<code>DaoAuthenticationProvider</code>是<code>Spring Security</code>中一个核心的<code>Provider</code>,对所有的数据库提供了基本方法和入口。</p>
+<h2 id="5-1-DaoAuthenticationProvider"><a href="#5-1-DaoAuthenticationProvider" class="headerlink" title="5.1 DaoAuthenticationProvider"></a>5.1 DaoAuthenticationProvider</h2><p><code>DaoAuthenticationProvider</code>主要做了以下事情</p>
+<ol>
+<li><p>对用户身份尽心加密操作；</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	#1.可直接返回BCryptPasswordEncoder，也可以自己实现该接口使用自己的加密算法核心方法String encode(CharSequence rawPassword);和boolean matches(CharSequence rawPassword, String encodedPassword);</span><br><span class="line"><span class="keyword">private</span> PasswordEncoder passwordEncoder;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现了 <code>AbstractUserDetailsAuthenticationProvider</code> 两个抽象方法，</p>
+<ol>
+<li><p>获取用户信息的扩展点</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> UserDetails <span class="title">retrieveUser</span><span class="params">(String username,</span></span></span><br><span class="line"><span class="function"><span class="params">			UsernamePasswordAuthenticationToken authentication)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">		UserDetails loadedUser;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			loadedUser = <span class="keyword">this</span>.getUserDetailsService().loadUserByUsername(username);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要是通过注入<code>UserDetailsService</code>接口对象，并调用其接口方法 <code>loadUserByUsername(String username)</code> 获取得到相关的用户信息。<code>UserDetailsService</code>接口非常重要。</p>
+</li>
+<li><p>实现 additionalAuthenticationChecks 的验证方法(主要验证密码)；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-2-AbstractUserDetailsAuthenticationProvider"><a href="#5-2-AbstractUserDetailsAuthenticationProvider" class="headerlink" title="5.2 AbstractUserDetailsAuthenticationProvider"></a>5.2 AbstractUserDetailsAuthenticationProvider</h2><p><code>AbstractUserDetailsAuthenticationProvider</code>为<code>DaoAuthenticationProvider</code>提供了基本的认证方法；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">		Assert.isInstanceOf(UsernamePasswordAuthenticationToken.class, authentication,</span><br><span class="line">				messages.getMessage(</span><br><span class="line">						<span class="string">"AbstractUserDetailsAuthenticationProvider.onlySupports"</span>,</span><br><span class="line">						<span class="string">"Only UsernamePasswordAuthenticationToken is supported"</span>));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Determine username</span></span><br><span class="line">		String username = (authentication.getPrincipal() == <span class="keyword">null</span>) ? <span class="string">"NONE_PROVIDED"</span></span><br><span class="line">				: authentication.getName();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">boolean</span> cacheWasUsed = <span class="keyword">true</span>;</span><br><span class="line">		UserDetails user = <span class="keyword">this</span>.userCache.getUserFromCache(username);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">			cacheWasUsed = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				#1.获取用户信息由子类实现即DaoAuthenticationProvider</span><br><span class="line">				user = retrieveUser(username,</span><br><span class="line">						(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span> (UsernameNotFoundException notFound) &#123;</span><br><span class="line">				logger.debug(<span class="string">"User '"</span> + username + <span class="string">"' not found"</span>);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (hideUserNotFoundExceptions) &#123;</span><br><span class="line">					<span class="keyword">throw</span> <span class="keyword">new</span> BadCredentialsException(messages.getMessage(</span><br><span class="line">							<span class="string">"AbstractUserDetailsAuthenticationProvider.badCredentials"</span>,</span><br><span class="line">							<span class="string">"Bad credentials"</span>));</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">throw</span> notFound;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			Assert.notNull(user,</span><br><span class="line">					<span class="string">"retrieveUser returned null - a violation of the interface contract"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			#2.前检查由DefaultPreAuthenticationChecks类实现（主要判断当前用户是否锁定，过期，冻结User接口）</span><br><span class="line">			preAuthenticationChecks.check(user);</span><br><span class="line">			#3.子类实现</span><br><span class="line">			additionalAuthenticationChecks(user,</span><br><span class="line">					(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (AuthenticationException exception) &#123;</span><br><span class="line">			<span class="keyword">if</span> (cacheWasUsed) &#123;</span><br><span class="line">				<span class="comment">// There was a problem, so try again after checking</span></span><br><span class="line">				<span class="comment">// we're using latest data (i.e. not from the cache)</span></span><br><span class="line">				cacheWasUsed = <span class="keyword">false</span>;</span><br><span class="line">				user = retrieveUser(username,</span><br><span class="line">						(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line">				preAuthenticationChecks.check(user);</span><br><span class="line">				additionalAuthenticationChecks(user,</span><br><span class="line">						(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">throw</span> exception;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		#4.检测用户密码是否过期对应#2 的User接口</span><br><span class="line">		postAuthenticationChecks.check(user);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!cacheWasUsed) &#123;</span><br><span class="line">			<span class="keyword">this</span>.userCache.putUserInCache(user);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Object principalToReturn = user;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (forcePrincipalAsString) &#123;</span><br><span class="line">			principalToReturn = user.getUsername();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> createSuccessAuthentication(principalToReturn, authentication, user);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>AbstractUserDetailsAuthenticationProvider</code>主要实现了<code>AuthenticationProvider</code>的接口方法<code>authenticate</code> 并提供了相关的验证逻辑；</p>
+<ol>
+<li><p>获取用户返回<code>UserDetails</code><br> <code>AbstractUserDetailsAuthenticationProvider</code>定义了一个抽象的方法</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> UserDetails <span class="title">retrieveUser</span><span class="params">(String username,</span></span></span><br><span class="line"><span class="function"><span class="params">     UsernamePasswordAuthenticationToken authentication)</span></span></span><br><span class="line"><span class="function">     <span class="keyword">throws</span> AuthenticationException</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三步验证工作</p>
+<ol>
+<li>preAuthenticationChecks</li>
+<li>additionalAuthenticationChecks（抽象方法，子类实现）</li>
+<li>postAuthenticationChecks</li>
+</ol>
+</li>
+<li><p>将已通过验证的用户信息封装成 UsernamePasswordAuthenticationToken 对象并返回；该对象封装了用户的身份信息，以及相应的权限信息，相关源码如下，</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Authentication <span class="title">createSuccessAuthentication</span><span class="params">(Object principal,</span></span></span><br><span class="line"><span class="function"><span class="params">		UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(</span></span></span><br><span class="line"><span class="function"><span class="params">				principal, authentication.getCredentials()</span>,</span></span><br><span class="line"><span class="function">				authoritiesMapper.<span class="title">mapAuthorities</span><span class="params">(user.getAuthorities()</span>))</span>;</span><br><span class="line">		result.setDetails(authentication.getDetails());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="5-3-UserDetailsService"><a href="#5-3-UserDetailsService" class="headerlink" title="5.3 UserDetailsService"></a>5.3 UserDetailsService</h2><p><code>UserDetailsService</code>是一个接口，提供了一个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line">	<span class="function">UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过用户名 username 调用方法 loadUserByUsername 返回了一个UserDetails接口对象（对应<code>AbstractUserDetailsAuthenticationProvider</code>的三步验证方法）；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserDetails</span> <span class="keyword">extends</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">	#1.权限集合</span><br><span class="line">	Collection&lt;? extends GrantedAuthority&gt; getAuthorities();</span><br><span class="line">	#2.密码	</span><br><span class="line">	<span class="function">String <span class="title">getPassword</span><span class="params">()</span></span>;</span><br><span class="line">	#3.用户民</span><br><span class="line">	<span class="function">String <span class="title">getUsername</span><span class="params">()</span></span>;</span><br><span class="line">	#4.用户是否过期</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isAccountNonExpired</span><span class="params">()</span></span>;</span><br><span class="line">	#5.是否锁定	</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isAccountNonLocked</span><span class="params">()</span></span>;</span><br><span class="line">	#6.用户密码是否过期	</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isCredentialsNonExpired</span><span class="params">()</span></span>;</span><br><span class="line">	#7.账号是否可用（可理解为是否删除）</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">isEnabled</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Spring 为<code>UserDetailsService</code>默认提供了一个实现类 org.springframework.security.core.userdetails.jdbc.<code>JdbcDaoImpl</code></p>
+<h2 id="5-4-JdbcUserDetailsManager"><a href="#5-4-JdbcUserDetailsManager" class="headerlink" title="5.4 JdbcUserDetailsManager"></a>5.4 JdbcUserDetailsManager</h2><p>该实现类主要是提供基于<code>JDBC</code>对 User 进行增、删、查、改的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcUserDetailsManager</span> <span class="keyword">extends</span> <span class="title">JdbcDaoImpl</span> <span class="keyword">implements</span> <span class="title">UserDetailsManager</span>,</span></span><br><span class="line"><span class="class">		<span class="title">GroupManager</span> </span>&#123;</span><br><span class="line">	<span class="comment">// ~ Static fields/initializers</span></span><br><span class="line">	<span class="comment">// =====================================================================================</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// UserDetailsManager SQL</span></span><br><span class="line">	#1.定义了一些列对数据库操作的语句</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_CREATE_USER_SQL = <span class="string">"insert into users (username, password, enabled) values (?,?,?)"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_DELETE_USER_SQL = <span class="string">"delete from users where username = ?"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_UPDATE_USER_SQL = <span class="string">"update users set password = ?, enabled = ? where username = ?"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_INSERT_AUTHORITY_SQL = <span class="string">"insert into authorities (username, authority) values (?,?)"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_DELETE_USER_AUTHORITIES_SQL = <span class="string">"delete from authorities where username = ?"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_USER_EXISTS_SQL = <span class="string">"select username from users where username = ?"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEF_CHANGE_PASSWORD_SQL = <span class="string">"update users set password = ? where username = ?"</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-5-InMemoryUserDetailsManager"><a href="#5-5-InMemoryUserDetailsManager" class="headerlink" title="5.5 InMemoryUserDetailsManager"></a>5.5 InMemoryUserDetailsManager</h2><p>该实现类主要是提供基于<code>内存</code>对 User 进行增、删、查、改的方法<br><code>public class InMemoryUserDetailsManager implements UserDetailsManager {
+    protected final Log logger = LogFactory.getLog(getClass());
+    #1.用MAP 存储
+    private final Map&lt;String, MutableUserDetails&gt; users = new HashMap&lt;String, MutableUserDetails&gt;();
+
+    private AuthenticationManager authenticationManager;
+
+    public InMemoryUserDetailsManager() {
+    }
+
+    public InMemoryUserDetailsManager(Collection&lt;UserDetails&gt; users) {
+        for (UserDetails user : users) {
+            createUser(user);
+        }
+    }</code></p>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h1><p><code>UserDetailsService</code>接口作为桥梁，是<code>DaoAuthenticationProvier</code>与特定用户信息来源进行解耦的地方，<code>UserDetailsService</code>由<code>UserDetails</code>和<code>UserDetailsManage</code>r所构成；<code>UserDetails</code>和<code>UserDetailsManager</code>各司其责，一个是对基本用户信息进行封装，一个是对基本用户信息进行管理；</p>
+<p><code>特别注意</code>，<code>UserDetailsService</code>、<code>UserDetails</code>以及<code>UserDetailsManager</code>都是可被用户自定义的扩展点，我们可以继承这些接口提供自己的读取用户来源和管理用户的方法，比如我们可以自己实现一个 与特定 ORM 框架，比如 Mybatis 或者 Hibernate，相关的<code>UserDetailsService</code>和<code>UserDetailsManager</code>；</p>
+<h1 id="7-时序图"><a href="#7-时序图" class="headerlink" title="7. 时序图"></a>7. 时序图</h1><p><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-service-Sequence.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-service-Sequence.png" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-service-Sequence.png" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-service-Sequence.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/core-service-Sequence.png"></a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-类图"><span class="toc-number">1.</span> <span class="toc-text">1. 类图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-概述"><span class="toc-number">2.</span> <span class="toc-text">2. 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-AuthenticationManager"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 AuthenticationManager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-ProviderManager"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 ProviderManager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-验证逻辑"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 验证逻辑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Authentication"><span class="toc-number">3.</span> <span class="toc-text">3. Authentication</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-ProviderManager"><span class="toc-number">4.</span> <span class="toc-text">4. ProviderManager</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-AuthenticationProvider"><span class="toc-number">5.</span> <span class="toc-text">5. AuthenticationProvider</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-DaoAuthenticationProvider"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 DaoAuthenticationProvider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-AbstractUserDetailsAuthenticationProvider"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 AbstractUserDetailsAuthenticationProvider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-UserDetailsService"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 UserDetailsService</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-JdbcUserDetailsManager"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 JdbcUserDetailsManager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-InMemoryUserDetailsManager"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 InMemoryUserDetailsManager</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-总结"><span class="toc-number">6.</span> <span class="toc-text">6. 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-时序图"><span class="toc-number">7.</span> <span class="toc-text">7. 时序图</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

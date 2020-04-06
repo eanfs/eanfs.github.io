@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【龙飞】Spring Security 源码分析三：Spring Social 实现 QQ 社交登录 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 http://niocoder.com/2018/01/09/Spring-Security源码分析三-Spring-Social社交登录过程/ 「龙飞」欢迎转载，保留摘要，谢谢！,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">【龙飞】Spring Security 源码分析三：Spring Social 实现 QQ 社交登录</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                一月 09, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/01/09/Spring-Security/longfei/Spring-Social-QQ-login-process/" title="【龙飞】Spring Security 源码分析三：Spring Social 实现 QQ 社交登录">【龙飞】Spring Security 源码分析三：Spring Social 实现 QQ 社交登录</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    48k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    44 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="http://niocoder.com/2018/01/09/Spring-Security源码分析三-Spring-Social社交登录过程/" target="_blank" rel="noopener">http://niocoder.com/2018/01/09/Spring-Security源码分析三-Spring-Social社交登录过程/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">1. OAuth2.0的认证流程示意图</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2. 使用Spring Social</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.1 准备工作</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.2 引入Spring Social 模块</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.3 目录结构</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.4 定义返回用户信息接口</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.5 实现返回用户信息接口</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.6 QQOAuth2Template处理qq返回的令牌信息</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.7 QQServiceProvider连接服务提供商</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.8 QQConnectionFactory连接服务提供商的工厂类</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.9 QQAdapter 适配spring Social默认的返回信息</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.10 SocialConfig 社交配置主类</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.11 MerryyouSpringSocialConfigurer自定义登录和注册连接</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">2.12 开启SocialAuthenticationFilter过滤器</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfei/Spring-Social-login-process/" target="_blank" rel="noopener">3. 代码下载</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<blockquote>
+<p>社交登录又称作社会化登录（Social Login），是指网站的用户可以使用腾讯QQ、人人网、开心网、新浪微博、搜狐微博、腾讯微博、淘宝、豆瓣、MSN、Google等社会化媒体账号登录该网站。</p>
+</blockquote>
+<h1 id="1-OAuth2-0的认证流程示意图"><a href="#1-OAuth2-0的认证流程示意图" class="headerlink" title="1. OAuth2.0的认证流程示意图"></a>1. OAuth2.0的认证流程示意图</h1><p><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/OAuth2-Sequence.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/OAuth2-Sequence.png" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/OAuth2-Sequence.png" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/OAuth2-Sequence.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/OAuth2-Sequence.png"></a></p>
+<ol>
+<li>请求第三方应用</li>
+<li>第三方应用将用户请求导向服务提供商</li>
+<li>用户同意授权</li>
+<li>服务提供商返回code</li>
+<li>client根据code去服务提供商换取令牌</li>
+<li>返回令牌</li>
+<li>获取用户信息</li>
+</ol>
+<p>在标准的OAuth2协议中，<code>1-6</code>步都是固定，只有最后一步，不通的服务提供商返回的用户信息是不同的。<code>Spring Social</code>已经为我们封装好了<code>1-6</code>步。</p>
+<h1 id="2-使用Spring-Social"><a href="#2-使用Spring-Social" class="headerlink" title="2. 使用Spring Social"></a>2. 使用Spring Social</h1><h2 id="2-1-准备工作"><a href="#2-1-准备工作" class="headerlink" title="2.1 准备工作"></a>2.1 准备工作</h2><ol>
+<li><p>在<a href="https://connect.qq.com/" target="_blank" rel="noopener">qq互联</a>申请个人开发者，获得appId和appKey或者使用 <a href="http://www.spring4all.com/article/424" target="_blank" rel="noopener">SpringForAll</a>贡献出来的</p>
+</li>
+<li><p>配置本地host 添加 <code>127.0.0.1 www.ictgu.cn</code></p>
+</li>
+<li><p>数据库执行以下sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> UserConnection (userId <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	providerId <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	providerUserId <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">	<span class="keyword">rank</span> <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	displayName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">	profileUrl <span class="built_in">varchar</span>(<span class="number">512</span>),</span><br><span class="line">	imageUrl <span class="built_in">varchar</span>(<span class="number">512</span>),</span><br><span class="line">	accessToken <span class="built_in">varchar</span>(<span class="number">512</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	secret <span class="built_in">varchar</span>(<span class="number">512</span>),</span><br><span class="line">	refreshToken <span class="built_in">varchar</span>(<span class="number">512</span>),</span><br><span class="line">	expireTime <span class="built_in">bigint</span>,</span><br><span class="line">	primary <span class="keyword">key</span> (userId, providerId, providerUserId));</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">unique</span> <span class="keyword">index</span> UserConnectionRank <span class="keyword">on</span> UserConnection(userId, providerId, <span class="keyword">rank</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>项目端口设置为<code>80</code>端口</p>
+</li>
+</ol>
+<h2 id="2-2-引入Spring-Social-模块"><a href="#2-2-引入Spring-Social-模块" class="headerlink" title="2.2 引入Spring Social 模块"></a>2.2 引入Spring Social 模块</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>spring-social-core</td>
+<td>提供社交连接框架和OAuth 客户端支持</td>
+</tr>
+<tr>
+<td>spring-social-config</td>
+<td>提供Java 配置</td>
+</tr>
+<tr>
+<td>spring-social-security</td>
+<td>社交安全的一些支持</td>
+</tr>
+<tr>
+<td>spring-social-web</td>
+<td>管理web应用程序的连接</td>
+</tr>
+</tbody></table>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">!--spring-social 相关--&gt;</span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.social<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-social-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.social<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-social-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.social<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-social-security<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.social<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-social-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-目录结构"><a href="#2-3-目录结构" class="headerlink" title="2.3 目录结构"></a>2.3 目录结构</h2><p><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring-social_01.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring-social_01.png" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring-social_01.png" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring-social_01.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring-social_01.png"></a></p>
+<ol>
+<li>‘api’ 定义api绑定的公共接口</li>
+<li>‘config’ qq的一些配置信息</li>
+<li>‘connect’与服务提供商建立连接所需的一些类。</li>
+</ol>
+<h2 id="2-4-定义返回用户信息接口"><a href="#2-4-定义返回用户信息接口" class="headerlink" title="2.4 定义返回用户信息接口"></a>2.4 定义返回用户信息接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">QQ</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取用户信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">QQUserInfo <span class="title">getUserInfo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-实现返回用户信息接口"><a href="#2-5-实现返回用户信息接口" class="headerlink" title="2.5 实现返回用户信息接口"></a>2.5 实现返回用户信息接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QQImpl</span> <span class="keyword">extends</span> <span class="title">AbstractOAuth2ApiBinding</span> <span class="keyword">implements</span> <span class="title">QQ</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//http://wiki.connect.qq.com/openapi%E8%B0%83%E7%94%A8%E8%AF%B4%E6%98%8E_oauth2-0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QQ_URL_GET_OPENID = <span class="string">"https://graph.qq.com/oauth2.0/me?access_token=%s"</span>;</span><br><span class="line">    <span class="comment">//http://wiki.connect.qq.com/get_user_info(access_token由父类提供)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QQ_URL_GET_USER_INFO = <span class="string">"https://graph.qq.com/user/get_user_info?oauth_consumer_key=%s&amp;openid=%s"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * appId 配置文件读取</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String appId;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * openId 请求QQ_URL_GET_OPENID返回</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String openId;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 工具类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 构造方法获取openId</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QQImpl</span><span class="params">(String accessToken, String appId)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//access_token作为查询参数来携带。</span></span><br><span class="line">        <span class="keyword">super</span>(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.appId = appId;</span><br><span class="line"></span><br><span class="line">        String url = String.format(QQ_URL_GET_OPENID, accessToken);</span><br><span class="line">        String result = getRestTemplate().getForObject(url, String.class);</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"【QQImpl】 QQ_URL_GET_OPENID=&#123;&#125; result=&#123;&#125;"</span>, QQ_URL_GET_OPENID, result);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.openId = StringUtils.substringBetween(result, <span class="string">"\"openid\":\""</span>, <span class="string">"\"&#125;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> QQUserInfo <span class="title">getUserInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String url = String.format(QQ_URL_GET_USER_INFO, appId, openId);</span><br><span class="line">        String result = getRestTemplate().getForObject(url, String.class);</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"【QQImpl】 QQ_URL_GET_USER_INFO=&#123;&#125; result=&#123;&#125;"</span>, QQ_URL_GET_USER_INFO, result);</span><br><span class="line"></span><br><span class="line">        QQUserInfo userInfo = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            userInfo = objectMapper.readValue(result, QQUserInfo.class);</span><br><span class="line">            userInfo.setOpenId(openId);</span><br><span class="line">            <span class="keyword">return</span> userInfo;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"获取用户信息失败"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-6-QQOAuth2Template处理qq返回的令牌信息"><a href="#2-6-QQOAuth2Template处理qq返回的令牌信息" class="headerlink" title="2.6 QQOAuth2Template处理qq返回的令牌信息"></a>2.6 QQOAuth2Template处理qq返回的令牌信息</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QQOAuth2Template</span> <span class="keyword">extends</span> <span class="title">OAuth2Template</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QQOAuth2Template</span><span class="params">(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(clientId, clientSecret, authorizeUrl, accessTokenUrl);</span><br><span class="line">        setUseParametersForClientAuthentication(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AccessGrant <span class="title">postForAccessGrant</span><span class="params">(String accessTokenUrl, MultiValueMap&lt;String, String&gt; parameters)</span> </span>&#123;</span><br><span class="line">        String responseStr = getRestTemplate().postForObject(accessTokenUrl, parameters, String.class);</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"【QQOAuth2Template】获取accessToke的响应：responseStr=&#123;&#125;"</span> + responseStr);</span><br><span class="line"></span><br><span class="line">        String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(responseStr, <span class="string">"&amp;"</span>);</span><br><span class="line">        <span class="comment">//http://wiki.connect.qq.com/使用authorization_code获取access_token</span></span><br><span class="line">        <span class="comment">//access_token=FE04************************CCE2&amp;expires_in=7776000&amp;refresh_token=88E4************************BE14</span></span><br><span class="line">        String accessToken = StringUtils.substringAfterLast(items[<span class="number">0</span>], <span class="string">"="</span>);</span><br><span class="line">        Long expiresIn = <span class="keyword">new</span> Long(StringUtils.substringAfterLast(items[<span class="number">1</span>], <span class="string">"="</span>));</span><br><span class="line">        String refreshToken = StringUtils.substringAfterLast(items[<span class="number">2</span>], <span class="string">"="</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AccessGrant(accessToken, <span class="keyword">null</span>, refreshToken, expiresIn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 坑，日志debug模式才打印出来 处理qq返回的text/html 类型数据</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> RestTemplate <span class="title">createRestTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RestTemplate restTemplate = <span class="keyword">super</span>.createRestTemplate();</span><br><span class="line">        restTemplate.getMessageConverters().add(<span class="keyword">new</span> StringHttpMessageConverter(Charset.forName(<span class="string">"UTF-8"</span>)));</span><br><span class="line">        <span class="keyword">return</span> restTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-7-QQServiceProvider连接服务提供商"><a href="#2-7-QQServiceProvider连接服务提供商" class="headerlink" title="2.7 QQServiceProvider连接服务提供商"></a>2.7 QQServiceProvider连接服务提供商</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QQServiceProvider</span> <span class="keyword">extends</span> <span class="title">AbstractOAuth2ServiceProvider</span>&lt;<span class="title">QQ</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取code</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QQ_URL_AUTHORIZE = <span class="string">"https://graph.qq.com/oauth2.0/authorize"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取access_token 也就是令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QQ_URL_ACCESS_TOKEN = <span class="string">"https://graph.qq.com/oauth2.0/token"</span>;</span><br><span class="line">    <span class="keyword">private</span> String appId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QQServiceProvider</span><span class="params">(String appId, String appSecret)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="keyword">new</span> QQOAuth2Template(appId, appSecret, QQ_URL_AUTHORIZE, QQ_URL_ACCESS_TOKEN));</span><br><span class="line">        <span class="keyword">this</span>.appId = appId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> QQ <span class="title">getApi</span><span class="params">(String accessToken)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> QQImpl(accessToken, appId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-8-QQConnectionFactory连接服务提供商的工厂类"><a href="#2-8-QQConnectionFactory连接服务提供商的工厂类" class="headerlink" title="2.8 QQConnectionFactory连接服务提供商的工厂类"></a>2.8 QQConnectionFactory连接服务提供商的工厂类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QQConnectionFactory</span> <span class="keyword">extends</span> <span class="title">OAuth2ConnectionFactory</span>&lt;<span class="title">QQ</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QQConnectionFactory</span><span class="params">(String providerId, String appId, String appSecret)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(providerId, <span class="keyword">new</span> QQServiceProvider(appId, appSecret), <span class="keyword">new</span> QQAdapter());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-9-QQAdapter-适配spring-Social默认的返回信息"><a href="#2-9-QQAdapter-适配spring-Social默认的返回信息" class="headerlink" title="2.9 QQAdapter 适配spring Social默认的返回信息"></a>2.9 QQAdapter 适配spring Social默认的返回信息</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QQAdapter</span> <span class="keyword">implements</span> <span class="title">ApiAdapter</span>&lt;<span class="title">QQ</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(QQ api)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setConnectionValues</span><span class="params">(QQ api, ConnectionValues values)</span> </span>&#123;</span><br><span class="line">        QQUserInfo userInfo = api.getUserInfo();</span><br><span class="line"></span><br><span class="line">        values.setProviderUserId(userInfo.getOpenId());<span class="comment">//openId 唯一标识</span></span><br><span class="line">        values.setDisplayName(userInfo.getNickname());</span><br><span class="line">        values.setImageUrl(userInfo.getFigureurl_qq_1());</span><br><span class="line">        values.setProfileUrl(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserProfile <span class="title">fetchUserProfile</span><span class="params">(QQ api)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateStatus</span><span class="params">(QQ api, String message)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-10-SocialConfig-社交配置主类"><a href="#2-10-SocialConfig-社交配置主类" class="headerlink" title="2.10 SocialConfig 社交配置主类"></a>2.10 SocialConfig 社交配置主类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSocial</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SocialConfig</span> <span class="keyword">extends</span> <span class="title">SocialConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 社交登录配类</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SpringSocialConfigurer <span class="title">merryyouSocialSecurityConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String filterProcessesUrl = SecurityConstants.DEFAULT_SOCIAL_QQ_PROCESS_URL;</span><br><span class="line">        MerryyouSpringSocialConfigurer configurer = <span class="keyword">new</span> MerryyouSpringSocialConfigurer(filterProcessesUrl);</span><br><span class="line">        <span class="keyword">return</span> configurer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理注册流程的工具类</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> factoryLocator</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ProviderSignInUtils <span class="title">providerSignInUtils</span><span class="params">(ConnectionFactoryLocator factoryLocator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ProviderSignInUtils(factoryLocator, getUsersConnectionRepository(factoryLocator));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-10-1-QQAuthConfig-针对qq返回结果的一些操作"><a href="#2-10-1-QQAuthConfig-针对qq返回结果的一些操作" class="headerlink" title="2.10.1 QQAuthConfig 针对qq返回结果的一些操作"></a>2.10.1 QQAuthConfig 针对qq返回结果的一些操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QQAuthConfig</span> <span class="keyword">extends</span> <span class="title">SocialAutoConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DataSource dataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ConnectionSignUp myConnectionSignUp;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> ConnectionFactory&lt;?&gt; createConnectionFactory() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> QQConnectionFactory(SecurityConstants.DEFAULT_SOCIAL_QQ_PROVIDER_ID, SecurityConstants.DEFAULT_SOCIAL_QQ_APP_ID, SecurityConstants.DEFAULT_SOCIAL_QQ_APP_SECRET);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UsersConnectionRepository <span class="title">getUsersConnectionRepository</span><span class="params">(ConnectionFactoryLocator connectionFactoryLocator)</span> </span>&#123;</span><br><span class="line">        JdbcUsersConnectionRepository repository = <span class="keyword">new</span> JdbcUsersConnectionRepository(dataSource,</span><br><span class="line">                connectionFactoryLocator, Encryptors.noOpText());</span><br><span class="line">        <span class="keyword">if</span> (myConnectionSignUp != <span class="keyword">null</span>) &#123;</span><br><span class="line">            repository.setConnectionSignUp(myConnectionSignUp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> repository;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-11-MerryyouSpringSocialConfigurer自定义登录和注册连接"><a href="#2-11-MerryyouSpringSocialConfigurer自定义登录和注册连接" class="headerlink" title="2.11 MerryyouSpringSocialConfigurer自定义登录和注册连接"></a>2.11 MerryyouSpringSocialConfigurer自定义登录和注册连接</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MerryyouSpringSocialConfigurer</span> <span class="keyword">extends</span> <span class="title">SpringSocialConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String filterProcessesUrl;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MerryyouSpringSocialConfigurer</span><span class="params">(String filterProcessesUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.filterProcessesUrl = filterProcessesUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">T <span class="title">postProcess</span><span class="params">(T object)</span> </span>&#123;</span><br><span class="line">        SocialAuthenticationFilter filter = (SocialAuthenticationFilter) <span class="keyword">super</span>.postProcess(object);</span><br><span class="line">        filter.setFilterProcessesUrl(filterProcessesUrl);</span><br><span class="line">        filter.setSignupUrl(<span class="string">"/register"</span>);</span><br><span class="line">        <span class="keyword">return</span> (T) filter;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-12-开启SocialAuthenticationFilter过滤器"><a href="#2-12-开启SocialAuthenticationFilter过滤器" class="headerlink" title="2.12 开启SocialAuthenticationFilter过滤器"></a>2.12 开启SocialAuthenticationFilter过滤器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SpringSocialConfigurer merryyouSpringSocialConfigurer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)</span><br><span class="line">                .formLogin()<span class="comment">//使用表单登录，不再使用默认httpBasic方式</span></span><br><span class="line">                .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)<span class="comment">//如果请求的URL需要认证则跳转的URL</span></span><br><span class="line">                .loginProcessingUrl(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM)<span class="comment">//处理表单中自定义的登录URL</span></span><br><span class="line">                .and()</span><br><span class="line">                .apply(merryyouSpringSocialConfigurer)</span><br><span class="line">                .and()</span><br><span class="line">                .authorizeRequests().antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,</span><br><span class="line">                SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM,</span><br><span class="line">                SecurityConstants.DEFAULT_REGISTER_URL,</span><br><span class="line">                <span class="string">"/register"</span>,</span><br><span class="line">                <span class="string">"/social/info"</span>,</span><br><span class="line">                <span class="string">"/**/*.js"</span>,</span><br><span class="line">                <span class="string">"/**/*.css"</span>,</span><br><span class="line">                <span class="string">"/**/*.jpg"</span>,</span><br><span class="line">                <span class="string">"/**/*.png"</span>,</span><br><span class="line">                <span class="string">"/**/*.woff2"</span>,</span><br><span class="line">                <span class="string">"/code/image"</span>)</span><br><span class="line">                .permitAll()<span class="comment">//以上的请求都不需要认证</span></span><br><span class="line">                <span class="comment">//.antMatchers("/").access("hasRole('USER')")</span></span><br><span class="line">                .and()</span><br><span class="line">                .csrf().disable()<span class="comment">//关闭csrd拦截</span></span><br><span class="line">        ;</span><br><span class="line">        <span class="comment">//安全模块单独配置</span></span><br><span class="line">        authorizeConfigProvider.config(http.authorizeRequests());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/demo.gif" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/demo.gif" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/demo.gif" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/demo.gif" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/demo.gif"></a></p>
+<h1 id="3-代码下载"><a href="#3-代码下载" class="headerlink" title="3. 代码下载"></a>3. 代码下载</h1><p>从我的 github 中下载，<a href="https://github.com/longfeizheng/logback" target="_blank" rel="noopener">https://github.com/longfeizheng/logback</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-OAuth2-0的认证流程示意图"><span class="toc-number">1.</span> <span class="toc-text">1. OAuth2.0的认证流程示意图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-使用Spring-Social"><span class="toc-number">2.</span> <span class="toc-text">2. 使用Spring Social</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-准备工作"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-引入Spring-Social-模块"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 引入Spring Social 模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-目录结构"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-定义返回用户信息接口"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 定义返回用户信息接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-实现返回用户信息接口"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 实现返回用户信息接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-QQOAuth2Template处理qq返回的令牌信息"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 QQOAuth2Template处理qq返回的令牌信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-QQServiceProvider连接服务提供商"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 QQServiceProvider连接服务提供商</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-QQConnectionFactory连接服务提供商的工厂类"><span class="toc-number">2.8.</span> <span class="toc-text">2.8 QQConnectionFactory连接服务提供商的工厂类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9-QQAdapter-适配spring-Social默认的返回信息"><span class="toc-number">2.9.</span> <span class="toc-text">2.9 QQAdapter 适配spring Social默认的返回信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-10-SocialConfig-社交配置主类"><span class="toc-number">2.10.</span> <span class="toc-text">2.10 SocialConfig 社交配置主类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-10-1-QQAuthConfig-针对qq返回结果的一些操作"><span class="toc-number">2.10.1.</span> <span class="toc-text">2.10.1 QQAuthConfig 针对qq返回结果的一些操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-11-MerryyouSpringSocialConfigurer自定义登录和注册连接"><span class="toc-number">2.11.</span> <span class="toc-text">2.11 MerryyouSpringSocialConfigurer自定义登录和注册连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-12-开启SocialAuthenticationFilter过滤器"><span class="toc-number">2.12.</span> <span class="toc-text">2.12 开启SocialAuthenticationFilter过滤器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-代码下载"><span class="toc-number">3.</span> <span class="toc-text">3. 代码下载</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

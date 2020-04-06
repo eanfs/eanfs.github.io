@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【龙飞】Spring Security 源码分析四：Spring Social 实现微信社交登录 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 http://niocoder.com/2018/01/12/Spring-Security源码分析四-Spring-Social社交登录过程/ 「龙飞」欢迎转载，保留摘要，谢谢！,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">【龙飞】Spring Security 源码分析四：Spring Social 实现微信社交登录</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                一月 12, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/01/12/Spring-Security/longfeiSpring-Social-WeChat-login-process/" title="【龙飞】Spring Security 源码分析四：Spring Social 实现微信社交登录">【龙飞】Spring Security 源码分析四：Spring Social 实现微信社交登录</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    50k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    45 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="http://niocoder.com/2018/01/12/Spring-Security源码分析四-Spring-Social社交登录过程/" target="_blank" rel="noopener">http://niocoder.com/2018/01/12/Spring-Security源码分析四-Spring-Social社交登录过程/</a> 「龙飞」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfeiSpring-Social-WeChat-login-process/" target="_blank" rel="noopener">1. 前言</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfeiSpring-Social-WeChat-login-process/" target="_blank" rel="noopener">1.1 准备工作</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfeiSpring-Social-WeChat-login-process/" target="_blank" rel="noopener">1.2 目录结构</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/longfeiSpring-Social-WeChat-login-process/" target="_blank" rel="noopener">2. 代码下载</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<blockquote>
+<p>社交登录又称作社会化登录（Social Login），是指网站的用户可以使用腾讯QQ、人人网、开心网、新浪微博、搜狐微博、腾讯微博、淘宝、豆瓣、MSN、Google等社会化媒体账号登录该网站。</p>
+</blockquote>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>在上一章<a href="https://longfeizheng.github.io/2018/01/09/Spring-Security%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%89-Spring-Social%E7%A4%BE%E4%BA%A4%E7%99%BB%E5%BD%95%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener">Spring-Security源码分析三-Spring-Social社交登录过程</a>中，我们已经实现了使用<code>Spring Social</code>+<code>Security</code>的QQ社交登录。本章我们将实现微信的社交登录。（微信和QQ登录的大体流程相同，但存在一些细节上的差异，下面我们来简单实现一下）</p>
+<h2 id="1-1-准备工作"><a href="#1-1-准备工作" class="headerlink" title="1.1 准备工作"></a>1.1 准备工作</h2><ol>
+<li>熟悉<a href="https://oauth.net/2/" target="_blank" rel="noopener">OAuth2.0协议标准</a>，微信登录是基于<a href="https://tools.ietf.org/html/rfc6749#section-4.1" target="_blank" rel="noopener">OAuth2.0中的authorization_code模式</a>的授权登录；</li>
+<li><a href="https://open.weixin.qq.com/cgi-bin/frame?t=home/web_tmpl&lang=zh_CN" target="_blank" rel="noopener">微信开放平台</a>申请网站应用开发，获取<code>appid</code>和<code>appsecret</code></li>
+<li>熟读<a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=6505faac65c26a79bc1b0218aa8cd24c0e24bceb&lang=zh_CN" target="_blank" rel="noopener">网站应用微信登录开发指南</a></li>
+<li>参考<a href="https://longfeizheng.github.io/2018/01/09/Spring-Security%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%89-Spring-Social%E7%A4%BE%E4%BA%A4%E7%99%BB%E5%BD%95%E8%BF%87%E7%A8%8B/#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C" target="_blank" rel="noopener">Spring-Security源码分析三-Spring-Social社交登录过程</a>的准备工作</li>
+</ol>
+<p>为了方便大家测试，博主在某宝租用了一个月的appid和appSecret</p>
+<table>
+<thead>
+<tr>
+<th>appid</th>
+<th><code>wxfd6965ab1fc6adb2</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>appsecret</td>
+<td><code>66bb4566de776ac699ec1dbed0cc3dd1</code></td>
+</tr>
+</tbody></table>
+<h2 id="1-2-目录结构"><a href="#1-2-目录结构" class="headerlink" title="1.2 目录结构"></a>1.2 目录结构</h2><p><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring_social_weixin.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring_social_weixin.png" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring_social_weixin.png" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring_social_weixin.png" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/spring_social_weixin.png"></a></p>
+<p><a href="https://docs.spring.io/spring-social/docs/1.1.0.RELEASE/reference/htmlsingle/#section_creatingAProviderProject" target="_blank" rel="noopener">参考</a></p>
+<ol>
+<li><code>api</code> 定义api绑定的公共接口</li>
+<li><code>config</code> 微信的一些配置信息</li>
+<li><code>connect</code>与服务提供商建立连接所需的一些类。</li>
+</ol>
+<h3 id="1-2-1-定义返回用户信息接口"><a href="#1-2-1-定义返回用户信息接口" class="headerlink" title="1.2.1 定义返回用户信息接口"></a>1.2.1 定义返回用户信息接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Weixin</span> </span>&#123;</span><br><span class="line">    <span class="function">WeixinUserInfo <span class="title">getUserInfo</span><span class="params">(String openId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们看到相对于QQ的<code>getUserInfo</code>微信多了一个参数<code>openId</code>。这是因为<a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=6505faac65c26a79bc1b0218aa8cd24c0e24bceb&lang=zh_CN" target="_blank" rel="noopener">微信文档</a>中在<a href="https://longfeizheng.github.io/2018/01/09/Spring-Security%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%89-Spring-Social%E7%A4%BE%E4%BA%A4%E7%99%BB%E5%BD%95%E8%BF%87%E7%A8%8B/#oauth20%E7%9A%84%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE" target="_blank" rel="noopener">OAuth2.0的认证流程示意图</a>第五步时，微信的<code>openid</code> 同<code>access_token</code>一起返回。而<code>Spring Social</code>获取<code>access_token</code>的类<code>AccessGrant.java</code>中没有<code>openid</code>。因此我们自己需要扩展一下<code>Spring Social</code>获取令牌的类（<code>AccessGrant.java</code>）；</p>
+<h3 id="1-2-2-处理微信返回的access-token类-添加openid"><a href="#1-2-2-处理微信返回的access-token类-添加openid" class="headerlink" title="1.2.2 处理微信返回的access_token类(添加openid)"></a>1.2.2 处理微信返回的access_token类(添加openid)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinAccessGrant</span> <span class="keyword">extends</span> <span class="title">AccessGrant</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String openId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinAccessGrant</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinAccessGrant</span><span class="params">(String accessToken, String scope, String refreshToken, Long expiresIn)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(accessToken, scope, refreshToken, expiresIn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-3-实现返回用户信息接口"><a href="#1-2-3-实现返回用户信息接口" class="headerlink" title="1.2.3 实现返回用户信息接口"></a>1.2.3 实现返回用户信息接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeiXinImpl</span> <span class="keyword">extends</span> <span class="title">AbstractOAuth2ApiBinding</span> <span class="keyword">implements</span> <span class="title">Weixin</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取用户信息的url</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String WEIXIN_URL_GET_USER_INFO = <span class="string">"https://api.weixin.qq.com/sns/userinfo?openid="</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeiXinImpl</span><span class="params">(String accessToken)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取用户信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> openId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WeixinUserInfo <span class="title">getUserInfo</span><span class="params">(String openId)</span> </span>&#123;</span><br><span class="line">        String url = WEIXIN_URL_GET_USER_INFO + openId;</span><br><span class="line"></span><br><span class="line">        String result = getRestTemplate().getForObject(url, String.class);</span><br><span class="line">        <span class="keyword">if</span>(StringUtils.contains(result, <span class="string">"errcode"</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        WeixinUserInfo userInfo = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            userInfo = objectMapper.readValue(result,WeixinUserInfo.class);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> userInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用utf-8 替换默认的ISO-8859-1编码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> List&lt;HttpMessageConverter&lt;?&gt;&gt; getMessageConverters() &#123;</span><br><span class="line">        List&lt;HttpMessageConverter&lt;?&gt;&gt; messageConverters = <span class="keyword">super</span>.getMessageConverters();</span><br><span class="line">        messageConverters.remove(<span class="number">0</span>);</span><br><span class="line">        messageConverters.add(<span class="keyword">new</span> StringHttpMessageConverter(Charset.forName(<span class="string">"UTF-8"</span>)));</span><br><span class="line">        <span class="keyword">return</span> messageConverters;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与<code>QQ</code>获取用户信息相比,<code>微信</code>的实现类中少了一步通过<code>access_token</code>获取<code>openid</code>的请求。<code>openid</code>由自己定义的扩展类<code>WeixinAccessGrant</code>中获取；</p>
+<h3 id="1-2-4-WeixinOAuth2Template处理微信返回的令牌信息"><a href="#1-2-4-WeixinOAuth2Template处理微信返回的令牌信息" class="headerlink" title="1.2.4 WeixinOAuth2Template处理微信返回的令牌信息"></a>1.2.4 WeixinOAuth2Template处理微信返回的令牌信息</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinOAuth2Template</span> <span class="keyword">extends</span> <span class="title">OAuth2Template</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String clientId;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String clientSecret;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String accessTokenUrl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String REFRESH_TOKEN_URL = <span class="string">"https://api.weixin.qq.com/sns/oauth2/refresh_token"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinOAuth2Template</span><span class="params">(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(clientId, clientSecret, authorizeUrl, accessTokenUrl);</span><br><span class="line">        setUseParametersForClientAuthentication(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">this</span>.clientId = clientId;</span><br><span class="line">        <span class="keyword">this</span>.clientSecret = clientSecret;</span><br><span class="line">        <span class="keyword">this</span>.accessTokenUrl = accessTokenUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* (non-Javadoc)</span></span><br><span class="line"><span class="comment">     * @see org.springframework.social.oauth2.OAuth2Template#exchangeForAccess(java.lang.String, java.lang.String, org.springframework.util.MultiValueMap)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AccessGrant <span class="title">exchangeForAccess</span><span class="params">(String authorizationCode, String redirectUri,</span></span></span><br><span class="line"><span class="function"><span class="params">                                         MultiValueMap&lt;String, String&gt; parameters)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        StringBuilder accessTokenRequestUrl = <span class="keyword">new</span> StringBuilder(accessTokenUrl);</span><br><span class="line"></span><br><span class="line">        accessTokenRequestUrl.append(<span class="string">"?appid="</span>+clientId);</span><br><span class="line">        accessTokenRequestUrl.append(<span class="string">"&amp;secret="</span>+clientSecret);</span><br><span class="line">        accessTokenRequestUrl.append(<span class="string">"&amp;code="</span>+authorizationCode);</span><br><span class="line">        accessTokenRequestUrl.append(<span class="string">"&amp;grant_type=authorization_code"</span>);</span><br><span class="line">        accessTokenRequestUrl.append(<span class="string">"&amp;redirect_uri="</span>+redirectUri);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> getAccessToken(accessTokenRequestUrl);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AccessGrant <span class="title">refreshAccess</span><span class="params">(String refreshToken, MultiValueMap&lt;String, String&gt; additionalParameters)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        StringBuilder refreshTokenUrl = <span class="keyword">new</span> StringBuilder(REFRESH_TOKEN_URL);</span><br><span class="line"></span><br><span class="line">        refreshTokenUrl.append(<span class="string">"?appid="</span>+clientId);</span><br><span class="line">        refreshTokenUrl.append(<span class="string">"&amp;grant_type=refresh_token"</span>);</span><br><span class="line">        refreshTokenUrl.append(<span class="string">"&amp;refresh_token="</span>+refreshToken);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> getAccessToken(refreshTokenUrl);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> AccessGrant <span class="title">getAccessToken</span><span class="params">(StringBuilder accessTokenRequestUrl)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"获取access_token, 请求URL: "</span>+accessTokenRequestUrl.toString());</span><br><span class="line"></span><br><span class="line">        String response = getRestTemplate().getForObject(accessTokenRequestUrl.toString(), String.class);</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"获取access_token, 响应内容: "</span>+response);</span><br><span class="line"></span><br><span class="line">        Map&lt;String, Object&gt; result = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            result = <span class="keyword">new</span> ObjectMapper().readValue(response, Map.class);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//返回错误码时直接返回空</span></span><br><span class="line">        <span class="keyword">if</span>(StringUtils.isNotBlank(MapUtils.getString(result, <span class="string">"errcode"</span>)))&#123;</span><br><span class="line">            String errcode = MapUtils.getString(result, <span class="string">"errcode"</span>);</span><br><span class="line">            String errmsg = MapUtils.getString(result, <span class="string">"errmsg"</span>);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"获取access token失败, errcode:"</span>+errcode+<span class="string">", errmsg:"</span>+errmsg);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        WeixinAccessGrant accessToken = <span class="keyword">new</span> WeixinAccessGrant(</span><br><span class="line">                MapUtils.getString(result, <span class="string">"access_token"</span>),</span><br><span class="line">                MapUtils.getString(result, <span class="string">"scope"</span>),</span><br><span class="line">                MapUtils.getString(result, <span class="string">"refresh_token"</span>),</span><br><span class="line">                MapUtils.getLong(result, <span class="string">"expires_in"</span>));</span><br><span class="line"></span><br><span class="line">        accessToken.setOpenId(MapUtils.getString(result, <span class="string">"openid"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> accessToken;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 构建获取授权码的请求。也就是引导用户跳转到微信的地址。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">buildAuthenticateUrl</span><span class="params">(OAuth2Parameters parameters)</span> </span>&#123;</span><br><span class="line">        String url = <span class="keyword">super</span>.buildAuthenticateUrl(parameters);</span><br><span class="line">        url = url + <span class="string">"&amp;appid="</span>+clientId+<span class="string">"&amp;scope=snsapi_login"</span>;</span><br><span class="line">        <span class="keyword">return</span> url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">buildAuthorizeUrl</span><span class="params">(OAuth2Parameters parameters)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> buildAuthenticateUrl(parameters);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 微信返回的contentType是html/text，添加相应的HttpMessageConverter来处理。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> RestTemplate <span class="title">createRestTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RestTemplate restTemplate = <span class="keyword">super</span>.createRestTemplate();</span><br><span class="line">        restTemplate.getMessageConverters().add(<span class="keyword">new</span> StringHttpMessageConverter(Charset.forName(<span class="string">"UTF-8"</span>)));</span><br><span class="line">        <span class="keyword">return</span> restTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与<code>QQ</code>处理令牌类相比多了三个全局变量并且复写了<code>exchangeForAccess</code>方法。这是因为<code>微信</code>在通过<code>code</code>获取<code>access_token</code>是传递的参数是<code>appid</code>和<code>secret</code>而不是<a href="https://github.com/spring-projects/spring-social/blob/79341986fec8b663f5a3c059e61823c24765d9ec/spring-social-core/src/main/java/org/springframework/social/oauth2/OAuth2Template.java#L150" target="_blank" rel="noopener">标准</a>的<code>client_id</code>和<code>client_secret</code>。</p>
+<h3 id="1-2-5-WeixinServiceProvider连接服务提供商"><a href="#1-2-5-WeixinServiceProvider连接服务提供商" class="headerlink" title="1.2.5 WeixinServiceProvider连接服务提供商"></a>1.2.5 WeixinServiceProvider连接服务提供商</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinServiceProvider</span> <span class="keyword">extends</span> <span class="title">AbstractOAuth2ServiceProvider</span>&lt;<span class="title">Weixin</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 微信获取授权码的url</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String WEIXIN_URL_AUTHORIZE = <span class="string">"https://open.weixin.qq.com/connect/qrconnect"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 微信获取accessToken的url(微信在获取accessToken时也已经返回openId)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String WEIXIN_URL_ACCESS_TOKEN = <span class="string">"https://api.weixin.qq.com/sns/oauth2/access_token"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinServiceProvider</span><span class="params">(String appId, String appSecret)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="keyword">new</span> WeixinOAuth2Template(appId, appSecret, WEIXIN_URL_AUTHORIZE, WEIXIN_URL_ACCESS_TOKEN));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Weixin <span class="title">getApi</span><span class="params">(String accessToken)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WeiXinImpl(accessToken);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-6-WeixinConnectionFactory连接服务提供商的工厂类"><a href="#1-2-6-WeixinConnectionFactory连接服务提供商的工厂类" class="headerlink" title="1.2.6 WeixinConnectionFactory连接服务提供商的工厂类"></a>1.2.6 WeixinConnectionFactory连接服务提供商的工厂类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinConnectionFactory</span> <span class="keyword">extends</span> <span class="title">OAuth2ConnectionFactory</span>&lt;<span class="title">Weixin</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> appId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> appSecret</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinConnectionFactory</span><span class="params">(String providerId, String appId, String appSecret)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(providerId, <span class="keyword">new</span> WeixinServiceProvider(appId, appSecret), <span class="keyword">new</span> WeixinAdapter());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 由于微信的openId是和accessToken一起返回的，所以在这里直接根据accessToken设置providerUserId即可，不用像QQ那样通过QQAdapter来获取</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">extractProviderUserId</span><span class="params">(AccessGrant accessGrant)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(accessGrant <span class="keyword">instanceof</span> WeixinAccessGrant) &#123;</span><br><span class="line">            <span class="keyword">return</span> ((WeixinAccessGrant)accessGrant).getOpenId();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* (non-Javadoc)</span></span><br><span class="line"><span class="comment">     * @see org.springframework.social.connect.support.OAuth2ConnectionFactory#createConnection(org.springframework.social.oauth2.AccessGrant)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Connection&lt;Weixin&gt; <span class="title">createConnection</span><span class="params">(AccessGrant accessGrant)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> OAuth2Connection&lt;Weixin&gt;(getProviderId(), extractProviderUserId(accessGrant), accessGrant.getAccessToken(),</span><br><span class="line">                accessGrant.getRefreshToken(), accessGrant.getExpireTime(), getOAuth2ServiceProvider(), getApiAdapter(extractProviderUserId(accessGrant)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* (non-Javadoc)</span></span><br><span class="line"><span class="comment">     * @see org.springframework.social.connect.support.OAuth2ConnectionFactory#createConnection(org.springframework.social.connect.ConnectionData)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Connection&lt;Weixin&gt; <span class="title">createConnection</span><span class="params">(ConnectionData data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> OAuth2Connection&lt;Weixin&gt;(data, getOAuth2ServiceProvider(), getApiAdapter(data.getProviderUserId()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiAdapter&lt;Weixin&gt; <span class="title">getApiAdapter</span><span class="params">(String providerUserId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WeixinAdapter(providerUserId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> OAuth2ServiceProvider&lt;Weixin&gt; <span class="title">getOAuth2ServiceProvider</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (OAuth2ServiceProvider&lt;Weixin&gt;) getServiceProvider();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-7-WeixinAdapter将微信api返回的数据模型适配Spring-Social的标准模型"><a href="#1-2-7-WeixinAdapter将微信api返回的数据模型适配Spring-Social的标准模型" class="headerlink" title="1.2.7 WeixinAdapter将微信api返回的数据模型适配Spring Social的标准模型"></a>1.2.7 WeixinAdapter将微信api返回的数据模型适配Spring Social的标准模型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinAdapter</span> <span class="keyword">implements</span> <span class="title">ApiAdapter</span>&lt;<span class="title">Weixin</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String openId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinAdapter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeixinAdapter</span><span class="params">(String openId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.openId = openId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(Weixin api)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setConnectionValues</span><span class="params">(Weixin api, ConnectionValues values)</span> </span>&#123;</span><br><span class="line">        WeixinUserInfo userInfo = api.getUserInfo(openId);</span><br><span class="line">        values.setProviderUserId(userInfo.getOpenid());</span><br><span class="line">        values.setDisplayName(userInfo.getNickname());</span><br><span class="line">        values.setImageUrl(userInfo.getHeadimgurl());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserProfile <span class="title">fetchUserProfile</span><span class="params">(Weixin api)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateStatus</span><span class="params">(Weixin api, String message)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-8-WeixinAuthConfig创建工厂和设置数据源"><a href="#1-2-8-WeixinAuthConfig创建工厂和设置数据源" class="headerlink" title="1.2.8 WeixinAuthConfig创建工厂和设置数据源"></a>1.2.8 WeixinAuthConfig创建工厂和设置数据源</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinAuthConfig</span> <span class="keyword">extends</span> <span class="title">SocialAutoConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DataSource dataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ConnectionSignUp myConnectionSignUp;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> ConnectionFactory&lt;?&gt; createConnectionFactory() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WeixinConnectionFactory(DEFAULT_SOCIAL_WEIXIN_PROVIDER_ID, SecurityConstants.DEFAULT_SOCIAL_WEIXIN_APP_ID,</span><br><span class="line">                SecurityConstants.DEFAULT_SOCIAL_WEIXIN_APP_SECRET);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UsersConnectionRepository <span class="title">getUsersConnectionRepository</span><span class="params">(ConnectionFactoryLocator connectionFactoryLocator)</span> </span>&#123;</span><br><span class="line">        JdbcUsersConnectionRepository repository = <span class="keyword">new</span> JdbcUsersConnectionRepository(dataSource,</span><br><span class="line">                connectionFactoryLocator, Encryptors.noOpText());</span><br><span class="line">        <span class="keyword">if</span> (myConnectionSignUp != <span class="keyword">null</span>) &#123;</span><br><span class="line">            repository.setConnectionSignUp(myConnectionSignUp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> repository;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * /connect/weixin POST请求,绑定微信返回connect/weixinConnected视图</span></span><br><span class="line"><span class="comment">     * /connect/weixin DELETE请求,解绑返回connect/weixinConnect视图</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span>(&#123;<span class="string">"connect/weixinConnect"</span>, <span class="string">"connect/weixinConnected"</span>&#125;)</span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"weixinConnectedView"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">weixinConnectedView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SocialConnectView();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-9-社交登录配置类"><a href="#1-2-9-社交登录配置类" class="headerlink" title="1.2.9 社交登录配置类"></a>1.2.9 社交登录配置类</h3><p>由于社交登录都是通过<code>SocialAuthenticationFilter</code>过滤器拦截的，如果 <a href="https://longfeizheng.github.io/2018/01/09/Spring-Security%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%89-Spring-Social%E7%A4%BE%E4%BA%A4%E7%99%BB%E5%BD%95%E8%BF%87%E7%A8%8B/#socialconfig-%E7%A4%BE%E4%BA%A4%E9%85%8D%E7%BD%AE%E4%B8%BB%E7%B1%BB" target="_blank" rel="noopener">上一章</a> 已经配置过，则本章不需要配置。</p>
+<p>效果如下：</p>
+<p><a href="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/weixin.gif" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/weixin.gif" target="_blank" rel="noopener"><img src="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/weixin.gif" alt="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/weixin.gif" title="http://dandandeshangni.oss-cn-beijing.aliyuncs.com/github/Spring%20Security/weixin.gif"></a></p>
+<h1 id="2-代码下载"><a href="#2-代码下载" class="headerlink" title="2. 代码下载"></a>2. 代码下载</h1><p>从我的 github 中下载，<a href="https://github.com/longfeizheng/logback" target="_blank" rel="noopener">https://github.com/longfeizheng/logback</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-前言"><span class="toc-number">1.</span> <span class="toc-text">1. 前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-准备工作"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-目录结构"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-定义返回用户信息接口"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 定义返回用户信息接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-处理微信返回的access-token类-添加openid"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 处理微信返回的access_token类(添加openid)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-实现返回用户信息接口"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 实现返回用户信息接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-WeixinOAuth2Template处理微信返回的令牌信息"><span class="toc-number">1.2.4.</span> <span class="toc-text">1.2.4 WeixinOAuth2Template处理微信返回的令牌信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-5-WeixinServiceProvider连接服务提供商"><span class="toc-number">1.2.5.</span> <span class="toc-text">1.2.5 WeixinServiceProvider连接服务提供商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-6-WeixinConnectionFactory连接服务提供商的工厂类"><span class="toc-number">1.2.6.</span> <span class="toc-text">1.2.6 WeixinConnectionFactory连接服务提供商的工厂类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-7-WeixinAdapter将微信api返回的数据模型适配Spring-Social的标准模型"><span class="toc-number">1.2.7.</span> <span class="toc-text">1.2.7 WeixinAdapter将微信api返回的数据模型适配Spring Social的标准模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-8-WeixinAuthConfig创建工厂和设置数据源"><span class="toc-number">1.2.8.</span> <span class="toc-text">1.2.8 WeixinAuthConfig创建工厂和设置数据源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-9-社交登录配置类"><span class="toc-number">1.2.9.</span> <span class="toc-text">1.2.9 社交登录配置类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-代码下载"><span class="toc-number">2.</span> <span class="toc-text">2. 代码下载</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

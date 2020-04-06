@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【老徐】从零开始的 Spring Security OAuth2（二） - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 https://www.cnkirito.moe/Re%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84Spring%20,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">【老徐】从零开始的 Spring Security OAuth2（二）</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                二月 02, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2018/02/02/Spring-Security/laoxu/OAuth2-2/" title="【老徐】从零开始的 Spring Security OAuth2（二）">【老徐】从零开始的 Spring Security OAuth2（二）</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    36k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    33 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="https://www.cnkirito.moe/Re%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84Spring%20Security%20OAuth2%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="noopener">https://www.cnkirito.moe/Re%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84Spring%20Security%20OAuth2%EF%BC%88%E4%BA%8C%EF%BC%89/</a> 「老徐」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-2/" target="_blank" rel="noopener">准备工作</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-2/" target="_blank" rel="noopener">@EnableAuthorizationServer</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-2/" target="_blank" rel="noopener">客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-2/" target="_blank" rel="noopener">顶级身份管理者AuthenticationManager（掌握）</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-2/" target="_blank" rel="noopener">AuthorizationServerTokenServices（了解）</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-2/" target="_blank" rel="noopener">总结</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<p>本文开始从源码的层面，讲解一些Spring Security Oauth2的认证流程。本文较长，适合在空余时间段观看。且涉及了较多的源码，非关键性代码以…代替。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>首先开启debug信息：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">logging:</span></span><br><span class="line"><span class="attr">  level:</span></span><br><span class="line">    <span class="string">org.springframework:</span> <span class="string">DEBUG</span></span><br></pre></td></tr></table></figure>
+
+<p>可以完整的看到内部的运转流程。</p>
+<p>client模式稍微简单一些，使用client模式获取token<br><code>http://localhost:8080/oauth/token?client_id=client_1&amp;client_secret=123456&amp;scope=select&amp;grant_type=client_credentials</code></p>
+<p>由于debug信息太多了，我简单按照顺序列了一下关键的几个类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ClientCredentialsTokenEndpointFilter</span><br><span class="line">DaoAuthenticationProvider</span><br><span class="line">TokenEndpoint</span><br><span class="line">TokenGranter</span><br></pre></td></tr></table></figure>
+
+<h2 id="EnableAuthorizationServer"><a href="#EnableAuthorizationServer" class="headerlink" title="@EnableAuthorizationServer"></a>@EnableAuthorizationServer</h2><p>上一篇博客中我们尝试使用了password模式和client模式，有一个比较关键的endpoint：/oauth/token。从这个入口开始分析，spring security oauth2内部是如何生成token的。获取token，与第一篇文章中的两个重要概念之一有关，也就是AuthorizationServer与ResourceServer中的AuthorizationServer。</p>
+<p>在之前的配置中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthorizationServerConfiguration</span> <span class="keyword">extends</span> <span class="title">AuthorizationServerConfigurerAdapter</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>出现了AuthorizationServerConfigurerAdapter 关键类，他关联了三个重要的配置类，分别是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthorizationServerConfigurerAdapter</span> <span class="keyword">implements</span> <span class="title">AuthorizationServerConfigurer</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerSecurityConfigurer security &lt;<span class="number">1</span>&gt;)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients &lt;<span class="number">2</span>&gt;)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerEndpointsConfigurer endpoints &lt;<span class="number">3</span>&gt;)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&lt;1&gt; 配置AuthorizationServer安全认证的相关信息，创建ClientCredentialsTokenEndpointFilter核心过滤器</p>
+<p>&lt;2&gt; 配置OAuth2的客户端相关信息</p>
+<p>&lt;3&gt; 配置AuthorizationServerEndpointsConfigurer众多相关类，包括配置身份认证器，配置认证方式，TokenStore，TokenGranter，OAuth2RequestFactory</p>
+<p>我们逐步分析其中关键的类</p>
+<h2 id="客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）"><a href="#客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）" class="headerlink" title="客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）"></a>客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）</h2><p>截取关键的代码，可以分析出大概的流程<br>在请求到达/oauth/token之前经过了ClientCredentialsTokenEndpointFilter这个过滤器，关键方法如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuthenticationException, IOException, ServletException </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	String clientId = request.getParameter(<span class="string">"client_id"</span>);</span><br><span class="line">	String clientSecret = request.getParameter(<span class="string">"client_secret"</span>);</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	clientId = clientId.trim();</span><br><span class="line">	UsernamePasswordAuthenticationToken authRequest = <span class="keyword">new</span> UsernamePasswordAuthenticationToken(clientId,</span><br><span class="line">			clientSecret);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.getAuthenticationManager().authenticate(authRequest);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="顶级身份管理者AuthenticationManager（掌握）"><a href="#顶级身份管理者AuthenticationManager（掌握）" class="headerlink" title="顶级身份管理者AuthenticationManager（掌握）"></a>顶级身份管理者AuthenticationManager（掌握）</h2><p>用来从请求中获取client_id,client_secret，组装成一个UsernamePasswordAuthenticationToken作为身份标识，使用容器中的顶级身份管理器AuthenticationManager去进行身份认证（AuthenticationManager的实现类一般是ProviderManager。而ProviderManager内部维护了一个List,真正的身份认证是由一系列AuthenticationProvider去完成。而AuthenticationProvider的常用实现类则是DaoAuthenticationProvider，DaoAuthenticationProvider内部又聚合了一个UserDetailsService接口，UserDetailsService才是获取用户详细信息的最终接口，而我们上一篇文章中在内存中配置用户，就是使用了UserDetailsService的一个实现类InMemoryUserDetailsManager）。UML类图可以大概理解下这些类的关系，省略了授权部分。<br><a href="http://static.iocoder.cn/csdn/20170809145344042?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzgxNTU0Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" target="_blank" rel="noopener"><img src="http://static.iocoder.cn/csdn/20170809145344042?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzgxNTU0Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="认证相关"></a>认证相关</p>
+<p>图1 认证相关UML类图</p>
+<p>可能机智的读者会发现一个问题，我前面一篇文章已经提到了client模式是不存在“用户”的概念的，那么这里的身份认证是在认证什么呢？debug可以发现UserDetailsService的实现被适配成了ClientDetailsUserDetailsService，这个设计是将client客户端的信息（client_id,client_secret）适配成用户的信息(username,password)，这样我们的认证流程就不需要修改了。</p>
+<p>经过ClientCredentialsTokenEndpointFilter之后，身份信息已经得到了AuthenticationManager的验证。接着便到达了</p>
+<p>TokenEndpoint。</p>
+<p>## Token处理端点TokenEndpoint（掌握）</p>
+<p>前面的两个ClientCredentialsTokenEndpointFilter和AuthenticationManager可以理解为一些前置校验，和身份封装，而这个类一看名字就知道和我们的token是密切相关的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FrameworkEndpoint</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TokenEndpoint</span> <span class="keyword">extends</span> <span class="title">AbstractEndpoint</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@RequestMapping</span>(value = <span class="string">"/oauth/token"</span>, method=RequestMethod.POST)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> ResponseEntity&lt;OAuth2AccessToken&gt; <span class="title">postAccessToken</span><span class="params">(Principal principal, @RequestParam</span></span></span><br><span class="line"><span class="function"><span class="params">	Map&lt;String, String&gt; parameters)</span> <span class="keyword">throws</span> HttpRequestMethodNotSupportedException </span>&#123;</span><br><span class="line">		 ...</span><br><span class="line">		String clientId = getClientId(principal);</span><br><span class="line">		ClientDetails authenticatedClient = getClientDetailsService().loadClientByClientId(clientId);<span class="comment">//&lt;1&gt;</span></span><br><span class="line">		...</span><br><span class="line">		TokenRequest tokenRequest = getOAuth2RequestFactory().createTokenRequest(parameters, authenticatedClient);<span class="comment">//&lt;2&gt;</span></span><br><span class="line">		...</span><br><span class="line">		OAuth2AccessToken token = getTokenGranter().grant(tokenRequest.getGrantType(), tokenRequest);<span class="comment">//&lt;3&gt;</span></span><br><span class="line">		...</span><br><span class="line">		<span class="keyword">return</span> getResponse(token);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> TokenGranter tokenGranter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&lt;1&gt; 加载客户端信息</p>
+<p>&lt;2&gt; 结合请求信息，创建TokenRequest</p>
+<p>&lt;3&gt; 将TokenRequest传递给TokenGranter颁发token</p>
+<p>省略了一些校验代码之后，真正的/oauth/token端点暴露在了我们眼前，其中方法参数中的Principal经过之前的过滤器，已经被填充了相关的信息，而方法的内部则是依赖了一个TokenGranter 来颁发token。其中OAuth2AccessToken的实现类DefaultOAuth2AccessToken就是最终在控制台得到的token序列化之前的原始类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultOAuth2AccessToken</span> <span class="keyword">implements</span> <span class="title">Serializable</span>, <span class="title">OAuth2AccessToken</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">914967629530462926L</span>;</span><br><span class="line">  <span class="keyword">private</span> String value;</span><br><span class="line">  <span class="keyword">private</span> Date expiration;</span><br><span class="line">  <span class="keyword">private</span> String tokenType = BEARER_TYPE.toLowerCase();</span><br><span class="line">  <span class="keyword">private</span> OAuth2RefreshToken refreshToken;</span><br><span class="line">  <span class="keyword">private</span> Set&lt;String&gt; scope;</span><br><span class="line">  <span class="keyword">private</span> Map&lt;String, Object&gt; additionalInformation = Collections.emptyMap();</span><br><span class="line">  <span class="comment">//getter,setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@org</span>.codehaus.jackson.map.annotate.JsonSerialize(using = OAuth2AccessTokenJackson1Serializer.class)</span><br><span class="line"><span class="meta">@org</span>.codehaus.jackson.map.annotate.JsonDeserialize(using = OAuth2AccessTokenJackson1Deserializer.class)</span><br><span class="line"><span class="meta">@com</span>.fasterxml.jackson.databind.annotation.JsonSerialize(using = OAuth2AccessTokenJackson2Serializer.class)</span><br><span class="line"><span class="meta">@com</span>.fasterxml.jackson.databind.annotation.JsonDeserialize(using = OAuth2AccessTokenJackson2Deserializer.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OAuth2AccessToken</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String BEARER_TYPE = <span class="string">"Bearer"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String OAUTH2_TYPE = <span class="string">"OAuth2"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String ACCESS_TOKEN = <span class="string">"access_token"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String TOKEN_TYPE = <span class="string">"token_type"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String EXPIRES_IN = <span class="string">"expires_in"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String REFRESH_TOKEN = <span class="string">"refresh_token"</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String SCOPE = <span class="string">"scope"</span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个典型的样例token响应,如下所示，就是上述类序列化后的结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"access_token"</span>:<span class="string">"950a7cc9-5a8a-42c9-a693-40e817b1a4b0"</span>,</span><br><span class="line">	<span class="attr">"token_type"</span>:<span class="string">"bearer"</span>,</span><br><span class="line">	<span class="attr">"refresh_token"</span>:<span class="string">"773a0fcd-6023-45f8-8848-e141296cb3cb"</span>,</span><br><span class="line">	<span class="attr">"expires_in"</span>:<span class="number">27036</span>,</span><br><span class="line">	<span class="attr">"scope"</span>:<span class="string">"select"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>## TokenGranter（掌握）</p>
+<p>先从UML类图对TokenGranter接口的设计有一个宏观的认识</p>
+<p><img src="http://static.iocoder.cn/csdn/20170809134129753?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzgxNTU0Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>这里写图片描述</p>
+<p>图2 TokenGranter相关UML类图</p>
+<p>TokenGranter的设计思路是使用CompositeTokenGranter管理一个List列表，每一种grantType对应一个具体的真正授权者，在debug过程中可以发现CompositeTokenGranter 内部就是在循环调用五种TokenGranter实现类的grant方法，而granter内部则是通过grantType来区分是否是各自的授权类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompositeTokenGranter</span> <span class="keyword">implements</span> <span class="title">TokenGranter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> List&lt;TokenGranter&gt; tokenGranters;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CompositeTokenGranter</span><span class="params">(List&lt;TokenGranter&gt; tokenGranters)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.tokenGranters = <span class="keyword">new</span> ArrayList&lt;TokenGranter&gt;(tokenGranters);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">grant</span><span class="params">(String grantType, TokenRequest tokenRequest)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (TokenGranter granter : tokenGranters) &#123;</span><br><span class="line">			OAuth2AccessToken grant = granter.grant(grantType, tokenRequest);</span><br><span class="line">			<span class="keyword">if</span> (grant!=<span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">return</span> grant;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>五种类型分别是：</p>
+<ul>
+<li>ResourceOwnerPasswordTokenGranter ==&gt; password密码模式</li>
+<li>AuthorizationCodeTokenGranter ==&gt; authorization_code授权码模式</li>
+<li>ClientCredentialsTokenGranter ==&gt; client_credentials客户端模式</li>
+<li>ImplicitTokenGranter ==&gt; implicit简化模式</li>
+<li>RefreshTokenGranter ==&gt;refresh_token 刷新token专用</li>
+</ul>
+<p>以客户端模式为例，思考如何产生token的，则需要继续研究5种授权者的抽象类：AbstractTokenGranter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractTokenGranter</span> <span class="keyword">implements</span> <span class="title">TokenGranter</span> </span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">final</span> Log logger = LogFactory.getLog(getClass());</span><br><span class="line">	<span class="comment">//与token相关的service，重点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> AuthorizationServerTokenServices tokenServices;</span><br><span class="line">	<span class="comment">//与clientDetails相关的service，重点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> ClientDetailsService clientDetailsService;</span><br><span class="line">	<span class="comment">//创建oauth2Request的工厂，重点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> OAuth2RequestFactory requestFactory;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String grantType;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">grant</span><span class="params">(String grantType, TokenRequest tokenRequest)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		...</span><br><span class="line">		String clientId = tokenRequest.getClientId();</span><br><span class="line">		ClientDetails client = clientDetailsService.loadClientByClientId(clientId);</span><br><span class="line">		validateGrantType(grantType, client);</span><br><span class="line"></span><br><span class="line">		logger.debug(<span class="string">"Getting access token for: "</span> + clientId);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> getAccessToken(client, tokenRequest);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> OAuth2AccessToken <span class="title">getAccessToken</span><span class="params">(ClientDetails client, TokenRequest tokenRequest)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> tokenServices.createAccessToken(getOAuth2Authentication(client, tokenRequest));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> OAuth2Authentication <span class="title">getOAuth2Authentication</span><span class="params">(ClientDetails client, TokenRequest tokenRequest)</span> </span>&#123;</span><br><span class="line">		OAuth2Request storedOAuth2Request = requestFactory.createOAuth2Request(client, tokenRequest);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> OAuth2Authentication(storedOAuth2Request, <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回过头去看TokenEndpoint中，正是调用了这里的三个重要的类变量的相关方法。由于篇幅限制，不能延展太多，不然没完没了，所以重点分析下AuthorizationServerTokenServices是何方神圣。</p>
+<h2 id="AuthorizationServerTokenServices（了解）"><a href="#AuthorizationServerTokenServices（了解）" class="headerlink" title="AuthorizationServerTokenServices（了解）"></a>AuthorizationServerTokenServices（了解）</h2><p>AuthorizationServer端的token操作service，接口设计如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthorizationServerTokenServices</span> </span>&#123;</span><br><span class="line">	<span class="comment">//创建token</span></span><br><span class="line">	<span class="function">OAuth2AccessToken <span class="title">createAccessToken</span><span class="params">(OAuth2Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException</span>;</span><br><span class="line">	<span class="comment">//刷新token</span></span><br><span class="line">	<span class="function">OAuth2AccessToken <span class="title">refreshAccessToken</span><span class="params">(String refreshToken, TokenRequest tokenRequest)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException</span>;</span><br><span class="line">	<span class="comment">//获取token</span></span><br><span class="line">	<span class="function">OAuth2AccessToken <span class="title">getAccessToken</span><span class="params">(OAuth2Authentication authentication)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在默认的实现类DefaultTokenServices中，可以看到token是如何产生的，并且了解了框架对token进行哪些信息的关联。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">createAccessToken</span><span class="params">(OAuth2Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">	OAuth2AccessToken existingAccessToken = tokenStore.getAccessToken(authentication);</span><br><span class="line">	OAuth2RefreshToken refreshToken = <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">if</span> (existingAccessToken != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (existingAccessToken.isExpired()) &#123;</span><br><span class="line">			<span class="keyword">if</span> (existingAccessToken.getRefreshToken() != <span class="keyword">null</span>) &#123;</span><br><span class="line">				refreshToken = existingAccessToken.getRefreshToken();</span><br><span class="line">				<span class="comment">// The token store could remove the refresh token when the</span></span><br><span class="line">				<span class="comment">// access token is removed, but we want to</span></span><br><span class="line">				<span class="comment">// be sure...</span></span><br><span class="line">				tokenStore.removeRefreshToken(refreshToken);</span><br><span class="line">			&#125;</span><br><span class="line">			tokenStore.removeAccessToken(existingAccessToken);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Re-store the access token in case the authentication has changed</span></span><br><span class="line">			tokenStore.storeAccessToken(existingAccessToken, authentication);</span><br><span class="line">			<span class="keyword">return</span> existingAccessToken;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Only create a new refresh token if there wasn't an existing one</span></span><br><span class="line">	<span class="comment">// associated with an expired access token.</span></span><br><span class="line">	<span class="comment">// Clients might be holding existing refresh tokens, so we re-use it in</span></span><br><span class="line">	<span class="comment">// the case that the old access token</span></span><br><span class="line">	<span class="comment">// expired.</span></span><br><span class="line">	<span class="keyword">if</span> (refreshToken == <span class="keyword">null</span>) &#123;</span><br><span class="line">		refreshToken = createRefreshToken(authentication);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// But the refresh token itself might need to be re-issued if it has</span></span><br><span class="line">	<span class="comment">// expired.</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (refreshToken <span class="keyword">instanceof</span> ExpiringOAuth2RefreshToken) &#123;</span><br><span class="line">		ExpiringOAuth2RefreshToken expiring = (ExpiringOAuth2RefreshToken) refreshToken;</span><br><span class="line">		<span class="keyword">if</span> (System.currentTimeMillis() &gt; expiring.getExpiration().getTime()) &#123;</span><br><span class="line">			refreshToken = createRefreshToken(authentication);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	OAuth2AccessToken accessToken = createAccessToken(authentication, refreshToken);</span><br><span class="line">	tokenStore.storeAccessToken(accessToken, authentication);</span><br><span class="line">	<span class="comment">// In case it was modified</span></span><br><span class="line">	refreshToken = accessToken.getRefreshToken();</span><br><span class="line">	<span class="keyword">if</span> (refreshToken != <span class="keyword">null</span>) &#123;</span><br><span class="line">		tokenStore.storeRefreshToken(refreshToken, authentication);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> accessToken;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单总结一下AuthorizationServerTokenServices的作用，他提供了创建token，刷新token，获取token的实现。在创建token时，他会调用tokenStore对产生的token和相关信息存储到对应的实现类中，可以是redis，数据库，内存，jwt。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇总结了使用客户端模式获取Token时，spring security oauth2内部的运作流程，重点是在分析AuthenticationServer相关的类。其他模式有一定的不同，但抽象功能是固定的，只是具体的实现类会被相应地替换。阅读spring的源码，会发现它的设计中出现了非常多的抽象接口，这对我们理清楚内部工作流程产生了不小的困扰，我的方式是可以借助UML类图，先从宏观理清楚作者的设计思路，这会让我们的分析事半功倍。</p>
+<p>下一篇文章重点分析用户携带token访问受限资源时，spring security oauth2内部的工作流程。即ResourceServer相关的类。</p>
+<h1 id="666-彩蛋"><a href="#666-彩蛋" class="headerlink" title="666. 彩蛋"></a>666. 彩蛋</h1><p>如果你对 Spring Security 感兴趣，欢迎加入我的知识一起交流。</p>
+<p><img src="http://www.iocoder.cn/images/Architecture/2017_12_29/01.png" alt="知识星球"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EnableAuthorizationServer"><span class="toc-number">2.</span> <span class="toc-text">@EnableAuthorizationServer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）"><span class="toc-number">3.</span> <span class="toc-text">客户端身份认证核心过滤器ClientCredentialsTokenEndpointFilter（掌握）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#顶级身份管理者AuthenticationManager（掌握）"><span class="toc-number">4.</span> <span class="toc-text">顶级身份管理者AuthenticationManager（掌握）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AuthorizationServerTokenServices（了解）"><span class="toc-number">5.</span> <span class="toc-text">AuthorizationServerTokenServices（了解）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#666-彩蛋"><span class="toc-number"></span> <span class="toc-text">666. 彩蛋</span></a>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

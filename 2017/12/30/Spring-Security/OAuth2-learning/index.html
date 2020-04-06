@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spring Security OAuth2 入门 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="摘要: 原创出处 http://www.iocoder.cn/Spring-Security/OAuth2-learning/ 「芋道源码」欢迎转载，保留摘要，谢谢！
+
+1. 概述
+2. 引入 Sp,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Spring Security OAuth2 入门</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring Security"><b>「
+                    </b>SPRING SECURITY<b> 」</b></a>
+                
+                十二月 30, 2017
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2017/12/30/Spring-Security/OAuth2-learning/" title="Spring Security OAuth2 入门">Spring Security OAuth2 入门</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    66k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    1:01
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>摘要: 原创出处 <a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">http://www.iocoder.cn/Spring-Security/OAuth2-learning/</a> 「芋道源码」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">1. 概述</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">2. 引入 Spring Security OAuth2 依赖</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">3. 配置资源服务器</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4. 配置授权服务器</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4.1 授权码模式</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">Spring Security Setting</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4.2 密码模式</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4.3 简化模式</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4.4 客户端模式</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4.5 如何选择？</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">4.6 为什么有 Client 编号和密码</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">5. 刷新令牌</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">5.1 获取刷新令牌</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">5.2 “刷新”访问令牌</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">5.3 为什么需要有刷新令牌</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">6. 删除令牌</a><ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">6.1 删除访问令牌</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">6.2 删除刷新令牌</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">6.3 RFC7009 - OAuth2 Token Revocation</a></li>
+</ul>
+</li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">7. 令牌元数据</a></li>
+<li><a href="http://www.iocoder.cn/Spring-Security/OAuth2-learning/" target="_blank" rel="noopener">666. 彩蛋</a></li>
+</ul>
+<hr>
+<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
+<blockquote>
+<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
+<ol>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
+<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
+<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
+<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
+<li><strong>认真的</strong>源码交流微信群。</li>
+</ol>
+</blockquote>
+<hr>
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>本文，我们来入门 Spring Security OAuth2.0 的使用。通过本文，希望你对 OAuth2.0 有一次身临其境的感受。</p>
+<p>另外，这是一篇入门的文章，所以实际场景下，需要做一些微调。当然，需要微调的地方，笔者会在示例中说明，以免误导。</p>
+<p>如果你是 OAuth2.0 的萌新，建议先通读阮一峰大神的 <a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">《理解OAuth 2.0》</a>。因为，本文不会去阐述 OAuth2.0 概念部分的内容。或者，也可以看看 <a href="http://static.iocoder.cn/OAuth2.0%E6%9C%80%E7%AE%80%E5%90%91%E5%AF%BC.pdf" target="_blank" rel="noopener">《OAuth 2.0最简向导》</a> ，比较生动形象。</p>
+<p>阅读完本文后，你想要更加深入的理解 OAuth2.0 ，可以阅读如下两本书籍：</p>
+<ul>
+<li><a href="https://item.jd.com/11903292911.html" target="_blank" rel="noopener">《OAuth2 in Action》</a> 重原理</li>
+<li><a href="https://item.jd.com/28448815044.html" target="_blank" rel="noopener">《OAuth2 2.0 Cookbook》</a> 重实践，基于 Spring Security OAuth2 。</li>
+</ul>
+<p>阅读完本文后，你想要了解源码，可以阅读老徐的两篇文章：</p>
+<ul>
+<li><a href="https://www.cnkirito.moe/Spring-Security-OAuth2-2/" target="_blank" rel="noopener">《Re：从零开始的Spring Security OAuth2（二）》</a></li>
+<li><a href="https://www.cnkirito.moe/Spring-Security-OAuth2-3/" target="_blank" rel="noopener">《Re：从零开始的Spring Security OAuth2（三）》</a></li>
+</ul>
+<hr>
+<p>OK，一波安利之后，我们来一起进入正文。对于 Spring Security OAuth2 的配置，大体来说，就是<strong>两步</strong>：</p>
+<ol>
+<li>配置授权服务器( AuthorizationServer )</li>
+<li>配置资源服务器( ResourceServer )</li>
+</ol>
+<h1 id="2-引入-Spring-Security-OAuth2-依赖"><a href="#2-引入-Spring-Security-OAuth2-依赖" class="headerlink" title="2. 引入 Spring Security OAuth2 依赖"></a>2. 引入 Spring Security OAuth2 依赖</h1><p>在 <code>pom.xml</code> 文件中，引入如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.5.16.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span> /&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- for Spring MVC --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- for Spring Security --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- for OAuth 2.0 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.security.oauth<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-security-oauth2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>因为，我们使用的是 SpringBoot 的版本为 <code>1.5.16.RELEASE</code> ，所以使用的 Spring Security 的版本为 <code>4.2.8.RELEASE</code> ，Spring Security OAuth2 的版本为 <code>2.2.0.15.RELEASE</code> 。</p>
+<h1 id="3-配置资源服务器"><a href="#3-配置资源服务器" class="headerlink" title="3. 配置资源服务器"></a>3. 配置资源服务器</h1><p>一般情况下，资源服务器指的是，我们提供 API 的应用或服务。例如，订单服务、商品服务。<strong>考虑到让整个示例更加简单，本文先将它和授权服务器放在一个 Maven 项目中</strong>。</p>
+<p>① 创建一个 Controller 类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 示例模块 Controller</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/api/example"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExampleController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>非常简单，这是一个示例模块的 Controller ，提供 <code>/api/example/hello</code> 接口。</li>
+</ul>
+<p>② 配置资源服务器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 资源服务配置</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OAuth2ResourceServer</span> <span class="keyword">extends</span> <span class="title">ResourceServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                <span class="comment">// 对 "/api/**" 开启认证</span></span><br><span class="line">                .anyRequest()</span><br><span class="line">                .authenticated()</span><br><span class="line">                .and()</span><br><span class="line">                .requestMatchers()</span><br><span class="line">                .antMatchers(<span class="string">"/api/**"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Configuration</code> 注解，保证 OAuth2ResourceServer 能够被 SpringBoot 扫描到配置。</li>
+<li><code>@EnableResourceServer</code> 注解，开启资源服务器。</li>
+<li>继承( <code>extends</code> ) ResourceServerConfigurerAdapter 类，并覆写 <code>#configure(HttpSecurity http)</code> 方法，配置对 HTTP 请求中，匹配 <code>/api/**&quot;</code> 路径，开启认证的验证。</li>
+</ul>
+<h1 id="4-配置授权服务器"><a href="#4-配置授权服务器" class="headerlink" title="4. 配置授权服务器"></a>4. 配置授权服务器</h1><p>在 OAuth2.0 中，定义了<strong>四种</strong>授权模式：</p>
+<ul>
+<li>授权码模式( authorization code )</li>
+<li>密码模式( resource owner password credentials )</li>
+<li>简化模式( implicit )</li>
+<li>客户端模式( client credentials )</li>
+</ul>
+<p>所以，笔者在 <a href="https://github.com/YunaiV/SpringBoot-Labs/tree/master/lab-02" target="_blank" rel="noopener">SpringBoot-Labs/lab-02</a> 目录下，每一种方式，都提供了一个 Maven 项目示例。</p>
+<h2 id="4-1-授权码模式"><a href="#4-1-授权码模式" class="headerlink" title="4.1 授权码模式"></a>4.1 授权码模式</h2><p>Maven 项目结构如下：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/01.png" alt="Maven 项目结构"></p>
+<p>对应 GitHub 地址：<a href="https://github.com/YunaiV/SpringBoot-Labs/tree/master/lab-02/authorization-code-server" target="_blank" rel="noopener">https://github.com/YunaiV/SpringBoot-Labs/tree/master/lab-02/authorization-code-server</a></p>
+<p>① 配置授权服务器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 授权服务器配置</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OAuth2AuthorizationServer</span> <span class="keyword">extends</span> <span class="title">AuthorizationServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        clients.inMemory() <span class="comment">// &lt;1&gt;</span></span><br><span class="line">                <span class="comment">// &lt;2&gt; begin ...</span></span><br><span class="line">                .withClient(<span class="string">"clientapp"</span>).secret(<span class="string">"112233"</span>) <span class="comment">// Client 账号、密码。</span></span><br><span class="line">                .redirectUris(<span class="string">"http://localhost:9001/callback"</span>) <span class="comment">// 配置回调地址，选填。</span></span><br><span class="line">                .authorizedGrantTypes(<span class="string">"authorization_code"</span>) <span class="comment">// 授权码模式</span></span><br><span class="line">                .scopes(<span class="string">"read_userinfo"</span>, <span class="string">"read_contacts"</span>) <span class="comment">// 可授权的 Scope</span></span><br><span class="line">                <span class="comment">// &lt;2&gt; end ...</span></span><br><span class="line"><span class="comment">//                .and().withClient() // 可以继续配置新的 Client // &lt;3&gt;</span></span><br><span class="line">                ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Configuration</code> 注解，保证 OAuth2AuthorizationServer 能够被 SpringBoot 扫描到配置。</li>
+<li><code>@EnableAuthorizationServer</code> 注解，开启授权服务器。</li>
+<li><code>&lt;1&gt;</code> 处，基于内存，为了方便测试。实际情况下，最好放入<strong>数据库</strong>中，方便管理。</li>
+<li><code>&lt;2&gt;</code> 处，创建一个 Client 配置。</li>
+<li><code>&lt;3&gt;</code> 处，可以使用 <code>#and()</code> 方法，继续添加另外的 Client 配置。</li>
+</ul>
+<p>② 配置登陆账号</p>
+<p>创建 <code>application.properties</code> 文件，并配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Spring Security Setting</span><br><span class="line">security.user.name=yunai</span><br><span class="line">security.user.password=1024</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里配置了一个账号为 <code>&quot;yunai&quot;</code> ，密码为 <code>&quot;1024&quot;</code> 的登陆账户。</li>
+<li>实际生产环境下，登陆账号的数据，肯定是放在<strong>数据库</strong>中。</li>
+</ul>
+<p>③ 启动项目</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动项目</p>
+<p>④ 获取授权码</p>
+<p>4.1 浏览器打开 <a href="http://localhost:8080/oauth/authorize?client_id=clientapp&amp;redirect_uri=http://localhost:9001/callback&amp;response_type=code&amp;scope=read_userinfo" target="_blank" rel="noopener">http://localhost:8080/oauth/authorize?client_id=clientapp&amp;redirect_uri=http://localhost:9001/callback&amp;response_type=code&amp;scope=read_userinfo</a></p>
+<ul>
+<li><code>client_id</code> 参数，<strong>必传</strong>，为我们在 OAuth2AuthorizationServer 中配置的 Client 的编号。</li>
+<li><code>redirect_url</code> 参数，<strong>可选</strong>，回调地址。当然，如果 <code>client_id</code> 对应的 Client 未配置 <code>redirectUris</code> 属性，会报错。</li>
+<li><code>response_type</code> 参数，<strong>必传</strong>，返回结果为<strong>授权码</strong>。</li>
+<li><code>scope</code> 参数，<strong>可选</strong>，申请授权的 Scope 。如果多个，使用逗号分隔。</li>
+<li><code>state</code> 参数，<strong>可选</strong>，表示客户端的当前状态，可以指定任意值，认证服务器会原封不动地返回这个值。<ul>
+<li><em>未在上述 URL 中体现出来</em>。 </li>
+</ul>
+</li>
+</ul>
+<p>4.2 浏览器打开后，效果如下：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/02.png" alt="浏览器"></p>
+<ul>
+<li>输入在 <a href="#">「② 配置登陆账号」</a> 中配置的登陆账号 <code>&quot;yunai&quot;</code> / <code>&quot;1024&quot;</code> 。</li>
+<li>实际生产情况下，我们以 QQ 三方登陆作为例子，如下图：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/03.png" alt="QQ 示例"></li>
+</ul>
+<p>4.3 登陆成功，选择允许所有申请的 Scope ，点击【Authorize】按钮，确认授权。如下图：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/04.png" alt="Authorize"></p>
+<p>4.4 授权完成，回调 <code>redirect_uri</code> 地址。如下图所示：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/05.png" alt="回调地址"></p>
+<ul>
+<li><code>code</code> 参数，就是返回的授权码。</li>
+</ul>
+<p>⑤ 获取访问令牌</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST --user clientapp:112233 http://localhost:8080/oauth/token -H <span class="string">"content-type: application/x-www-form-urlencoded"</span> -d <span class="string">"code=UydkmV&amp;grant_type=authorization_code&amp;redirect_uri=http%3A%2F%2Flocalhost%3A9001%2Fcallback&amp;scope=read_userinfo"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--user clientapp:112233</code> 处，填写我们在 OAuth2AuthorizationServer 中配置的 Client 的编号和密码。</li>
+<li><code>code=UydkmV</code> 处，填写在 <a href="#">「④ 获取授权码」</a> 中获取的授权码( <code>code</code> ) 。</li>
+</ul>
+<p>返回结果示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>: <span class="string">"e60e41f2-2ad0-4c79-97d5-49af38e5c2e8"</span>, </span><br><span class="line">    <span class="attr">"token_type"</span>: <span class="string">"bearer"</span>, </span><br><span class="line">    <span class="attr">"expires_in"</span>: <span class="number">43199</span>, </span><br><span class="line">    <span class="attr">"scope"</span>: <span class="string">"read_userinfo"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>access_token</code> 属性，访问令牌。<strong>非空</strong>。</li>
+<li><code>token_type</code> 属性，令牌类型，可以是 <code>&quot;bearer&quot;</code> 或 <code>&quot;mac&quot;</code> 类型。<strong>非空</strong>。</li>
+<li><code>expires_in</code> 属性，过期时间，单位为秒。一般情况下，非空。</li>
+<li><code>scope</code> 属性，权限范围。如果与 Client 申请的范围一致，此项可省略。</li>
+<li><code>refresh_token</code> 属性，刷新令牌，用来获取下一次的访问令牌。<ul>
+<li>在授权码模式下，<strong>允许为空</strong>。</li>
+</ul>
+</li>
+</ul>
+<p>可能有部分胖友是 Windows 电脑，可以参考 <a href="http://www.cnblogs.com/xing901022/p/4652624.html" target="_blank" rel="noopener">《windows（64位）下使用 curl 命令》</a> 来安装一个 <code>curl</code> 命令。</p>
+<p>当然，如果胖友使用 <a href="https://www.getpostman.com/" target="_blank" rel="noopener">Postman</a> ，可以参看如下两图：</p>
+<ul>
+<li><img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/06.png" alt="图 1"></li>
+<li><img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/07.png" alt="图 2"></li>
+</ul>
+<p>⑥ 调用资源服务器的 API</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET http://localhost:8080/api/example/hello -H <span class="string">"authorization: Bearer e60e41f2-2ad0-4c79-97d5-49af38e5c2e8"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>authorization: Bearer e60e41f2-2ad0-4c79-97d5-49af38e5c2e8</code> 处，填写指定的访问令牌类型和访问令牌。例如此处分别为，<code>&quot;Bearer&quot;</code>、<code>&quot;e60e41f2-2ad0-4c79-97d5-49af38e5c2e8&quot;</code> 。</li>
+</ul>
+<p>如果胖友使用 <a href="https://www.getpostman.com/" target="_blank" rel="noopener">Postman</a> ，可以参看如下图：</p>
+<ul>
+<li><img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/08.png" alt="图"></li>
+</ul>
+<h2 id="4-2-密码模式"><a href="#4-2-密码模式" class="headerlink" title="4.2 密码模式"></a>4.2 密码模式</h2><p>Maven 项目结构如下：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/09.png" alt="Maven 项目结构"></p>
+<p>对应 GitHub 地址：<a href="https://github.com/YunaiV/SpringBoot-Labs/tree/f8d701cbd9b2a4f2cee3a7f2186148bcdf859895/lab-02/resource-owner-password-credentials-server" target="_blank" rel="noopener">https://github.com/YunaiV/SpringBoot-Labs/tree/f8d701cbd9b2a4f2cee3a7f2186148bcdf859895/lab-02/resource-owner-password-credentials-server</a></p>
+<p>① 配置授权服务器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 授权服务器配置</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OAuth2AuthorizationServer</span> <span class="keyword">extends</span> <span class="title">AuthorizationServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用户认证</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationManager authenticationManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerEndpointsConfigurer endpoints)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        endpoints.authenticationManager(authenticationManager);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        clients.inMemory()</span><br><span class="line">                .withClient(<span class="string">"clientapp"</span>).secret(<span class="string">"112233"</span>) <span class="comment">// Client 账号、密码。</span></span><br><span class="line">                .authorizedGrantTypes(<span class="string">"password"</span>) <span class="comment">// 密码模式</span></span><br><span class="line">                .scopes(<span class="string">"read_userinfo"</span>, <span class="string">"read_contacts"</span>) <span class="comment">// 可授权的 Scope</span></span><br><span class="line"><span class="comment">//                .and().withClient() // 可以继续配置新的 Client</span></span><br><span class="line">                ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置 Client 的方式，和【授权码模式】基本一致。差别在于：<ul>
+<li>无需配置 <code>redirectUris</code> 属性，因为不需要回调地址。</li>
+<li>配置授权模式为【<strong>密码模式</strong>】。</li>
+</ul>
+</li>
+<li>另外，需要引入 <strong>AuthenticationManager</strong> 来支持【密码模式】，否则会报 <code>&quot;Resolved [error=&quot;unsupported_grant_type&quot;, error_description=&quot;Unsupported grant type: password&quot;]&quot;</code> 异常。</li>
+</ul>
+<p>② 配置登陆账号</p>
+<p>和【授权码模式】<strong>一致</strong>。</p>
+<p>③ 启动项目</p>
+<p>和【授权码模式】<strong>一致</strong>。</p>
+<p>④ 获取访问令牌</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST --user clientapp:112233 http://localhost:8080/oauth/token -H <span class="string">"accept: application/json"</span> -H <span class="string">"content-type: application/x-www-form-urlencoded"</span> -d <span class="string">"grant_type=password&amp;username=yunai&amp;password=1024&amp;scope=read_userinfo"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>和【授权码模式】差异比较大。</li>
+<li>直接请求 <code>oauth/token</code> 接口，获得访问令牌。</li>
+<li>请求参数带上了 <code>username</code> 和 <code>password</code> ，就用户的登陆账号和密码。</li>
+<li>请求参数 <code>grant_type</code> 为 <code>password</code> ，表示【密码模式】。</li>
+</ul>
+<p>返回结果示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>: <span class="string">"68de6eb9-5672-4e47-a3e6-110404285ba9"</span>,</span><br><span class="line">    <span class="attr">"token_type"</span>: <span class="string">"bearer"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>: <span class="number">43199</span>,</span><br><span class="line">    <span class="attr">"scope"</span>: <span class="string">"read_userinfo"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>和【授权码模式】一致。</li>
+</ul>
+<p>⑤ 调用资源服务器的 API</p>
+<p>和【授权码模式】<strong>一致</strong>。</p>
+<h2 id="4-3-简化模式"><a href="#4-3-简化模式" class="headerlink" title="4.3 简化模式"></a>4.3 简化模式</h2><p>Maven 项目结构如下：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/13.png" alt="Maven 项目结构"></p>
+<p>对应 GitHub 地址：<a href="https://github.com/YunaiV/SpringBoot-Labs/tree/f8d701cbd9b2a4f2cee3a7f2186148bcdf859895/lab-02/implicit-server" target="_blank" rel="noopener">https://github.com/YunaiV/SpringBoot-Labs/tree/f8d701cbd9b2a4f2cee3a7f2186148bcdf859895/lab-02/implicit-server</a></p>
+<p>① 配置授权服务器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 授权服务器配置</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OAuth2AuthorizationServer</span> <span class="keyword">extends</span> <span class="title">AuthorizationServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        clients.inMemory()</span><br><span class="line">                .withClient(<span class="string">"clientapp"</span>).secret(<span class="string">"112233"</span>) <span class="comment">// Client 账号、密码。</span></span><br><span class="line">                .redirectUris(<span class="string">"http://localhost:9001/callback"</span>) <span class="comment">// 配置回调地址，选填。</span></span><br><span class="line">                .authorizedGrantTypes(<span class="string">"implicit"</span>) <span class="comment">// 授权码模式</span></span><br><span class="line">                .scopes(<span class="string">"read_userinfo"</span>, <span class="string">"read_contacts"</span>) <span class="comment">// 可授权的 Scope</span></span><br><span class="line"><span class="comment">//                .and().withClient() // 可以继续配置新的 Client</span></span><br><span class="line">                ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>和【授权码模式】基本一致。差别<strong>仅仅</strong>在于：配置授权模式为【简化模式】。</p>
+<blockquote>
+<p>FROM <a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">《理解 OAuth 2.0》</a></p>
+<p>简化模式（implicit grant type）不通过第三方应用程序的服务器，直接在浏览器中向认证服务器申请令牌，跳过了”授权码”这个步骤，因此得名。所有步骤在浏览器中完成，令牌对访问者是可见的，且客户端不需要认证。</p>
+</blockquote>
+</li>
+</ul>
+<p>② 配置登陆账号</p>
+<p>和【授权码模式】一致。</p>
+<p>③ 启动项目</p>
+<p>和【授权码模式】一致。</p>
+<p>④ 获取授权码</p>
+<p>4.1 浏览器打开 <a href="http://localhost:8080/oauth/authorize?client_id=clientapp&amp;redirect_uri=http://localhost:9001/callback&amp;response_type=implicit&amp;scope=read_userinfo" target="_blank" rel="noopener">http://localhost:8080/oauth/authorize?client_id=clientapp&amp;redirect_uri=http://localhost:9001/callback&amp;response_type=implicit&amp;scope=read_userinfo</a></p>
+<ul>
+<li>和【授权码模式】基本一致。差别<strong>仅仅</strong>在于：请求参数 <code>response_type</code> 为 <code>&quot;implicit&quot;</code> 简化模式。</li>
+</ul>
+<p>4.2 浏览器打开后，效果如下：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/11.png" alt="浏览器"></p>
+<ul>
+<li>和【授权码模式】基本一致，输入在 <a href="#">「② 配置登陆账号」</a> 中配置的登陆账号 <code>&quot;yunai&quot;</code> / <code>&quot;1024&quot;</code> 。</li>
+</ul>
+<p>4.3 登陆成功，直接授权完成，回调 <code>redirect_uri</code> 地址。如下图所示：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/12.png" alt="浏览器"></p>
+<ul>
+<li>和【授权码模式】基本不一致的有<strong>两点</strong>：<ul>
+<li>登陆成功后，<strong>无需</strong>选择允许所有申请的 Scope ，直接授权完成。</li>
+<li>返回的不是授权码，而是<strong>访问令牌</strong>。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>总的来说，【简化模式】是【授权码模式】的简化模式。</p>
+</blockquote>
+<p>⑤ 调用资源服务器的 API</p>
+<p>和【授权码模式】一致。</p>
+<h2 id="4-4-客户端模式"><a href="#4-4-客户端模式" class="headerlink" title="4.4 客户端模式"></a>4.4 客户端模式</h2><p>Maven 项目结构如下：<img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/10.png" alt="Maven 项目结构"></p>
+<p>对应 GitHub 地址：<a href="https://github.com/YunaiV/SpringBoot-Labs/tree/f8d701cbd9b2a4f2cee3a7f2186148bcdf859895/lab-02/client-credentials-server" target="_blank" rel="noopener">https://github.com/YunaiV/SpringBoot-Labs/tree/f8d701cbd9b2a4f2cee3a7f2186148bcdf859895/lab-02/client-credentials-server</a></p>
+<p>① 配置授权服务器</p>
+<p>和【密码模式】一致。</p>
+<p>② 配置登陆账号</p>
+<p>它<strong>无需</strong>配置登陆账号。因为它没有用户的概念，直接与授权服务器交互，通过 Client 的编号( <code>client_id</code> )和密码( <code>client_secret</code> )来保证安全性。</p>
+<p>③ 启动项目</p>
+<p>和【密码模式】一致。</p>
+<p>④ 获取访问令牌</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST <span class="string">"http://localhost:8080/oauth/token"</span> --user clientapp:112233 -d <span class="string">"grant_type=client_credentials&amp;scope=read_contacts"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>和【密码模式】基本一致，差别如下：<ul>
+<li>请求参数<strong>无需</strong>带上了 <code>username</code> 和 <code>password</code> 。</li>
+<li>请求参数 <code>grant_type</code> 为 <code>client_credentials</code> ，表示【密码模式】。</li>
+</ul>
+</li>
+</ul>
+<p>返回结果示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>:<span class="string">"cb2bdfd8-18fa-4b8f-b525-10587bd672e8"</span>,</span><br><span class="line">    <span class="attr">"token_type"</span>:<span class="string">"bearer"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>:<span class="number">43199</span>,</span><br><span class="line">    <span class="attr">"scope"</span>:<span class="string">"read_contacts"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>和【密码模式】一致。</li>
+</ul>
+<p>⑤ 调用资源服务器的 API</p>
+<p>和【密码模式】<strong>一致</strong>。</p>
+<blockquote>
+<p>总的来说，【客户端模式】是【密码模式】的简化模式。</p>
+</blockquote>
+<h2 id="4-5-如何选择？"><a href="#4-5-如何选择？" class="headerlink" title="4.5 如何选择？"></a>4.5 如何选择？</h2><p>可能很多胖友，有跟笔者一样的困惑。下面笔者引用杨波老师的一张图，相信能解决我们的困扰。如下图所示：</p>
+<blockquote>
+<p>FROM <a href="https://portal.qiniu.com/bucket/blog/resource" target="_blank" rel="noopener">《深度剖析 OAuth2 和微服务安全架构》</a></p>
+<p><img src="http://www.iocoder.cn/images/Spring-Security/2018_10_01/15.png" alt="授权类型选择"></p>
+</blockquote>
+<p>当然，对于<strong>黄框</strong>部分，对于笔者还是比较困惑的。笔者认为，第三方的单页应用 SPA ，也是适合采用 Authorization Code Grant 授权模式的。例如，<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842" target="_blank" rel="noopener">《微信网页授权》</a> ：</p>
+<blockquote>
+<p>具体而言，网页授权流程分为四步：</p>
+<p>1、引导用户进入授权页面同意授权，获取code<br>2、通过code换取网页授权access_token（与基础支持中的access_token不同）<br>3、如果需要，开发者可以刷新网页授权access_token，避免过期<br>4、通过网页授权access_token和openid获取用户基本信息（支持UnionID机制）</p>
+</blockquote>
+<p>所以，笔者猜测，之所以图中画的是 Implicit Grant 的原因是，受 Google 的 <a href="https://developers.google.com/identity/protocols/OAuth2UserAgent" target="_blank" rel="noopener">《OAuth 2.0 for Client-side Web Applications》</a> 一文中，推荐使用了 Implicit Grant 。</p>
+<p>当然，具体使用 Implicit Grant 还是 Authorization Code Grant 授权模式，没有定论。笔者，偏向于使用 <strong>Authorization Code Grant</strong>，对于第三方客户端的场景。</p>
+<h2 id="4-6-为什么有-Client-编号和密码"><a href="#4-6-为什么有-Client-编号和密码" class="headerlink" title="4.6 为什么有 Client 编号和密码"></a>4.6 为什么有 Client 编号和密码</h2><p>我们看到上述四种授权模式，无论是哪一种，最终调用授权服务器时，都会传递 Client 编号和密码，这是为什么呢？通过 Client 编号和密码，授权服务器可以知道调用的来源以及正确性。这样，即使“坏人”拿到 Access Token ，但是没有 Client 编号和密码，也不能和授权服务器发生<strong>有效</strong>的交互。</p>
+<h1 id="5-刷新令牌"><a href="#5-刷新令牌" class="headerlink" title="5. 刷新令牌"></a>5. 刷新令牌</h1><p>在 <a href="#">「4. 配置授权服务器」</a> 中，我们一直没有看到我们期盼的刷新令牌( refresh token )的身影。这是为什么呢？因为我们在配置 Spring Security OAuth2 并未配置，获取访问令牌的同时，获取刷新令牌。</p>
+<p>那么，怎么配置开启获取刷新令牌的功能呢？我们来看看 <a href="#">「5.1 获取刷新令牌」</a> 。</p>
+<h2 id="5-1-获取刷新令牌"><a href="#5-1-获取刷新令牌" class="headerlink" title="5.1 获取刷新令牌"></a>5.1 获取刷新令牌</h2><p>因为【密码模式】相对简单，我们直接在原有程序上做改造。对应 GitHub 地址：<a href="https://github.com/YunaiV/SpringBoot-Labs/tree/master/lab-02/authorization-code-server-with-refresh-token" target="_blank" rel="noopener">https://github.com/YunaiV/SpringBoot-Labs/tree/master/lab-02/authorization-code-server-with-refresh-token</a> 。</p>
+<blockquote>
+<p>在步骤上，如果和原有【密码模式】保持一致的地方，下文会进行省略，并标注“和原有<strong>一致</strong>”。</p>
+</blockquote>
+<p>① 配置授权服务器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 授权服务器配置</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OAuth2AuthorizationServer</span> <span class="keyword">extends</span> <span class="title">AuthorizationServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用户认证</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationManager authenticationManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerEndpointsConfigurer endpoints)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        endpoints.authenticationManager(authenticationManager);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        clients.inMemory()</span><br><span class="line">                .withClient(<span class="string">"clientapp"</span>).secret(<span class="string">"112233"</span>) <span class="comment">// Client 账号、密码。</span></span><br><span class="line">                .authorizedGrantTypes(<span class="string">"password"</span>, <span class="string">"refresh_token"</span>) <span class="comment">// 密码模式 // &lt;1&gt;</span></span><br><span class="line">                .scopes(<span class="string">"read_userinfo"</span>, <span class="string">"read_contacts"</span>) <span class="comment">// 可授权的 Scope</span></span><br><span class="line"><span class="comment">//                .and().withClient() // 可以继续配置新的 Client</span></span><br><span class="line">                ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 <code>&lt;1&gt;</code> 处，我们很神奇的多配置了一个 <code>&quot;refresh_token&quot;</code> ，用于开启获取刷新令牌的功能。但是但是但是，OAuth2 的授权模式说好的是四种的么，怎么又出现了 <code>&quot;refresh_token&quot;</code> 这种授权模式？淡定，在 Spring Security OAtuh2 中，<code>&quot;refresh_token&quot;</code> 作为一种特殊的授权模式<strong>配置</strong>，用于开启获取刷新令牌的功能。所以，其它授权模式如果开启获取刷新令牌的功能，需要在 <code>#authorizedGrantTypes(...)</code> 设置时，多传入 <code>&quot;refresh_token&quot;</code> 方法参数。</li>
+</ul>
+<p>② 配置登陆账号</p>
+<p>和原有<strong>一致</strong>。</p>
+<p>③ 启动项目</p>
+<p>和原有<strong>一致</strong>。</p>
+<p>④ 获取访问令牌</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST --user clientapp:112233 http://localhost:8080/oauth/token -H <span class="string">"accept: application/json"</span> -H <span class="string">"content-type: application/x-www-form-urlencoded"</span> -d <span class="string">"grant_type=password&amp;username=yunai&amp;password=1024&amp;scope=read_userinfo"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>和原有<strong>一致</strong>。</li>
+</ul>
+<p>返回结果示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>:<span class="string">"092a2286-04e7-4e7d-8c20-19fbe25865ff"</span>,</span><br><span class="line">    <span class="attr">"token_type"</span>:<span class="string">"bearer"</span>,</span><br><span class="line">    <span class="attr">"refresh_token"</span>:<span class="string">"afeeb083-997f-4ea8-9334-aab6c1696cca"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>:<span class="number">43199</span>,</span><br><span class="line">    <span class="attr">"scope"</span>:<span class="string">"read_userinfo"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在原有的基础上，<strong>多</strong>返回了 <code>&quot;refresh_token&quot;</code> 刷新令牌。美滋滋。</li>
+</ul>
+<p>⑤ 调用资源服务器的 API</p>
+<p>和原有<strong>一致</strong>。</p>
+<h2 id="5-2-“刷新”访问令牌"><a href="#5-2-“刷新”访问令牌" class="headerlink" title="5.2 “刷新”访问令牌"></a>5.2 “刷新”访问令牌</h2><p>因为访问访问令牌会自动过期，通过使用刷新令牌，可以获得<strong>新的</strong>访问令牌。注意，访问令牌获取到的是<strong>新的</strong>，不是老的哈。这也是为什么，在标题上，笔者对<strong>刷新</strong>加了双引号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i -X POST -u <span class="string">'clientapp:112233'</span>  http://localhost:8080/oauth/token -H <span class="string">"accept: application/json"</span> -d <span class="string">'grant_type=refresh_token&amp;refresh_token=afeeb083-997f-4ea8-9334-aab6c1696cca'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>调用接口还是 <code>&quot;oauth/token&quot;</code> ，差别在于传入的请求参数 <code>grant_type</code> 为 <code>&quot;refresh_token&quot;</code> ，使用刷新令牌。</li>
+<li>请求参数 <code>refresh_token</code> 为上面获取到的刷新令牌 <code>&quot;afeeb083-997f-4ea8-9334-aab6c1696cca&quot;</code> 。</li>
+</ul>
+<p>返回结果示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"access_token"</span>:<span class="string">"507eb761-4b25-4159-b927-ef3eff5e7eff"</span>,</span><br><span class="line">    <span class="attr">"token_type"</span>:<span class="string">"bearer"</span>,</span><br><span class="line">    <span class="attr">"refresh_token"</span>:<span class="string">"afeeb083-997f-4ea8-9334-aab6c1696cca"</span>,</span><br><span class="line">    <span class="attr">"expires_in"</span>:<span class="number">43199</span>,</span><br><span class="line">    <span class="attr">"scope"</span>:<span class="string">"read_userinfo"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>获得的访问令牌为 <code>&quot;507eb761-4b25-4159-b927-ef3eff5e7eff&quot;</code> ，是<strong>新的</strong>。并且，过期时间也变成<strong>新的</strong>。</li>
+</ul>
+<hr>
+<p>笔者在看 OAuth2.0 的刷新令牌时，一直有个疑惑：刷新令牌是否有过期时间？答案是，<strong>有</strong>。但是，笔者不太确定，在 Spring Security OAuth2 中，如果不设置刷新令牌的过期时间，刷新时间是否<strong>无限长</strong>？当然，这个貌似也并不重要。因为，在实际使用中，我们肯定是需要显示( 主动 )设置刷新令牌的过期时间，使用 <code>ClientBuilder#refreshTokenValiditySeconds(int refreshTokenValiditySeconds)</code> 方法，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    clients.inMemory()</span><br><span class="line">            .withClient(<span class="string">"clientapp"</span>).secret(<span class="string">"112233"</span>) <span class="comment">// Client 账号、密码。</span></span><br><span class="line">            .authorizedGrantTypes(<span class="string">"password"</span>, <span class="string">"refresh_token"</span>) <span class="comment">// 密码模式</span></span><br><span class="line">            .scopes(<span class="string">"read_userinfo"</span>, <span class="string">"read_contacts"</span>) <span class="comment">// 可授权的 Scope</span></span><br><span class="line">            .refreshTokenValiditySeconds(<span class="number">1200</span>) <span class="comment">// 1200 秒过期</span></span><br><span class="line"><span class="comment">//                .and().withClient() // 可以继续配置新的 Client</span></span><br><span class="line">            ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>刷新令牌过期时，返回结果示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"error"</span>:<span class="string">"invalid_token"</span>,</span><br><span class="line">    <span class="attr">"error_description"</span>:<span class="string">"Invalid refresh token (expired): 7139d075-c4ea-48f0-9dbb-6f65fa6dbeb0"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果胖友要测试这个效果，可以把刷新令牌过期时间设置为 1 秒。</li>
+</ul>
+<h2 id="5-3-为什么需要有刷新令牌"><a href="#5-3-为什么需要有刷新令牌" class="headerlink" title="5.3 为什么需要有刷新令牌"></a>5.3 为什么需要有刷新令牌</h2><p>出于<strong>安全性</strong>的考虑，访问令牌的过期时间比较短，刷新令牌的过期时间比较长。这样，如果访问令牌即使被盗用走，那么在一定的时间后，访问令牌也能在较短的时间吼过期。当然，安全也是相对的，如果使用刷新令牌后，获取到新的访问令牌，访问令牌<strong>后续</strong>又<strong>可能</strong>被盗用。</p>
+<p>另外，刷新令牌是可选项，不一定会返回。</p>
+<p>笔者整理了下，大家常用开放平台的令牌过期时间，让大家更好的理解：</p>
+<ul>
+<li>小米开放平台<ul>
+<li><a href="https://dev.mi.com/docs/passport/access-token-life-cycle/" target="_blank" rel="noopener">《Access Token 生命周期》</a></li>
+<li>Access Token ：90 天有效期 </li>
+<li>Refresh Token ：10 年有效期</li>
+</ul>
+</li>
+<li>微信开放平台<ul>
+<li><a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=&lang=zh_CN" target="_blank" rel="noopener">《网站应用微信登录开发指南》</a></li>
+<li>Access Token ：2 小时有效期</li>
+<li>Refresh Token ：未知有效期</li>
+</ul>
+</li>
+<li>腾讯开放平台<ul>
+<li><a href="http://wiki.open.qq.com/wiki/website/%E8%8E%B7%E5%8F%96Access_Token" target="_blank" rel="noopener">《获取 Access_Token》</a> </li>
+<li>Access Token ：90 天有效期 </li>
+<li>Refresh Token ：未知有效期</li>
+</ul>
+</li>
+</ul>
+<h1 id="6-删除令牌"><a href="#6-删除令牌" class="headerlink" title="6. 删除令牌"></a>6. 删除令牌</h1><p>实际在 OAuth2 时，有删除访问令牌和刷新令牌的需求。例如：用户登出系统。虽然说，可以通过客户端<strong>本地</strong>删除令牌的方式实现。但是，考虑到真正的彻底的实现删除令牌，必然服务端<strong>自身</strong>需要删除令牌。</p>
+<p>在 Spring Security OAuth2 中，并没有提供内置的接口，所以需要自己去实现。笔者参看 <a href="https://www.baeldung.com/spring-security-oauth-revoke-tokens" target="_blank" rel="noopener">《Spring Security OAuth2 – Simple Token Revocation》</a> 文档，实现删除令牌的 API 接口。</p>
+<p>因为【密码模式】相对简单，我们直接在原有程序上做改造。对应 GitHub 地址：<resource-owner-password-credentials-server-with-revoke-token> 。注意，如下仅仅是 Demo ，实际生产环境下需要做改造。</resource-owner-password-credentials-server-with-revoke-token></p>
+<h2 id="6-1-删除访问令牌"><a href="#6-1-删除访问令牌" class="headerlink" title="6.1 删除访问令牌"></a>6.1 删除访问令牌</h2><p>① 新增删除访问令牌的 API 接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> ConsumerTokenServices tokenServices;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(method = RequestMethod.POST, value = <span class="string">"api/access_token/revoke"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">revokeToken</span><span class="params">(@RequestParam(<span class="string">"token"</span>)</span> String token) </span>&#123;</span><br><span class="line">    tokenServices.revokeToken(token);</span><br><span class="line">    <span class="keyword">return</span> token;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 <code>ConsumerTokenServices#revokeToken(String tokenValue)</code> 方法，删除访问令牌。</li>
+</ul>
+<p><strong>注意</strong>，实际生产环境下，授权服务器和资源服务器是不在一起的，所以此处仅仅是示例。主要是为了介绍 <code>ConsumerTokenServices#revokeToken(String tokenValue)</code> 方法的使用。</p>
+<p>② 访问删除访问令牌的 API 接口。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:8080/api/access_token/revoke -H <span class="string">"authorization: Bearer 23874e0b-a1d8-4337-9551-7b9be1ebaebe"</span> -d <span class="string">"token=23874e0b-a1d8-4337-9551-7b9be1ebaebe"</span></span><br></pre></td></tr></table></figure>
+
+<p>移除成功后，在使用当前访问令牌，就会报如下错误：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"error"</span>:<span class="string">"invalid_token"</span>,</span><br><span class="line">    <span class="attr">"error_description"</span>:<span class="string">"Invalid access token: 23874e0b-a1d8-4337-9551-7b9be1ebaebe"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>另外，也可以参考 <a href="https://github.com/geektime-geekbang/oauth2lab/blob/master/lab05/oauth-server/src/main/java/io/spring2go/config/RevokeTokenEndpoint.java" target="_blank" rel="noopener">https://github.com/geektime-geekbang/oauth2lab/blob/master/lab05/oauth-server/src/main/java/io/spring2go/config/RevokeTokenEndpoint.java</a> 的实现。</p>
+<h2 id="6-2-删除刷新令牌"><a href="#6-2-删除刷新令牌" class="headerlink" title="6.2 删除刷新令牌"></a>6.2 删除刷新令牌</h2><p>① 新增删除访问令牌的 API 接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span>(required = <span class="keyword">false</span>) <span class="comment">// &lt;1&gt;</span></span><br><span class="line"><span class="keyword">private</span> TokenStore tokenStore;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(method = RequestMethod.POST, value = <span class="string">"api/refresh_token/revoke"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">revokeRefreshToken</span><span class="params">(@RequestParam(<span class="string">"token"</span>)</span> String token) </span>&#123;</span><br><span class="line">    tokenStore.removeRefreshToken(<span class="keyword">new</span> DefaultOAuth2RefreshToken(token));</span><br><span class="line">    <span class="keyword">return</span> token;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;1&gt;</code> 处，使用了 <code>required = false</code> 的原因是，本示例并未显示声明 TokenStore Bean 对象交给 Spring 管理，所以无法注入。😈 所以 <a href="#">「6.2 删除刷新令牌」</a> 是一个无法<strong>跑通</strong>的示例。</li>
+<li>重点在于，调用 <code>TokenStore#removeRefreshToken(OAuth2RefreshToken token)</code> 方法，删除刷新令牌。</li>
+</ul>
+<p>② 访问删除刷新令牌的 API 接口。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:8080/api/refresh_token/revoke -H <span class="string">"authorization: Bearer 52e85411-ac1d-4844-bf03-cf5633e4eecd"</span> -d <span class="string">"token=ead4734a-ca5c-45bf-ac25-9a92291a9fe1"</span></span><br></pre></td></tr></table></figure>
+
+<p>移除成功后，在使用当前刷新令牌，就会报如下错误：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"error"</span>:<span class="string">"invalid_token"</span>,</span><br><span class="line">    <span class="attr">"error_description"</span>:<span class="string">"Invalid refresh token: ead4734a-ca5c-45bf-ac25-9a92291a9fe1"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>另外，也可以参考 <a href="https://github.com/geektime-geekbang/oauth2lab/blob/master/lab05/oauth-server/src/main/java/io/spring2go/config/TokenController.java" target="_blank" rel="noopener">https://github.com/geektime-geekbang/oauth2lab/blob/master/lab05/oauth-server/src/main/java/io/spring2go/config/TokenController.java</a> 的实现。</p>
+<h2 id="6-3-RFC7009-OAuth2-Token-Revocation"><a href="#6-3-RFC7009-OAuth2-Token-Revocation" class="headerlink" title="6.3 RFC7009 - OAuth2 Token Revocation"></a>6.3 RFC7009 - OAuth2 Token Revocation</h2><p>在 OAuth2 中，删除令牌，标准的说法为 OAuth2 Token 撤销，对应 RFC7009 。感兴趣的胖友，可以看看。</p>
+<blockquote>
+<p>FROM <a href="https://www.cnblogs.com/linianhui/p/oauth2-extensions-protocol-and-json-web-token.html#auto_id_3" target="_blank" rel="noopener">《OAuth2 Token 撤销（RFC7009 - OAuth2 Token Revocation）》</a></p>
+</blockquote>
+<p>简单来说，这个协议规定了一个Authorization server提供一个怎样的API来供Client撤销access_token或者refresh_token。</p>
+<p>比如Client发起一个如下的请求：</p>
+<blockquote>
+<p><em>POST /revoke HTTP/1.1</em><br><em>Host: server.example.com</em><br><em>Content-Type: application/x-www-form-urlencoded</em><br><em>Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW</em><br><em>token=45ghiukldjahdnhzdauz&amp;token_type_hint=refresh_token</em></p>
+</blockquote>
+<p>其中各项含义如下：</p>
+<ol>
+<li>/revoke：是Authorization Server需要提供的API地址，Client使用Post方式请求这个地址。</li>
+<li>Content-Type: application/x-www-form-urlencoded：固定此格式。</li>
+<li>Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW：访问受保护资源的授权凭证。</li>
+<li>token：必选，可以是access_token或者refresh_token的内容。</li>
+<li>token_type_hint：可选，表示token的类型，值为”access_token“或者”refresh_token”。</li>
+</ol>
+<p>如果撤销成功，则返回一个HTTP status code为200的响应就可以了。</p>
+<h1 id="7-令牌元数据"><a href="#7-令牌元数据" class="headerlink" title="7. 令牌元数据"></a>7. 令牌元数据</h1><blockquote>
+<p>FROM <a href="https://www.cnblogs.com/linianhui/p/oauth2-extensions-protocol-and-json-web-token.html#auto_id_4" target="_blank" rel="noopener">《OAuth2 Token 元数据（RFC7662 - OAuth2 Token Introspection）》</a></p>
+</blockquote>
+<p>简单的总结来说，这个规范是为OAuth2扩展了一个API接口（Introspection Endpoint），让第三方Client可以查询上面提到的那些信息（比如，access_token是否还有效，谁颁发的，颁发给谁的，scope又哪些等等的元数据信息）。</p>
+<p>比如Client发起一个如下的请求：</p>
+<blockquote>
+<p><em>POST /introspect HTTP/1.1</em><br><em>Host: server.example.com</em><br><em>Accept: application/json</em><br><em>Content-Type: application/x-www-form-urlencoded</em><br><em>Authorization: Bearer 23410913-abewfq.123483</em></p>
+<p><em>token=2YotnFZFEjr1zCsicMWpAA&amp;token_type_hint=access_token</em></p>
+</blockquote>
+<p> 看起来和上面的撤销Token的请求差不多，其中各项含义如下：</p>
+<ol>
+<li>/introspect：是Authorization Server需要提供的API地址，Client使用Post方式请求这个地址。</li>
+<li>Accept:application/json：表示Authorization Server需要返回一个JSON格式的数据。</li>
+<li>Content-Type: application/x-www-form-urlencoded：固定此格式。</li>
+<li>Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW：访问受保护资源的授权凭证。</li>
+<li>token：必选，可以是access_token或者refresh_token的内容。</li>
+<li>token_type_hint：可选，表示token的类型，值为”access_token“或者”refresh_token”。</li>
+</ol>
+<p>如果请求成功，则会返回如下的信息：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> &#123;</span><br><span class="line"> 2       "active": true,</span><br><span class="line"> 3       "client_id": "l238j323ds-23ij4",</span><br><span class="line"> 4       "token_type":"access_token",</span><br><span class="line"> 5       "username": "jdoe",</span><br><span class="line"> 6       "scope": "read write dolphin",</span><br><span class="line"> 7       "sub": "Z5O3upPC88QrAjx00dis",</span><br><span class="line"> 8       "aud": "https://protected.example.net/resource",</span><br><span class="line"> 9       "iss": "https://server.example.com/",</span><br><span class="line">10       "exp": 1419356238,</span><br><span class="line">11       "iat": 1419350238,</span><br><span class="line">12       "nbf": 1419350238,</span><br><span class="line">13       "jti": "abcdefg"</span><br><span class="line">14       "extension_field": "twenty-seven"</span><br><span class="line">15 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>JSON各项属性含义如下（其中有些信息是在JSON Web Token中定义的，参考链接有详细的介绍）:</p>
+<ol>
+<li>active：必须的。表示token是否还是有效的。</li>
+<li>client_id：可选的。表示token所属的Client。比如上面的<strong>在线打印并且包邮的网站</strong>。</li>
+<li>token_type：可选的。表示token的类型。对应传递的token_type_hint。</li>
+<li>user_name：可选的。表示token的授权者的名字。比如上面的<strong>小明</strong>。</li>
+<li>scope：可选的。和上篇<a href="http://www.cnblogs.com/linianhui/p/oauth2-authorization.html#auto_id_9" target="_blank" rel="noopener">5.1.1 Authorization Request</a>中的可选参数scope对应，表示授权给Client访问的范围，比如是相册，而不是小明的日志以及其他受保护资源。</li>
+<li>sub：可选的。token所属的资源拥有者的唯一标识，JWT定义的。也就是小明的唯一标识符。</li>
+<li>aud：可选的。token颁发给谁的，JWT定义的。</li>
+<li>iss：可选的。token的颁发者，JWT定义的。</li>
+<li>exp：可选的。token的过期时间，JWT定义的。</li>
+<li>iat：可选的。iss颁发token的时间，JWT定义的。</li>
+<li>nbf：可选的。token不会在这个时间之前被使用，JWT定义的。</li>
+<li>jti：可选的。token的唯一标识，JWT定义的。</li>
+<li>extension_field：可以自己扩展相关其他属性。</li>
+</ol>
+<p>其中大量的信息都是可选的信息，而且可以自己扩展需要的属性信息，从这些属性中就可以解决我们上面提到的access_token对于Client不透明的问题。</p>
+<p>我们注意到其中有很多属于JWT定义的属性，那么这个JWT是什么东西？它解决了什么问题？感兴趣的胖友，可以看看 <a href="https://www.cnblogs.com/linianhui/p/oauth2-extensions-protocol-and-json-web-token.html#auto_id_5" target="_blank" rel="noopener">《JSON Web Token (JWT)》</a> 。</p>
+<hr>
+<p>对于令牌元数据 API 接口的实现，笔者这里就暂时不提供。如果有需要的胖友，可以看看 TokenStore 的两个 API ：</p>
+<ul>
+<li><code>#readAccessToken(String tokenValue)</code> 方法，读取指定的访问令牌的信息。</li>
+<li><code>#readRefreshToken(String tokenValue)</code> 方法，读取指定的刷新令牌的信息。</li>
+</ul>
+<h1 id="666-彩蛋"><a href="#666-彩蛋" class="headerlink" title="666. 彩蛋"></a>666. 彩蛋</h1><p>一万个注意，本文仅仅是 Spring Security OAuth2 的入门文章。实际生产使用时，还需要做很多事情。例如：</p>
+<ul>
+<li>使用关系数据库，<strong>持久化</strong>存储 Client 和令牌信息。例如，使用 JdbcTokenStore 。</li>
+<li>授权服务器和资源服务器分离。例如，使用 RemoteTokenServices 。</li>
+<li>使用缓存服务器，提升 Client 和令牌信息的<strong>访问</strong>速度。例如，使用 RedisTokenStore 。</li>
+</ul>
+<p>推荐阅读文章：</p>
+<ul>
+<li>CatalpaFlat <a href="https://juejin.im/post/5a3cbce05188252582279467" target="_blank" rel="noopener">《Spring Security OAuth2 深入解析》</a></li>
+<li>小东子 <a href="https://lidong1665.github.io/2017/03/14/Spring-Security-OAuth2-%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/" target="_blank" rel="noopener">《Spring Security OAuth2 开发指南》</a></li>
+<li>聊聊架构 <a href="http://www.sohu.com/a/154131834_467759" target="_blank" rel="noopener">《轻松筹 1.6 亿注册用户的 Passport 账户体系架构设计》</a></li>
+</ul>
+<p><img src="http://www.iocoder.cn/images/Architecture/2017_12_29/01.png" alt="知识星球"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">37 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">1 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-概述"><span class="toc-number">1.</span> <span class="toc-text">1. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-引入-Spring-Security-OAuth2-依赖"><span class="toc-number">2.</span> <span class="toc-text">2. 引入 Spring Security OAuth2 依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-配置资源服务器"><span class="toc-number">3.</span> <span class="toc-text">3. 配置资源服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-配置授权服务器"><span class="toc-number">4.</span> <span class="toc-text">4. 配置授权服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-授权码模式"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 授权码模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-密码模式"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 密码模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-简化模式"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 简化模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-客户端模式"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 客户端模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-如何选择？"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 如何选择？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6-为什么有-Client-编号和密码"><span class="toc-number">4.6.</span> <span class="toc-text">4.6 为什么有 Client 编号和密码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-刷新令牌"><span class="toc-number">5.</span> <span class="toc-text">5. 刷新令牌</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-获取刷新令牌"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 获取刷新令牌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-“刷新”访问令牌"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 “刷新”访问令牌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-为什么需要有刷新令牌"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 为什么需要有刷新令牌</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-删除令牌"><span class="toc-number">6.</span> <span class="toc-text">6. 删除令牌</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-删除访问令牌"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 删除访问令牌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-删除刷新令牌"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 删除刷新令牌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-RFC7009-OAuth2-Token-Revocation"><span class="toc-number">6.3.</span> <span class="toc-text">6.3 RFC7009 - OAuth2 Token Revocation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-令牌元数据"><span class="toc-number">7.</span> <span class="toc-text">7. 令牌元数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#666-彩蛋"><span class="toc-number">8.</span> <span class="toc-text">666. 彩蛋</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>
