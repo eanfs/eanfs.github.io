@@ -14,10 +14,7 @@
 
 4 过滤器详解
 
-
-
-
-🙂🙂🙂关注微信公众号：【,"> 
+前面的部分，我们关注了Spring ,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -134,19 +131,6 @@
 <ul>
 <li><a href="http://www.iocoder.cn/Spring-Security/laoxu/SpringSecurityFilterChain/" target="_blank" rel="noopener">4 过滤器详解</a></li>
 </ul>
-<hr>
-<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
-<blockquote>
-<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
-<ol>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
-<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
-<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
-<li><strong>认真的</strong>源码交流微信群。</li>
-</ol>
-</blockquote>
-<hr>
 <p>前面的部分，我们关注了Spring Security是如何完成认证工作的，但是另外一部分核心的内容：过滤器，一直没有提到，我们已经知道Spring Security使用了springSecurityFilterChain作为了安全过滤的入口，这一节主要分析一下这个过滤器链都包含了哪些关键的过滤器，并且各自的使命是什么。</p>
 <h2 id="4-过滤器详解"><a href="#4-过滤器详解" class="headerlink" title="4 过滤器详解"></a>4 过滤器详解</h2><h3 id="4-1-核心过滤器概述"><a href="#4-1-核心过滤器概述" class="headerlink" title="4.1 核心过滤器概述"></a>4.1 核心过滤器概述</h3><p>由于过滤器链路中的过滤较多，即使是Spring Security的官方文档中也并未对所有的过滤器进行介绍，在之前，《Spring Security(二)–Guides》入门指南中我们配置了一个表单登录的demo，以此为例，来看看这过程中Spring Security都帮我们自动配置了哪些过滤器。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Creating filter chain: o.s.s.web.util.matcher.AnyRequestMatcher@<span class="number">1</span>,</span><br><span class="line">[o.s.s.web.context.SecurityContextPersistenceFilter@<span class="number">8851</span>ce1,</span><br><span class="line">o.s.s.web.header.HeaderWriterFilter@<span class="number">6</span>a472566, o.s.s.web.csrf.CsrfFilter@<span class="number">61</span>cd1c71,</span><br><span class="line">o.s.s.web.authentication.logout.LogoutFilter@<span class="number">5e1</span>d03d7,</span><br><span class="line">o.s.s.web.authentication.UsernamePasswordAuthenticationFilter@<span class="number">122</span>d6c22,</span><br><span class="line">o.s.s.web.savedrequest.RequestCacheAwareFilter@<span class="number">5</span>ef6fd7f,</span><br><span class="line">o.s.s.web.servletapi.SecurityContextHolderAwareRequestFilter@<span class="number">4</span>beaf6bd,</span><br><span class="line">o.s.s.web.authentication.AnonymousAuthenticationFilter@<span class="number">6</span>edcad64,</span><br><span class="line">o.s.s.web.session.SessionManagementFilter@<span class="number">5e65</span>afb6,</span><br><span class="line">o.s.s.web.access.ExceptionTranslationFilter@<span class="number">5</span>b9396d3,</span><br><span class="line">o.s.s.web.access.intercept.FilterSecurityInterceptor@<span class="number">3</span>c5dbdf8</span><br><span class="line">]</span><br></pre></td></tr></table></figure>

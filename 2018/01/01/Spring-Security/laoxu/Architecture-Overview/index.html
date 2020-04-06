@@ -11,7 +11,10 @@
     <meta name="google" content="notranslate">
     <meta name="keywords" content="TriDiamond Obsidian,"> 
     <meta name="description" content="摘要: 原创出处 https://www.cnkirito.moe/spring-security-1/ 「老徐」欢迎转载，保留摘要，谢谢！
-一直以来我都想写一写Spring Security系列的,"> 
+
+1 核心组件
+
+一直以来我都想写一写Spring Se,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -125,6 +128,9 @@
     <div class='main'>
         <div class="content markdown animated fadeIn">
             <p>摘要: 原创出处 <a href="https://www.cnkirito.moe/spring-security-1/" target="_blank" rel="noopener">https://www.cnkirito.moe/spring-security-1/</a> 「老徐」欢迎转载，保留摘要，谢谢！</p>
+<ul>
+<li><a href="http://www.iocoder.cn/Spring-Security/laoxu/Architecture-Overview/" target="_blank" rel="noopener">1 核心组件</a></li>
+</ul>
 <p>一直以来我都想写一写Spring Security系列的文章，但是整个Spring Security体系强大却又繁杂。陆陆续续从最开始的guides接触它，到项目中看了一些源码，到最近这个月为了写一写这个系列的文章，阅读了好几遍文档，最终打算尝试一下，写一个较为完整的系列文章。</p>
 <p>较为简单或者体量较小的技术，完全可以参考着demo直接上手，但系统的学习一门技术则不然。以我的认知，一般的文档大致有两种风格：Architecture First和Code First。前者致力于让读者先了解整体的架构，方便我们对自己的认知有一个宏观的把控，而后者以特定的demo配合讲解，可以让读者在解决问题的过程中顺便掌握一门技术。关注过我博客或者公众号的朋友会发现，我之前介绍技术的文章，大多数是Code First，提出一个需求，介绍一个思路，解决一个问题，分析一下源码，大多如此。而学习一个体系的技术，我推荐Architecture First，正如本文标题所言，这篇文章是我Spring Security系列的第一篇，主要是根据Spring Security文档选择性<del>翻译</del>整理而成的一个架构概览，配合自己的一些注释方便大家理解。写作本系列文章时，参考版本为Spring Security 4.2.3.RELEASE。</p>
 <h1 id="1-核心组件"><a href="#1-核心组件" class="headerlink" title="1 核心组件"></a>1 核心组件</h1><p>这一节主要介绍一些在Spring Security中常见且核心的Java类，它们之间的依赖，构建起了整个框架。想要理解整个架构，最起码得对这些类眼熟。</p>

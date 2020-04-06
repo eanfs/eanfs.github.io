@@ -14,8 +14,7 @@
 
 2 Spring Security Guides
 
-
-,"> 
+上,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -90,7 +89,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    25k
+                    24k
                 </span>
                 
                 
@@ -132,19 +131,6 @@
 <ul>
 <li><a href="http://www.iocoder.cn/Spring-Security/laoxu/Guides/" target="_blank" rel="noopener">2 Spring Security Guides</a></li>
 </ul>
-<hr>
-<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
-<blockquote>
-<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
-<ol>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
-<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
-<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
-<li><strong>认真的</strong>源码交流微信群。</li>
-</ol>
-</blockquote>
-<hr>
 <p>上一篇文章《Spring Security(一)–Architecture Overview》，我们介绍了Spring Security的基础架构，这一节我们通过Spring官方给出的一个guides例子，来了解Spring Security是如何保护我们的应用的，之后会对进行一个解读。</p>
 <h2 id="2-Spring-Security-Guides"><a href="#2-Spring-Security-Guides" class="headerlink" title="2 Spring Security Guides"></a>2 Spring Security Guides</h2><h3 id="2-1-引入依赖"><a href="#2-1-引入依赖" class="headerlink" title="2.1 引入依赖"></a>2.1 引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
 

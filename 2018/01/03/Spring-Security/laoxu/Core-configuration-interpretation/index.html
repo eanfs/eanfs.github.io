@@ -14,10 +14,7 @@
 
 3 核心配置解读
 
-
-
-
-🙂🙂🙂关注微信公众号：,"> 
+上一篇文章《Spring Secu,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -92,7 +89,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    27k
+                    26k
                 </span>
                 
                 
@@ -134,19 +131,6 @@
 <ul>
 <li><a href="http://www.iocoder.cn/Spring-Security/laoxu/Guides/" target="_blank" rel="noopener">3 核心配置解读</a></li>
 </ul>
-<hr>
-<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
-<blockquote>
-<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
-<ol>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
-<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
-<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
-<li><strong>认真的</strong>源码交流微信群。</li>
-</ol>
-</blockquote>
-<hr>
 <p>上一篇文章《Spring Security(二)–Guides》，通过Spring Security的配置项了解了Spring Security是如何保护我们的应用的，本篇文章对上一次的配置做一个分析。</p>
 <h2 id="3-核心配置解读"><a href="#3-核心配置解读" class="headerlink" title="3 核心配置解读"></a>3 核心配置解读</h2><h3 id="3-1-功能介绍"><a href="#3-1-功能介绍" class="headerlink" title="3.1 功能介绍"></a>3.1 功能介绍</h3><p>这是Spring Security入门指南中的配置项：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      http</span><br><span class="line">          .authorizeRequests()</span><br><span class="line">              .antMatchers(<span class="string">"/"</span>, <span class="string">"/home"</span>).permitAll()</span><br><span class="line">              .anyRequest().authenticated()</span><br><span class="line">              .and()</span><br><span class="line">          .formLogin()</span><br><span class="line">              .loginPage(<span class="string">"/login"</span>)</span><br><span class="line">              .permitAll()</span><br><span class="line">              .and()</span><br><span class="line">          .logout()</span><br><span class="line">              .permitAll();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureGlobal</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">      auth</span><br><span class="line">          .inMemoryAuthentication()</span><br><span class="line">              .withUser(<span class="string">"admin"</span>).password(<span class="string">"admin"</span>).roles(<span class="string">"USER"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

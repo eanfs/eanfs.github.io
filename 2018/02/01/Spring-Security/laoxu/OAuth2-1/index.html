@@ -85,13 +85,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    33k
+                    32k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    30 mins.
+                    29 mins.
                 </span>
                 
                 
@@ -133,19 +133,6 @@
 <li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-1/" target="_blank" rel="noopener">获取token</a></li>
 <li><a href="http://www.iocoder.cn/Spring-Security/laoxu/OAuth2-1/" target="_blank" rel="noopener">示例代码下载</a></li>
 </ul>
-<hr>
-<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
-<blockquote>
-<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
-<ol>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
-<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
-<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
-<li><strong>认真的</strong>源码交流微信群。</li>
-</ol>
-</blockquote>
-<hr>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天来聊聊一个接口对接的场景，A厂家有一套HTTP接口需要提供给B厂家使用，由于是外网环境，所以需要有一套安全机制保障，这个时候oauth2就可以作为一个方案。</p>
 <p>关于oauth2，其实是一个规范，本文重点讲解spring对他进行的实现，如果你还不清楚授权服务器，资源服务器，认证授权等基础概念，可以移步<a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">理解OAuth 2.0 - 阮一峰</a>，这是一篇对于oauth2很好的科普文章。</p>
 <p>需要对spring security有一定的配置使用经验，用户认证这一块，spring security oauth2建立在spring security的基础之上。第一篇文章主要是讲解使用springboot搭建一个简易的授权，资源服务器，在文末会给出具体代码的github地址。后续文章会进行spring security oauth2的相关源码分析。java中的安全框架如shrio，已经有<a href="http://jinnianshilongnian.iteye.com/blog/2018936" target="_blank" rel="noopener">跟我学shiro - 开涛</a>，非常成体系地，深入浅出地讲解了apache的这个开源安全框架，但是spring security包括oauth2一直没有成体系的文章，学习它们大多依赖于较少的官方文档，理解一下基本的使用配置；通过零散的博客，了解一下他人的使用经验；打断点，分析内部的工作流程；看源码中的接口设计，以及注释，了解设计者的用意。spring的各个框架都运用了很多的设计模式，在学习源码的过程中，也大概了解了一些套路。spring也在必要的地方添加了适当的注释，避免了源码阅读者对于一些细节设计的理解产生偏差，让我更加感叹，spring不仅仅是一个工具框架，更像是一个艺术品。</p>

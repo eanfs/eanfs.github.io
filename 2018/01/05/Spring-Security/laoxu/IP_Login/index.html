@@ -14,10 +14,7 @@
 
 5 动手实现一个IP_Login
 
-
-
-
-🙂🙂🙂,"> 
+在开始这篇文章之前,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -98,7 +95,7 @@
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    26 mins.
+                    25 mins.
                 </span>
                 
                 
@@ -134,19 +131,6 @@
 <ul>
 <li><a href="http://www.iocoder.cn/Spring-Security/laoxu/IP_Login/" target="_blank" rel="noopener">5 动手实现一个IP_Login</a></li>
 </ul>
-<hr>
-<p><img src="http://www.iocoder.cn/images/common/wechat_mp_2017_07_31.jpg" alt></p>
-<blockquote>
-<p>🙂🙂🙂关注<strong>微信公众号：【芋道源码】</strong>有福利：</p>
-<ol>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>所有</strong>源码分析文章列表</li>
-<li>RocketMQ / MyCAT / Sharding-JDBC <strong>中文注释源码 GitHub 地址</strong></li>
-<li>您对于源码的疑问每条留言<strong>都</strong>将得到<strong>认真</strong>回复。<strong>甚至不知道如何读源码也可以请教噢</strong>。</li>
-<li><strong>新的</strong>源码解析文章<strong>实时</strong>收到通知。<strong>每周更新一篇左右</strong>。</li>
-<li><strong>认真的</strong>源码交流微信群。</li>
-</ol>
-</blockquote>
-<hr>
 <p>在开始这篇文章之前，我们似乎应该思考下为什么需要搞清楚Spring Security的内部工作原理？按照第二篇文章中的配置，一个简单的表单认证不就达成了吗？更有甚者，为什么我们不自己写一个表单认证，用过滤器即可完成，大费周章引入Spring Security，看起来也并没有方便多少。对的，在引入Spring Security之前，我们得首先想到，是什么需求让我们引入了Spring Security，以及为什么是Spring Security，而不是shiro等等其他安全框架。我的理解是有如下几点：</p>
 <p>1 在前文的介绍中，Spring Security支持防止csrf攻击，session-fixation protection，支持表单认证，basic认证，rememberMe…等等一些特性，有很多是开箱即用的功能，而大多特性都可以通过配置灵活的变更，这是它的强大之处。</p>
 <p>2 Spring Security的兄弟的项目Spring Security SSO，OAuth2等支持了多种协议，而这些都是基于Spring Security的，方便了项目的扩展。</p>
