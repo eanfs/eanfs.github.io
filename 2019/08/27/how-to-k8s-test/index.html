@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>kubernetes基本使用 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="基本命令查看Node运行情况1kubectl get nodes
+
+所有节点STATUS都是Ready
+
+123456789NAME    STATUS   ROLES    AGE   VERSI,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">kubernetes基本使用</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
+                
+                八月 27, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/08/27/how-to-k8s-test/" title="kubernetes基本使用" class="">kubernetes基本使用</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    34k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    31 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h3 id="查看Node运行情况"><a href="#查看Node运行情况" class="headerlink" title="查看Node运行情况"></a>查看Node运行情况</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>所有节点STATUS都是Ready</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NAME    STATUS   ROLES    AGE   VERSION</span><br><span class="line">node1   Ready    master   57d   v1.12.3</span><br><span class="line">node2   Ready    master   57d   v1.12.3</span><br><span class="line">node3   Ready    node     41d   v1.12.3</span><br><span class="line">node4   Ready    node     57d   v1.12.3</span><br><span class="line">node5   Ready    node     57d   v1.12.3</span><br><span class="line">node6   Ready    master   57d   v1.12.3</span><br><span class="line">node7   Ready    node     57d   v1.12.3</span><br><span class="line">node8   Ready    node     57d   v1.12.3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>加上 -o wide 可以查看节点的IP及其他信息<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes -o wide</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NAME    STATUS   ROLES    AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION          CONTAINER-RUNTIME</span><br><span class="line">node1   Ready    master   57d   v1.12.3   192.168.1.16   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node2   Ready    master   57d   v1.12.3   192.168.1.17   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node3   Ready    node     41d   v1.12.3   192.168.1.25   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node4   Ready    node     57d   v1.12.3   192.168.1.26   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node5   Ready    node     57d   v1.12.3   192.168.1.21   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node6   Ready    master   57d   v1.12.3   192.168.1.18   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node7   Ready    node     57d   v1.12.3   192.168.1.22   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br><span class="line">node8   Ready    node     57d   v1.12.3   192.168.1.15   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.el7.x86_64   docker://18.6.2</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="查看POD运行情况"><a href="#查看POD运行情况" class="headerlink" title="查看POD运行情况"></a>查看POD运行情况</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br></pre></td></tr></table></figure>
+<ul>
+<li>所有POD的STATUS都是Running , READY 1&#x2F;1或者2&#x2F;2，RESTARTS 如果过多需要看一下POD的日志，<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">NAME                                   READY   STATUS    RESTARTS   AGE</span><br><span class="line">esen-account-6c8db4d79c-wqhb4          1/1     Running   1          22h</span><br><span class="line">esen-activity-b945f5d5c-vw792          1/1     Running   169        45d</span><br><span class="line">esen-app-gateway-6b4b447c89-rg748      1/1     Running   0          13h</span><br><span class="line">esen-approval-55ffdf5866-njwfz         1/1     Running   2          6d20h</span><br><span class="line">esen-badge-589b6d9797-q5ckm            1/1     Running   3          34d</span><br><span class="line">esen-base-56594b4896-5wftz             1/1     Running   7          45d</span><br><span class="line">esen-chat-8d89586db-tmk49              1/1     Running   3          20h</span><br><span class="line">esen-checklist-7854b779cb-swnxg        1/1     Running   0          13h</span><br><span class="line">esen-common-5968cbbbdf-8fvxt           1/1     Running   6          45d</span><br><span class="line">esen-concern-79c9cb4cc6-rws44          1/1     Running   6          49d</span><br><span class="line">esen-crs-8967ddc7d-89hlw               1/1     Running   0          23h</span><br><span class="line">esen-eapp-67895798b-djslt              1/1     Running   3          20h</span><br><span class="line">esen-emonitor-7f449c9c67-66gss         1/1     Running   7          20h</span><br><span class="line">esen-eva-74f65b768b-bqdfg              1/1     Running   0          2d</span><br><span class="line">esen-feedback-5f44fd677c-d7tnn         1/1     Running   0          20h</span><br><span class="line">esen-feedback2-5f6566989f-rlpfr        1/1     Running   0          48m</span><br><span class="line">esen-gtp-79c7f6f4b-6wcfj               1/1     Running   4          18d</span><br><span class="line">esen-hrm-6947d75f84-649xk              1/1     Running   1          20h</span><br><span class="line">esen-hrm-outing-689f44cf4c-wzpd4       1/1     Running   2          16d</span><br><span class="line">esen-hrs-74574dfc6f-4gmkp              1/1     Running   2          22d</span><br><span class="line">esen-hrs-letter-857c97d8b7-cmsrq       1/1     Running   0          3d5h</span><br><span class="line">esen-ic-577f647b4c-njr7g               1/1     Running   0          2d18h</span><br><span class="line">esen-index-699dd59885-9vrrt            1/1     Running   46         3d5h</span><br><span class="line">esen-job-784d5546c6-dccr5              1/1     Running   1          38h</span><br><span class="line">esen-message-8457866f5-hhxf9           1/1     Running   1          3d5h</span><br><span class="line">esen-mosaic-d958fdb8d-r8cs8            1/1     Running   0          2d</span><br><span class="line">esen-mtc-55bfb94b94-t9fbk              1/1     Running   0          20h</span><br><span class="line">esen-open-gateway-8f887dc6-vnbrn       1/1     Running   0          51m</span><br><span class="line">esen-open-platform-5d8dfb7956-589q6    1/1     Running   0          51m</span><br><span class="line">esen-oss-account-59869c68-qlqkf        1/1     Running   0          51m</span><br><span class="line">esen-oss-gateway-7dd87f67f6-8zmzs      1/1     Running   20         44d</span><br><span class="line">esen-oss-product-774b68c466-6zhkf      1/1     Running   20         45d</span><br><span class="line">esen-personal-space-77bf6c9496-6b866   1/1     Running   46         3d5h</span><br><span class="line">esen-product-777795574b-mhxmc          1/1     Running   0          2d18h</span><br><span class="line">esen-registry-0                        1/1     Running   3          8d</span><br><span class="line">esen-registry-1                        1/1     Running   1          19h</span><br><span class="line">esen-remind-68654546bc-w7g7w           1/1     Running   0          20h</span><br><span class="line">esen-res-base-656f454b9-n9wfw          1/1     Running   0          16h</span><br><span class="line">esen-search-7645b54f7b-l6vcp           1/1     Running   0          42h</span><br><span class="line">esen-seenhow-7d49ffd9bc-cmc6j          1/1     Running   0          20h</span><br><span class="line">esen-socket-56479c744f-b8q47           1/1     Running   2          20h</span><br><span class="line">esen-socket-56479c744f-bn7l2           1/1     Running   3          30d</span><br><span class="line">esen-survey-85b569c88-lwwq8            1/1     Running   2          27d</span><br><span class="line">esen-tag-777d877656-s5frr              1/1     Running   1          2d</span><br><span class="line">esen-tag2-c6cfcdcbb-svthp              1/1     Running   0          13h</span><br><span class="line">esen-task-7ddb884ff7-mnxcw             1/1     Running   0          20h</span><br><span class="line">esen-template-6d7cc669bd-56gc4         1/1     Running   0          41h</span><br><span class="line">esen-uaa-f669fb95c-xpsss               1/1     Running   0          19h</span><br><span class="line">esen-vcard-5dc44db5df-vztt4            1/1     Running   5          43d</span><br><span class="line">esen-wm-786c6658c8-ln8b8               1/1     Running   0          2d</span><br><span class="line">esen-wxcp-6c95499c54-jptv4             1/1     Running   0          18h</span><br><span class="line">esen-wxmp-856c6f5759-kjln2             1/1     Running   0          16h</span><br><span class="line">meta2-6b47d79c58-sxxmt                 1/1     Running   2          29d</span><br><span class="line">metaservice-7bdf9f99f9-wngtb           1/1     Running   8          49d</span><br><span class="line">personal-profile-5cf445dc67-b4ct8      1/1     Running   0          2d</span><br><span class="line">words-f8bcb5586-58hfw                  1/1     Running   0          19h</span><br><span class="line">yundisk-6b8c7df587-kclqg               1/1     Running   0          43h</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="查看系统kube-system级别的POD"><a href="#查看系统kube-system级别的POD" class="headerlink" title="查看系统kube-system级别的POD"></a>查看系统kube-system级别的POD</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>查看系统kube-system级别的POD信息, 同样的READY 1&#x2F;1，STATUS Running</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">dns-autoscaler-5c95c6bfb-x5vb8          1/1     Running   4          46d</span><br><span class="line">kube-apiserver-node1                    1/1     Running   2          57d</span><br><span class="line">kube-apiserver-node2                    1/1     Running   8          57d</span><br><span class="line">kube-apiserver-node6                    1/1     Running   13         46d</span><br><span class="line">kube-controller-manager-node1           1/1     Running   12         57d</span><br><span class="line">kube-controller-manager-node2           1/1     Running   17         57d</span><br><span class="line">kube-controller-manager-node6           1/1     Running   17         46d</span><br><span class="line">kube-dns-6789986d89-7q5n2               3/3     Running   3          50d</span><br><span class="line">kube-dns-6789986d89-jz4r5               3/3     Running   3          20h</span><br><span class="line">kube-dns-6789986d89-l5tqd               3/3     Running   9          49d</span><br><span class="line">kube-dns-6789986d89-r7vkb               3/3     Running   12         45d</span><br><span class="line">kube-flannel-4jp5c                      2/2     Running   13         57d</span><br><span class="line">kube-flannel-9mm7h                      2/2     Running   19         50d</span><br><span class="line">kube-flannel-dg2xl                      2/2     Running   19         57d</span><br><span class="line">kube-flannel-h6mw8                      2/2     Running   17         57d</span><br><span class="line">kube-flannel-mgjh5                      2/2     Running   16         57d</span><br><span class="line">kube-flannel-nd75s                      2/2     Running   12         41d</span><br><span class="line">kube-flannel-qq9xk                      2/2     Running   11         57d</span><br><span class="line">kube-flannel-t9h4v                      2/2     Running   5          57d</span><br><span class="line">kube-proxy-9dcp2                        1/1     Running   4          56d</span><br><span class="line">kube-proxy-f8npm                        1/1     Running   5          56d</span><br><span class="line">kube-proxy-k6htq                        1/1     Running   2          56d</span><br><span class="line">kube-proxy-n5nmw                        1/1     Running   8          56d</span><br><span class="line">kube-proxy-pdrlr                        1/1     Running   7          56d</span><br><span class="line">kube-proxy-snq6s                        1/1     Running   7          41d</span><br><span class="line">kube-proxy-vg456                        1/1     Running   11         56d</span><br><span class="line">kube-proxy-vt7pk                        1/1     Running   8          56d</span><br><span class="line">kube-scheduler-node1                    1/1     Running   12         57d</span><br><span class="line">kube-scheduler-node2                    1/1     Running   17         57d</span><br><span class="line">kube-scheduler-node6                    1/1     Running   16         46d</span><br><span class="line">kubernetes-dashboard-76cf77b8f7-gnlmr   1/1     Running   7          57d</span><br><span class="line">nginx-proxy-node3                       1/1     Running   6          20h</span><br><span class="line">nginx-proxy-node4                       1/1     Running   9          19h</span><br><span class="line">nginx-proxy-node5                       1/1     Running   5          46d</span><br><span class="line">nginx-proxy-node7                       1/1     Running   10         46d</span><br><span class="line">nginx-proxy-node8                       1/1     Running   8          46d</span><br><span class="line">traefik-ingress-lb-49snm                1/1     Running   0          51m</span><br><span class="line">traefik-ingress-lb-4kqcf                1/1     Running   0          51m</span><br><span class="line">traefik-ingress-lb-gfxsl                1/1     Running   0          51m</span><br><span class="line">traefik-ingress-lb-gzxc6                1/1     Running   0          35m</span><br><span class="line">traefik-ingress-lb-nc5wc                1/1     Running   0          51m</span><br><span class="line">traefik-ingress-lb-z2wb4                1/1     Running   0          35m</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看某个节点的POD</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -o wide | grep node1</span><br><span class="line">kubectl get pods -o wide | grep node2</span><br><span class="line">kubectl get pods -o wide | grep node3</span><br><span class="line">kubectl get pods -o wide | grep node4</span><br><span class="line">kubectl get pods -o wide | grep node5</span><br><span class="line">kubectl get pods -o wide | grep node6</span><br><span class="line">kubectl get pods -o wide | grep node7</span><br><span class="line">kubectl get pods -o wide | grep node8</span><br></pre></td></tr></table></figure></li>
+<li><p>所有某个节点的POD的STATUS都是Running</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">esen-app-gateway-6b4b447c89-rg748      1/1     Running   0          13h     10.233.74.109   node3   &lt;none&gt;</span><br><span class="line">esen-checklist-7854b779cb-swnxg        1/1     Running   0          13h     10.233.74.107   node3   &lt;none&gt;</span><br><span class="line">esen-open-platform-5d8dfb7956-589q6    1/1     Running   0          62m     10.233.74.110   node3   &lt;none&gt;</span><br><span class="line">esen-registry-1                        1/1     Running   1          20h     10.233.74.63    node3   &lt;none&gt;</span><br><span class="line">esen-res-base-656f454b9-n9wfw          1/1     Running   0          16h     10.233.74.83    node3   &lt;none&gt;</span><br><span class="line">esen-socket-56479c744f-b8q47           1/1     Running   2          20h     10.233.74.62    node3   &lt;none&gt;</span><br><span class="line">esen-tag2-c6cfcdcbb-svthp              1/1     Running   0          13h     10.233.74.108   node3   &lt;none&gt;</span><br><span class="line">esen-uaa-f669fb95c-xpsss               1/1     Running   0          19h     10.233.74.67    node3   &lt;none&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="查看POD的日志内容"><a href="#查看POD的日志内容" class="headerlink" title="查看POD的日志内容"></a>查看POD的日志内容</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -f $&#123;pod-name&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例：</span><br><span class="line">kubectl logs -f esen-app-gateway-6b4b447c89-rg748</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="查看POD的详情"><a href="#查看POD的详情" class="headerlink" title="查看POD的详情"></a>查看POD的详情</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pods $&#123;pod-name&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例：</span><br><span class="line">kubectl describe pods esen-app-gateway-6b4b447c89-rg748</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>如果有异常信息，都可以使用这个命令查看具体愿意</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">Name:               esen-app-gateway-6b4b447c89-rg748</span><br><span class="line">Namespace:          default</span><br><span class="line">Priority:           0</span><br><span class="line">PriorityClassName:  &lt;none&gt;</span><br><span class="line">Node:               node3/192.168.1.25</span><br><span class="line">Start Time:         Thu, 25 Jul 2019 21:27:11 +0800</span><br><span class="line">Labels:             app=esen-app-gateway</span><br><span class="line">                    pod-template-hash=6b4b447c89</span><br><span class="line">Annotations:        &lt;none&gt;</span><br><span class="line">Status:             Running</span><br><span class="line">IP:                 10.233.74.109</span><br><span class="line">Controlled By:      ReplicaSet/esen-app-gateway-6b4b447c89</span><br><span class="line">Containers:</span><br><span class="line">  esen-app-gateway-app:</span><br><span class="line">    Container ID:   docker://c37bfff9d52f73169124283a1c9da4b2ba5b99875acb6e97452f604dea506268</span><br><span class="line">    Image:          registry.cn-hangzhou.aliyuncs.com/esenyun/esen-app-gateway:test</span><br><span class="line">    Image ID:       docker-pullable://registry.cn-hangzhou.aliyuncs.com/esenyun/esen-app-gateway@sha256:6f4cda7c8f2f03ccfddb2fbd20d7b75ba1d9ff2e97a65c96f3bde13b109063be</span><br><span class="line">    Port:           9091/TCP</span><br><span class="line">    Host Port:      0/TCP</span><br><span class="line">    State:          Running</span><br><span class="line">      Started:      Thu, 25 Jul 2019 21:27:24 +0800</span><br><span class="line">    Ready:          True</span><br><span class="line">    Restart Count:  0</span><br><span class="line">    Limits:</span><br><span class="line">      cpu:     1250m</span><br><span class="line">      memory:  1560Mi</span><br><span class="line">    Requests:</span><br><span class="line">      cpu:     750m</span><br><span class="line">      memory:  1Gi</span><br><span class="line">    Environment:</span><br><span class="line">      GIT_COMMIT_VERSION:                     2070b239d3bdce2bf10f3a2384e4babb9e5872c9</span><br><span class="line">      TZ:                                     Asia/Shanghai</span><br><span class="line">      SPRING_PROFILES_ACTIVE:                 prod,swagger,no-liquibase</span><br><span class="line">      SPRING_CLOUD_CONFIG_URI:                http://admin:$&#123;jhipster.registry.password&#125;@esen-registry.default.svc.cluster.local:8761/config</span><br><span class="line">      JHIPSTER_REGISTRY_PASSWORD:             &lt;set to the key &#x27;registry-admin-password&#x27; in secret &#x27;registry-secret&#x27;&gt;  Optional: false</span><br><span class="line">      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:  http://admin:$&#123;jhipster.registry.password&#125;@esen-registry.default.svc.cluster.local:8761/eureka/</span><br><span class="line">      JHIPSTER_LOGGING_LOGSTASH_HOST:         logstash.prod</span><br><span class="line">      JHIPSTER_METRICS_PROMETHEUS_ENABLED:    false</span><br><span class="line">      JHIPSTER_METRICS_PROMETHEUS_ENDPOINT:   /prometheusMetrics</span><br><span class="line">      JAVA_OPTS:                               -Xmx768m -Xms256m</span><br><span class="line">    Mounts:</span><br><span class="line">      /var/run/secrets/kubernetes.io/serviceaccount from default-token-vgtm5 (ro)</span><br><span class="line">Conditions:</span><br><span class="line">  Type              Status</span><br><span class="line">  Initialized       True </span><br><span class="line">  Ready             True </span><br><span class="line">  ContainersReady   True </span><br><span class="line">  PodScheduled      True </span><br><span class="line">Volumes:</span><br><span class="line">  default-token-vgtm5:</span><br><span class="line">    Type:        Secret (a volume populated by a Secret)</span><br><span class="line">    SecretName:  default-token-vgtm5</span><br><span class="line">    Optional:    false</span><br><span class="line">QoS Class:       Burstable</span><br><span class="line">Node-Selectors:  &lt;none&gt;</span><br><span class="line">Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s</span><br><span class="line">                 node.kubernetes.io/unreachable:NoExecute for 300s</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><p><strong>目前常见的问题有三种：</strong></p>
+<h4 id="不同Node之间的Pod网络不通，导致服务无法在注册中心（registry）注册，导致服务启动失败，无法提供服务"><a href="#不同Node之间的Pod网络不通，导致服务无法在注册中心（registry）注册，导致服务启动失败，无法提供服务" class="headerlink" title="不同Node之间的Pod网络不通，导致服务无法在注册中心（registry）注册，导致服务启动失败，无法提供服务"></a>不同Node之间的Pod网络不通，导致服务无法在注册中心（registry）注册，导致服务启动失败，无法提供服务</h4><h4 id="1-不同Node之间的Pod网络不通解决方法"><a href="#1-不同Node之间的Pod网络不通解决方法" class="headerlink" title="1. 不同Node之间的Pod网络不通解决方法"></a>1. 不同Node之间的Pod网络不通解决方法</h4><p><strong>重启Node的Docker服务</strong><br>使用命令, 查看POD所在的NODE上是不是所有的Pod都是READY 1&#x2F;1<br>出现<strong>所有POD</strong>0&#x2F;1 的时候需要重启当前节点的Docker服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -o wide | grep $&#123;node-name&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>[解决方法]重启Docker</strong><br>systemctl restart docker</p>
+<p>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ericnie/p/8028681.html?tt_from=copy_link&utm_source=copy_link&utm_medium=toutiao_ios&utm_campaign=client_share">一次Flannel和Docker网络不通定位问题</a></p>
+<h4 id="2-Pod本身存在配置问题，或者其他原因，导致服务启动失败，无法提供服务"><a href="#2-Pod本身存在配置问题，或者其他原因，导致服务启动失败，无法提供服务" class="headerlink" title="2. Pod本身存在配置问题，或者其他原因，导致服务启动失败，无法提供服务"></a>2. Pod本身存在配置问题，或者其他原因，导致服务启动失败，无法提供服务</h4><p>使用命令, 查看POD的控制台日志信息，根据日志错误处理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -f $&#123;pod-name&#125;</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<p>使用命令, 查看POD的运行详细，OOM或者其他原因</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pods $&#123;pod-name&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Gateway网关不能访问"><a href="#3-Gateway网关不能访问" class="headerlink" title="3. Gateway网关不能访问"></a>3. Gateway网关不能访问</h4><p>使用命令, 查看Gateway的POD运行情况，确保pod启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -f esen-app-gateway-XXXXXX</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<p>使用命令, 查看Gateway的POD运行情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pods esen-app-gateway-XXXXXX</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果Gateway网关POD正常，仍然无法访问，继续一下操作</strong></p>
+<p>使用命令, 查看traefik的POD运行情况,确保所有POD 是Running</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system | grep traefik</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">traefik-ingress-lb-49snm                1/1     Running   0          122m</span><br><span class="line">traefik-ingress-lb-4kqcf                1/1     Running   0          122m</span><br><span class="line">traefik-ingress-lb-gfxsl                1/1     Running   0          122m</span><br><span class="line">traefik-ingress-lb-gzxc6                1/1     Running   0          106m</span><br><span class="line">traefik-ingress-lb-nc5wc                1/1     Running   0          122m</span><br><span class="line">traefik-ingress-lb-z2wb4                1/1     Running   0          106m</span><br></pre></td></tr></table></figure>
+
+<p>如果出现[CrashLoopBackOff] STATUS 的pod 可以把POD删除后，重启。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">traefik-ingress-lb-d5dp4                0/1     CrashLoopBackOff   191        3d15h</span><br><span class="line">traefik-ingress-lb-n8jth                0/1     CrashLoopBackOff   191        8d</span><br><span class="line">traefik-ingress-lb-nz8kg                0/1     CrashLoopBackOff   271        42d</span><br><span class="line">traefik-ingress-lb-p6wq6                0/1     CrashLoopBackOff   330        3d15h</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除问题POD<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pods traefik-ingress-lb-d5dp4 traefik-ingress-lb-n8jth traefik-ingress-lb-nz8kg traefik-ingress-lb-p6wq6  -n kube-system </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pod &quot;traefik-ingress-lb-d5dp4&quot; deleted</span><br><span class="line">pod &quot;traefik-ingress-lb-n8jth&quot; deleted</span><br><span class="line">pod &quot;traefik-ingress-lb-nz8kg&quot; deleted</span><br><span class="line">pod &quot;traefik-ingress-lb-p6wq6&quot; deleted</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>目前造成网络不稳定的问题还在排查中……</strong></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">7 <p>Articles</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">2 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">基本命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BNode%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5"><span class="toc-number">1.0.1.</span> <span class="toc-text">查看Node运行情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BPOD%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5"><span class="toc-number">1.0.2.</span> <span class="toc-text">查看POD运行情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9Fkube-system%E7%BA%A7%E5%88%AB%E7%9A%84POD"><span class="toc-number">1.0.3.</span> <span class="toc-text">查看系统kube-system级别的POD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BPOD%E7%9A%84%E6%97%A5%E5%BF%97%E5%86%85%E5%AE%B9"><span class="toc-number">1.0.4.</span> <span class="toc-text">查看POD的日志内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BPOD%E7%9A%84%E8%AF%A6%E6%83%85"><span class="toc-number">1.0.5.</span> <span class="toc-text">查看POD的详情</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-number">2.</span> <span class="toc-text">问题解决</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2023
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
