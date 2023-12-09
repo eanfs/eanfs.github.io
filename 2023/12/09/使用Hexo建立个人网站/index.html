@@ -5,12 +5,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>微内核架构设计 - 大晨小昕</title>
+    <title>使用Hexo建立个人网站 - 大晨小昕</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="TriDiamond Obsidian,"> 
-    <meta name="description" content="微内核架构风格-拓扑结构微内核架构的拓扑结构由两部分组件组成：核心系统（core system）和插件模块（plug-in modules）。应用逻辑被分割为独立的插件模块和核心系统，提供了可扩展性,"> 
+    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any pr,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -74,7 +74,7 @@
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">微内核架构设计</h3>
+        <h3 class="subtitle">使用Hexo建立个人网站</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -108,7 +108,7 @@
                 
                 十二月 09, 2023
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2023/12/09/%E5%BE%AE%E5%86%85%E6%A0%B8%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="微内核架构设计" class="">微内核架构设计</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2023/12/09/%E4%BD%BF%E7%94%A8Hexo%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" title="使用Hexo建立个人网站" class="">使用Hexo建立个人网站</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
@@ -134,7 +134,7 @@
             </p>
             
             
-            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li></ul>
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
             
         </div>
     </div>
@@ -155,31 +155,19 @@
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h2 id="微内核架构风格-拓扑结构"><a href="#微内核架构风格-拓扑结构" class="headerlink" title="微内核架构风格-拓扑结构"></a>微内核架构风格-拓扑结构</h2><pre><code>微内核架构的拓扑结构由两部分组件组成：核心系统（core system）和插件模块（plug-in modules）。应用逻辑被分割为独立的插件模块和核心系统，提供了可扩展性、灵活性、功能隔离和自定义处理逻辑的特性。
-</code></pre>
-<h2 id="设计关键"><a href="#设计关键" class="headerlink" title="设计关键"></a>设计关键</h2><pre><code>微内核架构的核心问题：插件管理、插件连接和插件通信。
-</code></pre>
-<h3 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h3><ul>
-<li><p>核心系统需要知道当前有哪些插件可用，如何加载这些插件，什么时候加载插件。常见的实现方法是插件注册表机制。</p>
-</li>
-<li><p>核心系统提供插件注册表（可以是配置文件，也可以是代码，还可以是数据库），插件注册表含有每个插件模块的信息，包括它的名字、位置、加载时机（启动就加载，还是按需加载）等。</p>
-</li>
-</ul>
-<h3 id="插件连接"><a href="#插件连接" class="headerlink" title="插件连接"></a>插件连接</h3><ul>
-<li><p>插件连接指插件如何连接到核心系统。通常来说，核心系统必须制定插件和核心系统的连接规范，然后插件按照规范实现，核心系统按照规范加载即可。</p>
-</li>
-<li><p>常见的连接机制有 OSGi（Eclipse 使用）、消息模式、依赖注入（Spring 使用），甚至使用分布式的协议都是可以的，比如 RPC 或者 HTTP Web 的方式。</p>
-</li>
-</ul>
-<h3 id="插件通信"><a href="#插件通信" class="headerlink" title="插件通信"></a>插件通信</h3><ul>
-<li>插件通信指插件间的通信。虽然设计的时候插件间是完全解耦的，但实际业务运行过程中，必然会出现某个业务流程需要多个插件协作，这就要求两个插件间进行通信。由于插件之间没有直接联系，通信必须通过核心系统，因此核心系统需要提供插件通信机制。这种情况和计算机类似，计算机的 CPU、硬盘、内存、网卡是独立设计的配件，但计算机运行过程中，CPU 和内存、内存和硬盘肯定是有通信的，计算机通过主板上的总线提供了这些组件之间的通信功能。微内核的核心系统也必须提供类似的通信机制，各个插件之间才能进行正常的通信。</li>
-</ul>
-<h2 id="微内核（Microkernel）架构是一种使得系统的各个组件高度模块化的设计方法，这种架构的主要目标是最大程度地降低系统的复杂性。在微内核架构中，只有最核心的功能，如线程调度、内存管理等，运行在系统的内核空间，其他所有的功能，如设备驱动、文件系统等，都作为独立的用户级进程运行。具体来说，微内核架构设计主要基于以下原则："><a href="#微内核（Microkernel）架构是一种使得系统的各个组件高度模块化的设计方法，这种架构的主要目标是最大程度地降低系统的复杂性。在微内核架构中，只有最核心的功能，如线程调度、内存管理等，运行在系统的内核空间，其他所有的功能，如设备驱动、文件系统等，都作为独立的用户级进程运行。具体来说，微内核架构设计主要基于以下原则：" class="headerlink" title="微内核（Microkernel）架构是一种使得系统的各个组件高度模块化的设计方法，这种架构的主要目标是最大程度地降低系统的复杂性。在微内核架构中，只有最核心的功能，如线程调度、内存管理等，运行在系统的内核空间，其他所有的功能，如设备驱动、文件系统等，都作为独立的用户级进程运行。具体来说，微内核架构设计主要基于以下原则："></a>微内核（Microkernel）架构是一种使得系统的各个组件高度模块化的设计方法，这种架构的主要目标是最大程度地降低系统的复杂性。在微内核架构中，只有最核心的功能，如线程调度、内存管理等，运行在系统的内核空间，其他所有的功能，如设备驱动、文件系统等，都作为独立的用户级进程运行。具体来说，微内核架构设计主要基于以下原则：</h2><ul>
-<li>最小化内核：把操作系统中的主要部分都放在用户空间运行，减少运行在内核空间的代码量。</li>
-<li>模块化：各组件之间通过明确定义的接口进行通信，使得各模块可以独立开发、测试和更新，无需修改其他模块。</li>
-<li>分层设计：各模块之间的依赖关系清楚明了，上层模块依赖于下层模块提供的服务，但下层模块并不依赖于上层模块。</li>
-</ul>
-<p>微内核架构的优点主要在于其模块化特性，可以实现高度的灵活性和可扩展性，便于系统的测试与维护。而其缺点主要是性能开销相对于传统的单体内核架构较大，因为组件之间的通信需要更多的上下文切换和消息传递。</p>
+            <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/deployment.html">Deployment</a></p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -240,7 +228,7 @@
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>Contents</h4>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E5%86%85%E6%A0%B8%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC-%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">微内核架构风格-拓扑结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E5%85%B3%E9%94%AE"><span class="toc-number">2.</span> <span class="toc-text">设计关键</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">插件管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">插件连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E9%80%9A%E4%BF%A1"><span class="toc-number">2.3.</span> <span class="toc-text">插件通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E5%86%85%E6%A0%B8%EF%BC%88Microkernel%EF%BC%89%E6%9E%B6%E6%9E%84%E6%98%AF%E4%B8%80%E7%A7%8D%E4%BD%BF%E5%BE%97%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E4%BB%B6%E9%AB%98%E5%BA%A6%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%EF%BC%8C%E8%BF%99%E7%A7%8D%E6%9E%B6%E6%9E%84%E7%9A%84%E4%B8%BB%E8%A6%81%E7%9B%AE%E6%A0%87%E6%98%AF%E6%9C%80%E5%A4%A7%E7%A8%8B%E5%BA%A6%E5%9C%B0%E9%99%8D%E4%BD%8E%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%8D%E6%9D%82%E6%80%A7%E3%80%82%E5%9C%A8%E5%BE%AE%E5%86%85%E6%A0%B8%E6%9E%B6%E6%9E%84%E4%B8%AD%EF%BC%8C%E5%8F%AA%E6%9C%89%E6%9C%80%E6%A0%B8%E5%BF%83%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%A6%82%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AD%89%EF%BC%8C%E8%BF%90%E8%A1%8C%E5%9C%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%85%E6%A0%B8%E7%A9%BA%E9%97%B4%EF%BC%8C%E5%85%B6%E4%BB%96%E6%89%80%E6%9C%89%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%A6%82%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AD%89%EF%BC%8C%E9%83%BD%E4%BD%9C%E4%B8%BA%E7%8B%AC%E7%AB%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%BA%A7%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E3%80%82%E5%85%B7%E4%BD%93%E6%9D%A5%E8%AF%B4%EF%BC%8C%E5%BE%AE%E5%86%85%E6%A0%B8%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%BB%E8%A6%81%E5%9F%BA%E4%BA%8E%E4%BB%A5%E4%B8%8B%E5%8E%9F%E5%88%99%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">微内核（Microkernel）架构是一种使得系统的各个组件高度模块化的设计方法，这种架构的主要目标是最大程度地降低系统的复杂性。在微内核架构中，只有最核心的功能，如线程调度、内存管理等，运行在系统的内核空间，其他所有的功能，如设备驱动、文件系统等，都作为独立的用户级进程运行。具体来说，微内核架构设计主要基于以下原则：</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
                 </div>
             </div>
             
