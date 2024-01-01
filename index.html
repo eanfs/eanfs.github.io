@@ -76,7 +76,7 @@
         
     </ul>
     <p class="copyright" id="copyright">
-        &copy; 2023 大晨.
+        &copy; 2024 大晨.
         Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
         Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
     </p>
@@ -130,22 +130,22 @@
             
             <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
             
-            十二月 10, 2023
+            十二月 16, 2023
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2023/12/10/langchain4j-Java%E5%BC%80%E5%8F%91%E7%9A%84%E7%A6%8F%E9%9F%B3/" title="langchain4j-Java开发的福音" class="posttitle">langchain4j-Java开发的福音</a></h3>
+            <a href="/2023/12/16/ChatGPT%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%AD%A6%E4%B9%A0/" title="OpenAI ChatGPT提示词工程学习" class="posttitle">OpenAI ChatGPT提示词工程学习</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                2k
+                12k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                2 mins.
+                11 mins.
             </span>
             
             
@@ -154,11 +154,12 @@
         
         <div class="md-content animated fadeIn">
             
-            <h1 id="langchain4j是什么"><a href="#langchain4j是什么" class="headerlink" title="langchain4j是什么"></a>langchain4j是什么</h1><p>将AI&#x2F;LLM能力集成到您的Java应用程序中，作为JAVA开发也可以快速的开发LLM-Base应用。</p>
-<p>这可以通过以下方式实现：</p>
-<p>一套简单而一致的抽象层，旨在确保...</p>
+            <h1 id="OpenAI-ChatGPT提示词工程学习"><a href="#OpenAI-ChatGPT提示词工程学习" class="headerlink" title="OpenAI ChatGPT提示词工程学习"></a>OpenAI ChatGPT提示词工程学习</h1><h2 id="LLM"><a href="#LLM" class="headerlink" title="LLM"></a>LLM</h2><ul>
+<li>两类LLM，一种是Base LLM，基于文本训练数据预测下一个词；另一种是Instruction Tuned LLM，</li>
+</ul>
+<h3 id="BaseLLM"><a href="#BaseLLM" class="headerlink" title="BaseLLM"></a>BaseLLM</h3><h3 id="Instruction-Tuned-LLM"><a href="#Instruction-Tuned-LLM" class="headerlink" title="Instruction Tuned LLM"></a>Instruction...</h3>
             
-            <span class="read-more"><a href="/2023/12/10/langchain4j-Java%E5%BC%80%E5%8F%91%E7%9A%84%E7%A6%8F%E9%9F%B3/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2023/12/16/ChatGPT%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -179,6 +180,54 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
+            
+            十二月 10, 2023
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2023/12/10/langchain4j-Java%E5%BC%80%E5%8F%91%E7%9A%84%E7%A6%8F%E9%9F%B3/" title="langchain4j-Java开发的福音" class="posttitle">langchain4j-Java开发的福音</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        2k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        2 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h1 id="langchain4j是什么"><a href="#langchain4j是什么" class="headerlink" title="langchain4j是什么"></a>langchain4j是什么</h1><p>将AI&#x2F;LLM能力集成到您的Java应用程序中，作为JAVA开发也可以快速的开发LLM-Base应用。</p>
+<p>这可以通过以下方式实现：</p>
+<p>一套简单而一致的抽象层，旨在确保您的代码不依赖于具体的实现，如LLM提供者、嵌入式存储提供者等。这使得组件的轻松替换成为可能。</p>
+<p>多种实现上述抽象的实现，为您提供多种LLM和嵌入式存储选择。</p>
+<p>在LLM之上提供的一系列热门功能，例如：</p>
+<p>能够摄取您自己的数据（文档、代码库等），使LLM能够基于您的数据进行操作和响应。</p>
+<p>用于委派任务（即时...</p>
+            
+            <span class="read-more"><a href="/2023/12/10/langchain4j-Java%E5%BC%80%E5%8F%91%E7%9A%84%E7%A6%8F%E9%9F%B3/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -380,7 +429,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2023
+        &copy; 2024
         <span class="gradient-text">
             大晨
         </span>.
