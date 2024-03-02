@@ -5,13 +5,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>微内核架构设计 - 大晨小昕</title>
+    <title>Finetuning - 大晨小昕</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="TriDiamond Obsidian,"> 
-    <meta name="description" content="微内核架构风格-拓扑结构
-微内核架构的拓扑结构由两部分组件组成：核心系统（core system）和插件模块（plug-in modules）。应用逻辑被分割为独立的插件模块和核心系统，提供了可扩展,"> 
+    <meta name="description" content="ChatGLM3 微调实践使用项目ChatGLM-Finetuning,预训练模型进行微调1https://github.com/liucongg/ChatGLM-Finetuning
+
+安装依赖1,"> 
     <meta name="author" content="大晨"> 
     <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -75,7 +76,7 @@
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">微内核架构设计</h3>
+        <h3 class="subtitle">Finetuning</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -107,22 +108,22 @@
                 
                 <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
                 
-                十二月 09, 2023
+                二月 06, 2024
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2023/12/09/%E5%BE%AE%E5%86%85%E6%A0%B8%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="微内核架构设计" class="">微内核架构设计</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2024/02/06/Finetuning/" title="Finetuning" class="">Finetuning</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    1.3k
+                    4.9k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    1 mins.
+                    4 mins.
                 </span>
                 
                 
@@ -134,8 +135,6 @@
                 
             </p>
             
-            
-            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></li></ul>
             
         </div>
     </div>
@@ -156,28 +155,23 @@
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h2 id="微内核架构风格-拓扑结构"><a href="#微内核架构风格-拓扑结构" class="headerlink" title="微内核架构风格-拓扑结构"></a>微内核架构风格-拓扑结构</h2><blockquote>
-<p>微内核架构的拓扑结构由两部分组件组成：核心系统（core system）和插件模块（plug-in modules）。应用逻辑被分割为独立的插件模块和核心系统，提供了可扩展性、灵活性、功能隔离和自定义处理逻辑的特性。</p>
-</blockquote>
-<h2 id="设计关键"><a href="#设计关键" class="headerlink" title="设计关键"></a>设计关键</h2><blockquote>
-<p>微内核架构的核心问题：插件管理、插件连接和插件通信。</p>
-</blockquote>
-<h3 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h3><ul>
-<li><p>核心系统需要知道当前有哪些插件可用，如何加载这些插件，什么时候加载插件。常见的实现方法是插件注册表机制。</p>
-</li>
-<li><p>核心系统提供插件注册表（可以是配置文件，也可以是代码，还可以是数据库），插件注册表含有每个插件模块的信息，包括它的名字、位置、加载时机（启动就加载，还是按需加载）等。</p>
-</li>
-</ul>
-<h3 id="插件连接"><a href="#插件连接" class="headerlink" title="插件连接"></a>插件连接</h3><ul>
-<li><p>插件连接指插件如何连接到核心系统。通常来说，核心系统必须制定插件和核心系统的连接规范，然后插件按照规范实现，核心系统按照规范加载即可。</p>
-</li>
-<li><p>常见的连接机制有 OSGi（Eclipse 使用）、消息模式、依赖注入（Spring 使用），甚至使用分布式的协议都是可以的，比如 RPC 或者 HTTP Web 的方式。</p>
-</li>
-</ul>
-<h3 id="插件通信"><a href="#插件通信" class="headerlink" title="插件通信"></a>插件通信</h3><ul>
-<li>插件通信指插件间的通信。虽然设计的时候插件间是完全解耦的，但实际业务运行过程中，必然会出现某个业务流程需要多个插件协作，这就要求两个插件间进行通信。由于插件之间没有直接联系，通信必须通过核心系统，因此核心系统需要提供插件通信机制。这种情况和计算机类似，计算机的 CPU、硬盘、内存、网卡是独立设计的配件，但计算机运行过程中，CPU 和内存、内存和硬盘肯定是有通信的，计算机通过主板上的总线提供了这些组件之间的通信功能。微内核的核心系统也必须提供类似的通信机制，各个插件之间才能进行正常的通信。</li>
-</ul>
+            <h1 id="ChatGLM3-微调实践"><a href="#ChatGLM3-微调实践" class="headerlink" title="ChatGLM3 微调实践"></a>ChatGLM3 微调实践</h1><h2 id="使用项目ChatGLM-Finetuning-预训练模型进行微调"><a href="#使用项目ChatGLM-Finetuning-预训练模型进行微调" class="headerlink" title="使用项目ChatGLM-Finetuning,预训练模型进行微调"></a>使用项目ChatGLM-Finetuning,预训练模型进行微调</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/liucongg/ChatGLM-Finetuning</span><br></pre></td></tr></table></figure>
 
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装torch&#x3D;&#x3D;1.13.0+cu116时使用命令, 同时注意安装CUDA驱动的版本11.6</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch==1.13.0 --index-url https://download.pytorch.org/whl/cu116</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用6张T4卡进行训练"><a href="#使用6张T4卡进行训练" class="headerlink" title="使用6张T4卡进行训练"></a>使用6张T4卡进行训练</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 deepspeed --master_port 520 train.py \</span><br><span class="line">                --train_path data/spo0.json \</span><br><span class="line">                --model_name_or_path chatglm3-6b/ \</span><br><span class="line">                --per_device_train_batch_size 1 \</span><br><span class="line">                --max_len 1560 \</span><br><span class="line">                --max_src_len 1024 \</span><br><span class="line">                --learning_rate 1e-4 \</span><br><span class="line">                --weight_decay 0.1 \</span><br><span class="line">                --num_train_epochs 3 \</span><br><span class="line">                --gradient_accumulation_steps 4 \</span><br><span class="line">                --warmup_ratio 0.1 \</span><br><span class="line">                --mode glm3 \</span><br><span class="line">                --train_type lora \</span><br><span class="line">                --lora_dim 16 \</span><br><span class="line">                --lora_alpha 64 \</span><br><span class="line">                --lora_dropout 0.1 \</span><br><span class="line">                --lora_module_name &quot;query_key_value,dense_h_to_4h,dense_4h_to_h,dense&quot; \</span><br><span class="line">                --seed 1234 \</span><br><span class="line">                --ds_file ds_zero2_no_offload.json \</span><br><span class="line">                --gradient_checkpointing \</span><br><span class="line">                --show_loss_step 10 \</span><br><span class="line">                --output_dir ./output-glm3-lora</span><br></pre></td></tr></table></figure>
+
+<h2 id="合并模型"><a href="#合并模型" class="headerlink" title="合并模型"></a>合并模型</h2><ul>
+<li>执行命令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python merge_lora.py</span><br></pre></td></tr></table></figure></li>
+<li>Copy Chatglm3-6b下所有*.py文件到 output-glm3-lora</li>
+<li>最后修改adapter_config.json中，base_model_name_or_path 为chatglm3-6b的路径<br>“base_model_name_or_path”: “&#x2F;home&#x2F;workspace&#x2F;ChatGLM-Finetuning&#x2F;chatglm3-6b&#x2F;“</li>
+</ul>
+<h2 id="使用ChatGLM3-DEMO-进行测试"><a href="#使用ChatGLM3-DEMO-进行测试" class="headerlink" title="使用ChatGLM3 DEMO 进行测试"></a>使用ChatGLM3 DEMO 进行测试</h2><p> <a target="_blank" rel="noopener" href="https://github.com/THUDM/ChatGLM3.git">https://github.com/THUDM/ChatGLM3.git</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export MODEL_PATH=/home/workspace/ChatGLM-Finetuning/output-glm3-lora/epoch-3-step-393</span><br><span class="line">streamlit run web_demo_streamlit.py</span><br></pre></td></tr></table></figure>
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
                 data-autoplay="false">
@@ -237,7 +231,7 @@
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>Contents</h4>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E5%86%85%E6%A0%B8%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC-%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">微内核架构风格-拓扑结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E5%85%B3%E9%94%AE"><span class="toc-number">2.</span> <span class="toc-text">设计关键</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">插件管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">插件连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E9%80%9A%E4%BF%A1"><span class="toc-number">2.3.</span> <span class="toc-text">插件通信</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ChatGLM3-%E5%BE%AE%E8%B0%83%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">ChatGLM3 微调实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%A1%B9%E7%9B%AEChatGLM-Finetuning-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E5%BE%AE%E8%B0%83"><span class="toc-number">1.1.</span> <span class="toc-text">使用项目ChatGLM-Finetuning,预训练模型进行微调</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-number">1.2.</span> <span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A86%E5%BC%A0T4%E5%8D%A1%E8%BF%9B%E8%A1%8C%E8%AE%AD%E7%BB%83"><span class="toc-number">1.3.</span> <span class="toc-text">使用6张T4卡进行训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">合并模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8ChatGLM3-DEMO-%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">1.5.</span> <span class="toc-text">使用ChatGLM3 DEMO 进行测试</span></a></li></ol></li></ol>
                 </div>
             </div>
             
