@@ -55,7 +55,7 @@
 <script src="/js/Meting.min.js"></script>
 
     
-<meta name="generator" content="Hexo 7.0.0"></head>
+<meta name="generator" content="Hexo 8.1.1"></head>
 
 
 <body class="loading">
@@ -166,7 +166,10 @@
 <h2 id="使用6张T4卡进行训练"><a href="#使用6张T4卡进行训练" class="headerlink" title="使用6张T4卡进行训练"></a>使用6张T4卡进行训练</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 deepspeed --master_port 520 train.py \</span><br><span class="line">                --train_path data/spo0.json \</span><br><span class="line">                --model_name_or_path chatglm3-6b/ \</span><br><span class="line">                --per_device_train_batch_size 1 \</span><br><span class="line">                --max_len 1560 \</span><br><span class="line">                --max_src_len 1024 \</span><br><span class="line">                --learning_rate 1e-4 \</span><br><span class="line">                --weight_decay 0.1 \</span><br><span class="line">                --num_train_epochs 3 \</span><br><span class="line">                --gradient_accumulation_steps 4 \</span><br><span class="line">                --warmup_ratio 0.1 \</span><br><span class="line">                --mode glm3 \</span><br><span class="line">                --train_type lora \</span><br><span class="line">                --lora_dim 16 \</span><br><span class="line">                --lora_alpha 64 \</span><br><span class="line">                --lora_dropout 0.1 \</span><br><span class="line">                --lora_module_name &quot;query_key_value,dense_h_to_4h,dense_4h_to_h,dense&quot; \</span><br><span class="line">                --seed 1234 \</span><br><span class="line">                --ds_file ds_zero2_no_offload.json \</span><br><span class="line">                --gradient_checkpointing \</span><br><span class="line">                --show_loss_step 10 \</span><br><span class="line">                --output_dir ./output-glm3-lora</span><br></pre></td></tr></table></figure>
 
 <h2 id="合并模型"><a href="#合并模型" class="headerlink" title="合并模型"></a>合并模型</h2><ul>
-<li>执行命令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python merge_lora.py</span><br></pre></td></tr></table></figure></li>
+<li>执行命令</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python merge_lora.py</span><br></pre></td></tr></table></figure>
+<ul>
 <li>Copy Chatglm3-6b下所有*.py文件到 output-glm3-lora</li>
 <li>最后修改adapter_config.json中，base_model_name_or_path 为chatglm3-6b的路径<br>“base_model_name_or_path”: “&#x2F;home&#x2F;workspace&#x2F;ChatGLM-Finetuning&#x2F;chatglm3-6b&#x2F;“</li>
 </ul>
@@ -221,8 +224,8 @@
                 </div>
                 <ul>
                     <li><a href="/">8 <p>Articles</p></a></li>
-                    <li><a href="/categories">2 <p>Categories</p></a></li>
-                    <li><a href="/tags">8 <p>Tags</p></a></li>
+                    <li><a href="/categories">1 <p>Categories</p></a></li>
+                    <li><a href="/tags">6 <p>Tags</p></a></li>
                 </ul>
             </div>
             
