@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>使用 vLLM 部署 DeepSeek 模型 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="使用 vLLM 部署 DeepSeek 模型：一次完整的实践记录前言在人工智能快速发展的今天，大语言模型（LLM）的部署已成为很多开发者和研究者的核心需求。本文将详细介绍如何使用 vLLM 引擎结合,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">使用 vLLM 部署 DeepSeek 模型</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/AI 部署"><b>「
+                    </b>AI 部署<b> 」</b></a>
+                
+                二月 13, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/02/13/blog-deployment/" title="使用 vLLM 部署 DeepSeek 模型" class="">使用 vLLM 部署 DeepSeek 模型</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    21k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/vLLM/" rel="tag">vLLM</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" rel="tag">模型部署</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h1 id="使用-vLLM-部署-DeepSeek-模型：一次完整的实践记录"><a href="#使用-vLLM-部署-DeepSeek-模型：一次完整的实践记录" class="headerlink" title="使用 vLLM 部署 DeepSeek 模型：一次完整的实践记录"></a>使用 vLLM 部署 DeepSeek 模型：一次完整的实践记录</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在人工智能快速发展的今天，大语言模型（LLM）的部署已成为很多开发者和研究者的核心需求。本文将详细介绍如何使用 vLLM 引擎结合 Docker Compose，在多 GPU 环境下成功部署 DeepSeek 系列模型，并分享在实际操作中遇到的各种坑以及相应的解决方案。</p>
+<blockquote>
+<p>[!info] 核心目标<br>掌握使用 vLLM + Docker Compose 部署 DeepSeek 模型的全流程</p>
+</blockquote>
+<h2 id="技术栈概述"><a href="#技术栈概述" class="headerlink" title="技术栈概述"></a>技术栈概述</h2><p>本次部署涉及的核心技术组件包括：</p>
+<table>
+<thead>
+<tr>
+<th>技术</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>vLLM</strong></td>
+<td>高性能 LLM 推理引擎，采用 PagedAttention 技术</td>
+</tr>
+<tr>
+<td><strong>Docker Compose</strong></td>
+<td>容器化部署，管理多服务容器</td>
+</tr>
+<tr>
+<td><strong>DeepSeek 系列模型</strong></td>
+<td>目标部署模型</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>[!tip] vLLM 优势</p>
+<ul>
+<li>显著提升推理吞吐量</li>
+<li>降低显存占用</li>
+<li>出色的多卡并行处理能力</li>
+</ul>
+</blockquote>
+<p><strong>DeepSeek 系列模型</strong>是本次部署的目标模型：</p>
+<ul>
+<li><strong>DeepSeek-R1-Distill-Qwen-7B</strong>：强大的文本推理模型</li>
+<li><strong>DeepSeek-OCR</strong>：专注于文档图像识别任务</li>
+</ul>
+<h2 id="硬件环境"><a href="#硬件环境" class="headerlink" title="硬件环境"></a>硬件环境</h2><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GPU</td>
+<td>8 × NVIDIA RTX 2080 Ti</td>
+</tr>
+<tr>
+<td>单卡显存</td>
+<td>11 GB</td>
+</tr>
+<tr>
+<td>总显存</td>
+<td>88 GB</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Linux 服务器</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>[!warning] 硬件兼容性注意<br>RTX 2080 Ti 是一款相对老旧的显卡，在使用最新版本的推理引擎时需要特别注意兼容性问题。</p>
+</blockquote>
+<h2 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h2><h3 id="Docker-Compose-配置"><a href="#Docker-Compose-配置" class="headerlink" title="Docker Compose 配置"></a>Docker Compose 配置</h3><p>以下是经过多次调优后的 docker-compose.yml 配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">vllm:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">vllm/vllm-openai:latest-nightly</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">deepseek-vllm</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./models:/models</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./entrypoint.sh:/entrypoint.sh</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MODEL_ID=deepseek-ai/DeepSeek-R1-Distill-Qwen-7B</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MODELSCOPE_CACHE=/models</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">GPU_MEMORY_UTILIZATION=0.85</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MAX_MODEL_LEN=16384</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">HF_ENDPOINT=https://hf-mirror.com</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">EXTRA_ARGS=--enforce-eager</span> <span class="string">--tensor-parallel-size=2</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">TENSOR_PARALLEL_SIZE=2</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">resources:</span></span><br><span class="line">        <span class="attr">reservations:</span></span><br><span class="line">          <span class="attr">devices:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">driver:</span> <span class="string">nvidia</span></span><br><span class="line">              <span class="attr">count:</span> <span class="number">8</span></span><br><span class="line">              <span class="attr">capabilities:</span> [<span class="string">gpu</span>]</span><br><span class="line">    <span class="attr">runtime:</span> <span class="string">nvidia</span></span><br><span class="line">    <span class="attr">privileged:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">ipc:</span> <span class="string">host</span></span><br><span class="line">    <span class="attr">shm_size:</span> <span class="string">16gb</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8000:8000&quot;</span></span><br><span class="line">    <span class="attr">entrypoint:</span> [<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;/entrypoint.sh&quot;</span>]</span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;curl&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;http://localhost:8000/v1/models&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">30s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!info] 关键参数说明<br>在这个配置中，有几个关键参数需要特别说明：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>推荐值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GPU_MEMORY_UTILIZATION</code></td>
+<td>每个 GPU 预留 15% 显存用于缓存</td>
+<td>0.85</td>
+</tr>
+<tr>
+<td><code>TENSOR_PARALLEL_SIZE</code></td>
+<td>张量并行大小，需能被注意力头数整除</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>enforce-eager</code></td>
+<td>强制使用 eager 模式（RTX 2080 Ti 必选）</td>
+<td>–</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>[!tip] GPU_MEMORY_UTILIZATION<br>设置为 0.85，表示每个 GPU 预留 15% 的显存用于推理过程中的中间结果缓存。这个值需要根据实际模型大小和显卡显存容量进行调整。</p>
+</blockquote>
+<blockquote>
+<p>[!tip] TENSOR_PARALLEL_SIZE<br>设置为 2，这是经过计算后的最优值。由于 DeepSeek-R1 的注意力头数量为 16（对于 Qwen 7B），需要能够被 TP 整除，而 8 张显卡用 TP&#x3D;8 会导致无法整除的错误。</p>
+</blockquote>
+<blockquote>
+<p>[!tip] enforce-eager<br>参数强制使用 eager 模式而非 Flash Attention，这是因为 RTX 2080 Ti 不支持 Flash Attention 2.0。</p>
+</blockquote>
+<h3 id="容器启动脚本"><a href="#容器启动脚本" class="headerlink" title="容器启动脚本"></a>容器启动脚本</h3><p>entrypoint.sh 负责模型的下载和服务的启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"></span><br><span class="line">MODEL_ID=<span class="string">&quot;<span class="variable">$&#123;MODEL_ID:-deepseek-ai/DeepSeek-R1-Distill-Qwen-7B&#125;</span>&quot;</span></span><br><span class="line">CACHE_DIR=<span class="string">&quot;<span class="variable">$&#123;MODELSCOPE_CACHE:-/models&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;==========================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;vLLM DeepSeek 部署脚本&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;==========================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;模型: <span class="variable">$MODEL_ID</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;缓存目录: <span class="variable">$CACHE_DIR</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找已下载的模型</span></span><br><span class="line">MODEL_PATH=$(find <span class="variable">$CACHE_DIR</span> -<span class="built_in">type</span> f -name <span class="string">&quot;config.json&quot;</span> | grep -i deepseek-r1 | <span class="built_in">head</span> -1 | xargs <span class="built_in">dirname</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$MODEL_PATH</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;模型未找到，正在下载...&quot;</span></span><br><span class="line">    python3 /download_model.py</span><br><span class="line">    MODEL_PATH=$(find <span class="variable">$CACHE_DIR</span> -<span class="built_in">type</span> f -name <span class="string">&quot;config.json&quot;</span> | grep -i deepseek-r1 | <span class="built_in">head</span> -1 | xargs <span class="built_in">dirname</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;模型路径: <span class="variable">$MODEL_PATH</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动 vLLM</span></span><br><span class="line"><span class="built_in">exec</span> python3 -m vllm.entrypoints.openai.api_server \</span><br><span class="line">    --model <span class="string">&quot;<span class="variable">$MODEL_PATH</span>&quot;</span> \</span><br><span class="line">    --trust-remote-code \</span><br><span class="line">    --gpu-memory-utilization <span class="string">&quot;<span class="variable">$&#123;GPU_MEMORY_UTILIZATION:-0.85&#125;</span>&quot;</span> \</span><br><span class="line">    --max-model-len <span class="string">&quot;<span class="variable">$&#123;MAX_MODEL_LEN:-16384&#125;</span>&quot;</span> \</span><br><span class="line">    --enforce-eager \</span><br><span class="line">    --tensor-parallel-size 2 \</span><br><span class="line">    --host 0.0.0.0 \</span><br><span class="line">    --port 8000 \</span><br><span class="line">    <span class="variable">$&#123;EXTRA_ARGS&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="常见问题与解决方案"><a href="#常见问题与解决方案" class="headerlink" title="常见问题与解决方案"></a>常见问题与解决方案</h2><h3 id="问题一：模型架构不支持"><a href="#问题一：模型架构不支持" class="headerlink" title="问题一：模型架构不支持"></a>问题一：模型架构不支持</h3><blockquote>
+<p>[!warning] 错误信息<br><code>ValueError: Model architectures [&#39;DeepseekOCR2ForCausalLM&#39;] are not supported</code></p>
+</blockquote>
+<p>这是因为某些版本的 vLLM 尚未支持最新的 DeepSeek 模型架构。</p>
+<blockquote>
+<p>[!success] 解决方案<br>使用 vLLM 的 nightly build 版本：</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">image:</span> <span class="string">vllm/vllm-openai:latest-nightly</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="问题二：显存不足（OOM）"><a href="#问题二：显存不足（OOM）" class="headerlink" title="问题二：显存不足（OOM）"></a>问题二：显存不足（OOM）</h3><p>当 GPU 显存利用率设置过高时，会出现 out of memory 错误。特别是在处理长文本或高分辨率图像时更容易触发。</p>
+<blockquote>
+<p>[!success] 解决方案<br>逐步降低 GPU_MEMORY_UTILIZATION 值，从 0.9 降至 0.75 或更低：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker-compose <span class="built_in">exec</span> vllm-env python3 -c <span class="string">&quot;</span></span><br><span class="line"><span class="string">import torch</span></span><br><span class="line"><span class="string">print(f&#x27;可用显存: &#123;torch.cuda.get_device_properties(0).total_memory / 1024**3:.2f&#125; GB&#x27;)</span></span><br><span class="line"><span class="string">&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="问题三：Tensor-Parallel-维度不匹配"><a href="#问题三：Tensor-Parallel-维度不匹配" class="headerlink" title="问题三：Tensor Parallel 维度不匹配"></a>问题三：Tensor Parallel 维度不匹配</h3><blockquote>
+<p>[!warning] 错误信息<br><code>ValueError: Tensor parallel size (8) must divide attention heads</code></p>
+</blockquote>
+<p>这是因为模型的注意力头数量无法被 Tensor Parallel Size 整除。</p>
+<blockquote>
+<p>[!success] 解决方案<br>调整 TP 大小，使其能够整除注意力头数量。对于 DeepSeek-R1-Distill-Qwen-7B（16 个注意力头），可以使用 TP&#x3D;2 或 TP&#x3D;4。</p>
+</blockquote>
+<h3 id="问题四：Flash-Attention-不兼容"><a href="#问题四：Flash-Attention-不兼容" class="headerlink" title="问题四：Flash Attention 不兼容"></a>问题四：Flash Attention 不兼容</h3><p>RTX 2080 Ti 使用的 Turing 架构不支持 Flash Attention 2.0，导致推理失败。</p>
+<blockquote>
+<p>[!success] 解决方案<br>添加 <code>--enforce-eager</code> 参数强制使用 eager 模式：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXTRA_ARGS=--enforce-eager --tensor-parallel-size=2</span><br></pre></td></tr></table></figure>
+
+<h2 id="多模型支持"><a href="#多模型支持" class="headerlink" title="多模型支持"></a>多模型支持</h2><p>在实际应用中，我们可能需要同时部署多个模型。vLLM 支持在一个容器中加载多个模型，只需在启动参数中指定即可。</p>
+<p>对于文本推理模型（如 DeepSeek-R1）和多模态模型（如 DeepSeek-OCR），它们的使用方式有所不同：</p>
+<table>
+<thead>
+<tr>
+<th>模型类型</th>
+<th>接口</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文本模型</td>
+<td><code>/v1/chat/completions</code></td>
+<td>通过对话接口交互</td>
+</tr>
+<tr>
+<td>OCR 模型</td>
+<td>特定提示词</td>
+<td>通过提示词触发图像识别</td>
+</tr>
+</tbody></table>
+<h2 id="API-调用示例"><a href="#API-调用示例" class="headerlink" title="API 调用示例"></a>API 调用示例</h2><p>部署完成后，可以通过以下方式调用服务：</p>
+<h3 id="文本推理"><a href="#文本推理" class="headerlink" title="文本推理"></a>文本推理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:8000/v1/chat/completions \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;model&quot;: &quot;/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B&quot;,</span></span><br><span class="line"><span class="string">    &quot;messages&quot;: [</span></span><br><span class="line"><span class="string">      &#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;请解释一下什么是量子计算？&quot;&#125;</span></span><br><span class="line"><span class="string">    ],</span></span><br><span class="line"><span class="string">    &quot;max_tokens&quot;: 1024,</span></span><br><span class="line"><span class="string">    &quot;temperature&quot;: 0.7</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Python-调用"><a href="#Python-调用" class="headerlink" title="Python 调用"></a>Python 调用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line">client = OpenAI(api_key=<span class="string">&quot;EMPTY&quot;</span>, base_url=<span class="string">&quot;http://localhost:8000/v1&quot;</span>)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;/models/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B&quot;</span>,</span><br><span class="line">    messages=[</span><br><span class="line">        &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;写一首关于春天的诗&quot;</span>&#125;</span><br><span class="line">    ],</span><br><span class="line">    max_tokens=<span class="number">512</span>,</span><br><span class="line">    temperature=<span class="number">0.8</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(response.choices[<span class="number">0</span>].message.content)</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><p>根据我们的实践经验，以下几点可以显著提升推理性能：</p>
+<blockquote>
+<p>[!abstract] 优化策略</p>
+</blockquote>
+<h3 id="1-批量处理"><a href="#1-批量处理" class="headerlink" title="1. 批量处理"></a>1. 批量处理</h3><p>vLLM 支持连续批处理（Continuous Batching），可以在不增加延迟的情况下提高吞吐量。可以通过调整 <code>max_num_seqs</code> 参数来控制批量大小。</p>
+<h3 id="2-显存管理"><a href="#2-显存管理" class="headerlink" title="2. 显存管理"></a>2. 显存管理</h3><p>对于多卡环境，合理分配显存非常重要。建议预留 10-15% 的显存用于 KV Cache，避免 OOM。</p>
+<h3 id="3-模型量化"><a href="#3-模型量化" class="headerlink" title="3. 模型量化"></a>3. 模型量化</h3><p>如果对精度要求不是特别高，可以考虑使用量化后的模型（如 AWQ、GPTQ），可以在保持较高精度的同时大幅减少显存占用。</p>
+<h3 id="4-通信优化"><a href="#4-通信优化" class="headerlink" title="4. 通信优化"></a>4. 通信优化</h3><p>对于多卡推理，GPU 之间的通信带宽很重要。NVLink 可以显著提升跨卡数据传输速度。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过本文的详细介绍，相信读者已经掌握了使用 vLLM 部署 DeepSeek 模型的基本方法和注意事项。在实际部署过程中，可能会遇到各种不同的问题，但只要理解了底层的原理，就能找到相应的解决方案。</p>
+<p>vLLM 作为一款高性能的推理引擎，为我们提供了便捷的模型部署能力。结合 Docker 的容器化技术，整个部署过程变得更加简单和可控。</p>
+<blockquote>
+<p>[!tip] 进一步学习</p>
+<ul>
+<li>[[ChatGPT提示词工程学习]]</li>
+<li>[[Finetuning]]</li>
+</ul>
+</blockquote>
+<hr>
+<blockquote>
+<p>[!question] 需要帮助？<br>如果在使用过程中遇到任何问题，欢迎通过 GitHub 提交 Issue 或参与讨论，共同完善这个部署方案。</p>
+</blockquote>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">8 <p>Articles</p></a></li>
+                    <li><a href="/categories">2 <p>Categories</p></a></li>
+                    <li><a href="/tags">8 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-vLLM-%E9%83%A8%E7%BD%B2-DeepSeek-%E6%A8%A1%E5%9E%8B%EF%BC%9A%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">使用 vLLM 部署 DeepSeek 模型：一次完整的实践记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">技术栈概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E7%8E%AF%E5%A2%83"><span class="toc-number">1.3.</span> <span class="toc-text">硬件环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">配置详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Compose-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">Docker Compose 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC"><span class="toc-number">1.4.2.</span> <span class="toc-text">容器启动脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.5.</span> <span class="toc-text">常见问题与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%B8%80%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84%E4%B8%8D%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text">问题一：模型架构不支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%BA%8C%EF%BC%9A%E6%98%BE%E5%AD%98%E4%B8%8D%E8%B6%B3%EF%BC%88OOM%EF%BC%89"><span class="toc-number">1.5.2.</span> <span class="toc-text">问题二：显存不足（OOM）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%B8%89%EF%BC%9ATensor-Parallel-%E7%BB%B4%E5%BA%A6%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="toc-number">1.5.3.</span> <span class="toc-text">问题三：Tensor Parallel 维度不匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%9B%9B%EF%BC%9AFlash-Attention-%E4%B8%8D%E5%85%BC%E5%AE%B9"><span class="toc-number">1.5.4.</span> <span class="toc-text">问题四：Flash Attention 不兼容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%A8%A1%E5%9E%8B%E6%94%AF%E6%8C%81"><span class="toc-number">1.6.</span> <span class="toc-text">多模型支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#API-%E8%B0%83%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.7.</span> <span class="toc-text">API 调用示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E6%8E%A8%E7%90%86"><span class="toc-number">1.7.1.</span> <span class="toc-text">文本推理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E8%B0%83%E7%94%A8"><span class="toc-number">1.7.2.</span> <span class="toc-text">Python 调用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.8.</span> <span class="toc-text">性能优化建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86"><span class="toc-number">1.8.1.</span> <span class="toc-text">1. 批量处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%98%BE%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.8.2.</span> <span class="toc-text">2. 显存管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96"><span class="toc-number">1.8.3.</span> <span class="toc-text">3. 模型量化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96"><span class="toc-number">1.8.4.</span> <span class="toc-text">4. 通信优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.9.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
