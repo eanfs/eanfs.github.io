@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>给编程智能体放权之前，先想清楚它在哪里必须停下 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+资料核验：2026 年 11 月 10 日约 18:10（新加坡时间），依据 Claude Code 与 OpenAI Codex 官方文档、hexo-deployer-git 源码，以及 Ser,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">给编程智能体放权之前，先想清楚它在哪里必须停下</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/AI智能体"><b>「
+                    </b>AI智能体<b> 」</b></a>
+                
+                十一月 10, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/11/10/agent-stop-points/" title="给编程智能体放权之前，先想清楚它在哪里必须停下" class="">给编程智能体放权之前，先想清楚它在哪里必须停下</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    6.5k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    6 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/AI-Agent/" rel="tag">AI Agent</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9D%83%E9%99%90%E4%B8%8E%E5%AE%A1%E6%89%B9/" rel="tag">权限与审批</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag">编程智能体</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>资料核验：2026 年 11 月 10 日约 18:10（新加坡时间），依据 Claude Code 与 OpenAI Codex 官方文档、hexo-deployer-git 源码，以及 Sergey Kuhne 的原文。产品文档会更新，配置细节请以官方最新页面为准。文中“本博客的发布”一节是真实发生的流程，其余部分是公开资料分析，不代表对任何工具的安全背书。</p>
+</blockquote>
+<p>用 Claude Code、Codex 这类编程智能体干活久了，很多人会遇到一个反直觉的问题：智能体越能干，人反而越累。</p>
+<p>Sergey Kuhne 在 11 月 8 日的文章 <a target="_blank" rel="noopener" href="https://sergeykuhne.com/blog/fighting-ai-brain-fry">How I’m fighting the AI Brain Fry</a> 里描述得很准：一个任务等回复时开第二个，第一个回来又需要澄清、追问和一个支线任务，不知不觉就在 20 个终端线程之间来回跳，脑子装不下所有上下文。这篇文章在 Hacker News 上拿到了 300 多分。</p>
+<p>他的解法后面会讲。先说一个更底层的问题：我们之所以要盯着这么多线程，往往是因为没想清楚<strong>哪些动作可以让智能体自己做，哪些必须停下来等人</strong>，以及这条线到底由谁来守。</p>
+<h2 id="一、写在提示词里的规矩，不是权限"><a href="#一、写在提示词里的规矩，不是权限" class="headerlink" title="一、写在提示词里的规矩，不是权限"></a>一、写在提示词里的规矩，不是权限</h2><p>很多人给智能体立规矩的方式，是在 <code>CLAUDE.md</code>、<code>AGENTS.md</code> 或系统提示里写“不要推送到 main”“不要删文件”。这有用，但它不是边界。</p>
+<p>Claude Code 的<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/permissions">权限文档</a>把这点写得很直白：权限规则由 Claude Code 执行，而不是由模型执行；提示词和 <code>CLAUDE.md</code> 里的说明只影响 Claude <em>想做什么</em>，不改变 Claude Code <em>允许做什么</em>。要真正授予或收回能力，得用权限规则、权限模式或 PreToolUse 钩子。</p>
+<p>OpenAI 的 <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/agent-approvals-security">Codex 安全文档</a>用了另一套词，意思一样，把控制分成两层：</p>
+<ul>
+<li><strong>沙箱模式</strong>：技术上能做什么，比如能写哪些目录、能不能联网；</li>
+<li><strong>审批策略</strong>：什么时候必须停下来问你，比如要离开沙箱、要联网、要运行信任列表之外的命令。</li>
+</ul>
+<p>换句话说，“让模型自觉”是第三层，是最软的一层。真正靠得住的，是工具本身的限制和外部系统的权限。</p>
+<h2 id="二、按“能不能撤回”给动作分级"><a href="#二、按“能不能撤回”给动作分级" class="headerlink" title="二、按“能不能撤回”给动作分级"></a>二、按“能不能撤回”给动作分级</h2><p>与其逐条列禁令，不如先按后果把动作分级。一个实用的分法是看它能不能撤回、影响是否出了你的工作区：</p>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>典型动作</th>
+<th>建议处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>只读</td>
+<td>读文件、搜索代码、查文档</td>
+<td>放开</td>
+</tr>
+<tr>
+<td>工作区内可撤回</td>
+<td>改文件、跑测试、在分支上提交</td>
+<td>在版本控制里放开，事后看 diff</td>
+</tr>
+<tr>
+<td>越出工作区</td>
+<td>改工作区外的文件、联网、装依赖</td>
+<td>需要时再批</td>
+</tr>
+<tr>
+<td>对外且难撤回</td>
+<td>推送共享分支、发布上线、发消息、付款、删数据</td>
+<td>必须人来拍板</td>
+</tr>
+</tbody></table>
+<p>两家工具的默认值大体就是按这个思路设的。Codex 在受版本控制的目录里推荐 <code>Auto</code> 预设（工作区可写、按需审批），能在工作区内读、改、运行命令，但要改工作区外的文件或联网时会请求批准；即使在可写的工作区里，<code>.git</code> 目录也被保护为只读。Claude Code 的默认手动模式下，读文件不需要批准，Bash 命令和改文件需要批准。</p>
+<p>这里有两个容易踩的坑，都写在官方文档里。</p>
+<p><strong>第一，命令文本规则不是安全边界。</strong> Claude Code 的规则按“拒绝、询问、允许”的顺序判断，拒绝优先。你可以写一条拒绝 <code>Bash(git push *)</code> 的规则，但文档明确说明，它拦得住 <code>git push origin main</code>，拦不住 <code>git -C . push origin main</code> 这种换了写法的调用。真正要硬性限制文件和网络访问，需要沙箱或钩子。</p>
+<p><strong>第二，“一路放行”的模式要放在隔离环境里。</strong> Claude Code 的 <code>bypassPermissions</code> 和 Codex 的 <code>--dangerously-bypass-approvals-and-sandbox</code>（别名 <code>--yolo</code>）都会跳过审批，两份文档都提醒只在容器、虚拟机这类隔离环境中使用。</p>
+<p>所以最后一级“对外且难撤回”的动作，最好别只靠本机规则拦，而是让外部系统本身就不给这个权限：生产部署的凭据不放进智能体的环境，受保护分支要求审查后才能合并。Kuhne 的做法也是这样：智能体会做研究、构建、测试，碰到敏感代码就在分支上做并先问，但<strong>从不部署到生产，那一步留给他自己</strong>。</p>
+<h2 id="三、一个真实例子：这个博客的发布"><a href="#三、一个真实例子：这个博客的发布" class="headerlink" title="三、一个真实例子：这个博客的发布"></a>三、一个真实例子：这个博客的发布</h2><p>这个博客最近两篇文章，都是由云端编码代理按“源稿进源仓库、构建、发布到站点仓库”的流程处理的。中间有两次停下，正好说明分级为什么重要。</p>
+<p><strong>第一次停下，是因为发现默认部署命令会强推。</strong> 博客用 Hexo 搭建，常规发布命令是 <code>hexo deploy</code>，背后是官方插件 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git">hexo-deployer-git</a>。看它的<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git/blob/master/lib/deployer.js">源码</a>可以发现两件事：推送时固定带 <code>--force</code>；如果本地没有 <code>.deploy_git</code> 目录，它会先 <code>git init</code> 建一段全新的历史。在每次都是全新环境的云端任务里，这两点加在一起，意味着“发一篇新文章”实际执行的是“用一段新历史强行覆盖整个站点仓库”。</p>
+<p>这在人手动发布、本地一直留着 <code>.deploy_git</code> 的时候不一定出事，但对智能体来说，它就从第二级动作变成了第四级。正确做法不是让智能体自己判断“应该没问题”，而是停下来，换成在站点仓库现有历史上做普通增量提交、普通推送，并且只改本篇需要的页面和索引。</p>
+<p><strong>第二次停下，是因为推送被拒绝了。</strong> 改成普通推送后，站点仓库返回了 403：代理没有该仓库的写权限。这时候“绕过去”的选项其实很多，比如换一个有权限的凭据、改远程地址。代理没有这样做，而是停下来报告；授权开通后第一次重试仍被拒绝，它也照样停下，直到写权限按正常流程真正生效，才完成发布。</p>
+<p>事后看，这次 403 恰好是外部系统在守最后一道线：智能体本地有多少规则都不如“没有这个权限”可靠。</p>
+<h2 id="四、把“等你拍板”的事收进一个地方"><a href="#四、把“等你拍板”的事收进一个地方" class="headerlink" title="四、把“等你拍板”的事收进一个地方"></a>四、把“等你拍板”的事收进一个地方</h2><p>分级解决了“哪些要停”，但停下来的事多了，人还是会被打断。Kuhne 原文里最值得抄的，是他处理这些停顿的方式：</p>
+<ol>
+<li><strong>队列放在 git 里。</strong> 每张工单是仓库里的一个 markdown 文件，就放在相关代码旁边，看板状态是一次提交快照。重要的东西不留在聊天窗口里，也不留在脑子里，会话断了队列还在。</li>
+<li><strong>只有一个“负责人收件箱”。</strong> 一个脚本读完整个看板，按优先级只列出等他判断的事：审这个改动、回答这个问题、权衡这个取舍。</li>
+<li><strong>结论写回工单。</strong> 他用一个每轮从 git 重建的页面来阅读改动和理由，但页面只是查看器，结论写回 git 里的卡片。</li>
+<li><strong>一次处理一件，处理完就关掉。</strong> 拿一件、载入上下文、做决定或要求动作，然后放回队列。他说“关掉”是整个方法的关键：上下文随工单一起关闭，下一件才能专注。</li>
+</ol>
+<p>他也很坦率：这样做仍然累，只是不再分心和迷失；难点在于把上下文整理得一分钟就能看懂，以及防止工单因为等他裁决而无限卡住。</p>
+<p>把这套做法和上面的分级结合起来，就得到一个比较健康的分工：前三级动作让智能体自己在分支上做完、留下证据；第四级动作统一进入收件箱，每一条都带上<strong>改了什么、证据是什么、能不能撤回、不批会怎样</strong>。人不再盯着 20 个线程，只在少数真正需要判断的地方出现。</p>
+<h2 id="五、一份可以直接用的最小清单"><a href="#五、一份可以直接用的最小清单" class="headerlink" title="五、一份可以直接用的最小清单"></a>五、一份可以直接用的最小清单</h2><p>如果你准备让编程智能体接手更多工作，可以从这几件事开始：</p>
+<ol>
+<li><strong>列出“必须人来做”的动作</strong>：推送受保护分支、生产部署、对外发消息、付款、删数据。一般不超过五六类。</li>
+<li><strong>让外部系统守住这些动作</strong>：智能体环境里不放生产部署凭据，受保护分支要求审查，CI 通过才能合并。</li>
+<li><strong>本机规则做第二层</strong>：用工具的权限规则把这些动作设为询问或拒绝；需要硬限制时加沙箱或钩子，别只靠命令文本匹配。</li>
+<li><strong>审一遍默认脚本</strong>：像 <code>hexo deploy</code> 这种用了多年的命令，可能藏着强推、重建历史这类在新环境里才暴露的行为。交给智能体之前，先读一下它实际执行了什么。</li>
+<li><strong>遇到拒绝就停</strong>：权限被拒、检查失败时，让智能体报告实际状态，而不是换凭据、改配置去“想办法”。</li>
+<li><strong>所有停顿进一个收件箱</strong>：每条带上下文和可选项，一次处理一件，结论写回记录。</li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>给智能体放权，真正难的不是“开不开自动模式”，而是提前想清楚它在哪里必须停下，以及这条线由谁来守。</p>
+<p>提示词能让智能体更守规矩，工具权限能让它犯错的范围更小，而外部系统的权限才是最后的边界。把这几层摆对，再把所有需要人判断的事收进一个地方，智能体才会真的替你省力，而不是让你在 20 个线程之间疲于奔命。</p>
+<hr>
+<h3 id="来源与证据边界"><a href="#来源与证据边界" class="headerlink" title="来源与证据边界"></a>来源与证据边界</h3><p>以下页面于 2026-11-10 约 18:10（新加坡时间）读取：</p>
+<ul>
+<li>Sergey Kuhne，<a target="_blank" rel="noopener" href="https://sergeykuhne.com/blog/fighting-ai-brain-fry">How I’m fighting the AI Brain Fry</a>（2026-11-08），以及对应的 <a target="_blank" rel="noopener" href="https://news.ycombinator.com/item?id=50416363">Hacker News 讨论</a>（读取时 305 分）</li>
+<li>Claude Code 文档：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/permissions">Configure permissions</a>（权限分级、规则优先级、命令规则的局限、权限模式）</li>
+<li>OpenAI Codex 文档：<a target="_blank" rel="noopener" href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals &amp; security</a>（沙箱与审批两层、默认预设、受保护路径、跳过审批的风险）</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git">hexojs&#x2F;hexo-deployer-git</a> 源码 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git/blob/master/lib/deployer.js">lib&#x2F;deployer.js</a>，最新发布版本 v4.0.0</li>
+</ul>
+<p>“本博客的发布”一节记录的是 2026 年 11 月 8 日至 9 日的实际发布过程，不涉及任何凭据或私有信息。其余内容是对公开资料的整理与分析，作者没有对文中工具做安全测试，不保证任何配置能防住所有风险。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">11 <p>Articles</p></a></li>
+                    <li><a href="/categories">3 <p>Categories</p></a></li>
+                    <li><a href="/tags">13 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%86%99%E5%9C%A8%E6%8F%90%E7%A4%BA%E8%AF%8D%E9%87%8C%E7%9A%84%E8%A7%84%E7%9F%A9%EF%BC%8C%E4%B8%8D%E6%98%AF%E6%9D%83%E9%99%90"><span class="toc-number">1.</span> <span class="toc-text">一、写在提示词里的规矩，不是权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%8C%89%E2%80%9C%E8%83%BD%E4%B8%8D%E8%83%BD%E6%92%A4%E5%9B%9E%E2%80%9D%E7%BB%99%E5%8A%A8%E4%BD%9C%E5%88%86%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">二、按“能不能撤回”给动作分级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%80%E4%B8%AA%E7%9C%9F%E5%AE%9E%E4%BE%8B%E5%AD%90%EF%BC%9A%E8%BF%99%E4%B8%AA%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%8F%91%E5%B8%83"><span class="toc-number">3.</span> <span class="toc-text">三、一个真实例子：这个博客的发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%8A%8A%E2%80%9C%E7%AD%89%E4%BD%A0%E6%8B%8D%E6%9D%BF%E2%80%9D%E7%9A%84%E4%BA%8B%E6%94%B6%E8%BF%9B%E4%B8%80%E4%B8%AA%E5%9C%B0%E6%96%B9"><span class="toc-number">4.</span> <span class="toc-text">四、把“等你拍板”的事收进一个地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%80%E4%BB%BD%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E7%94%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E6%B8%85%E5%8D%95"><span class="toc-number">5.</span> <span class="toc-text">五、一份可以直接用的最小清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AF%81%E6%8D%AE%E8%BE%B9%E7%95%8C"><span class="toc-number">6.1.</span> <span class="toc-text">来源与证据边界</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
