@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>智能体的界面不一定是一个应用：从 Telegram 消息内小组件看“代码固定、状态归后端” - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+资料核验：2026 年 11 月 12 日 17:58（新加坡时间），依据 Telegram 官方 Bot API 更新日志、Telegram Widgets 开发文档，以及官方仓库 Telegr,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">智能体的界面不一定是一个应用：从 Telegram 消息内小组件看“代码固定、状态归后端”</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/AI智能体"><b>「
+                    </b>AI智能体<b> 」</b></a>
+                
+                十一月 12, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/11/12/chat-widget-agent-ui/" title="智能体的界面不一定是一个应用：从 Telegram 消息内小组件看“代码固定、状态归后端”" class="">智能体的界面不一定是一个应用：从 Telegram 消息内小组件看“代码固定、状态归后端”</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    6.9k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    6 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/AI-Agent/" rel="tag">AI Agent</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Bot-API/" rel="tag">Bot API</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Telegram/" rel="tag">Telegram</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1/" rel="tag">交互设计</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>资料核验：2026 年 11 月 12 日 17:58（新加坡时间），依据 Telegram 官方 <a target="_blank" rel="noopener" href="https://core.telegram.org/bots/api-changelog">Bot API 更新日志</a>、<a target="_blank" rel="noopener" href="https://core.telegram.org/bots/widgets">Telegram Widgets 开发文档</a>，以及官方仓库 <a target="_blank" rel="noopener" href="https://github.com/TelegramMessenger/widget-sandbox">TelegramMessenger&#x2F;widget-sandbox</a> 的公开文档。该功能正在分阶段开放，限制和接口可能变化，请以官方最新页面为准。作者没有用真实机器人部署或测试过文中的代码，示例只用于说明接口形态。</p>
+</blockquote>
+<p>做智能体产品的人，很容易默认一条路线：先有一个对话框，再在对话框旁边做一个控制台、一个网页、一个小程序。用户在聊天里说需求，真正确认、查看进度、点按钮的地方却在另一个界面里。</p>
+<p>Telegram 在 2026 年 11 月 9 日发布的 Bot API 10.4，提供了另一种思路：让机器人直接发一条“会动的消息”。官方叫它 widget，下文称“小组件”。它不是一个缩小版的网页应用，而是一段嵌在消息气泡里的、离线运行的极小程序。</p>
+<p>这件事本身是一个平台的新功能，但它背后的设计取舍，对所有在聊天里做智能体的人都有参考价值：<strong>界面代码一旦发出就固定，状态只能由后端写，前端只能“请求”。</strong></p>
+<h2 id="一、它到底是什么"><a href="#一、它到底是什么" class="headerlink" title="一、它到底是什么"></a>一、它到底是什么</h2><p>按官方文档的描述，小组件有几条硬约束：</p>
+<ul>
+<li><strong>一份自包含的 HTML。</strong> CSS 和 JavaScript 都要内联，图片只能是 <code>data:</code> URL 或内联 SVG。源码最多 32768 字节，服务器用 zlib 压缩后不能超过 4096 字节。</li>
+<li><strong>完全离线。</strong> <code>fetch</code>、<code>XMLHttpRequest</code>、<code>WebSocket</code> 等网络接口都会抛错，外部脚本、字体和图片一律不加载，也不能跳转页面。</li>
+<li><strong>不在浏览器里跑。</strong> 脚本运行在 QuickJS 这个小型 JavaScript 引擎里，不是 WebView。客户端检查脚本对页面做的每个改动，只绘制合规的部分，因此在 iOS、Android、桌面和网页版上表现一致。</li>
+<li><strong>原生外观。</strong> 聊天主题色以 CSS 变量提供，没写样式的 <code>&lt;button&gt;</code> 会画成客户端自己的按钮。没有键盘输入，输入框、下拉框都会被移除。</li>
+<li><strong>代码固定，状态可变。</strong> HTML 发出后没有任何方法能替换它；会变的只有状态，而且<strong>只有机器人能写</strong>。</li>
+</ul>
+<p>最后一条最关键。状态分两种：<code>chat_data</code> 绑定一条消息，只在当前聊天可见；<code>public_data</code> 是随小组件显示在各处的共享状态。小组件只能读取状态、监听变化，不能自己改。它唯一的出口，是调用 <code>TelegramWidget.request(data)</code> 向机器人发一个 1—64 字节的请求；机器人用 <code>answerWidgetQuery</code> 在 15 秒内回复，回复最多 1024 字节，只给发起请求的那个小组件。要改状态，机器人得另外调用 <code>editMessageWidgetData</code>。</p>
+<p>这和 Telegram 已有的 Mini App 是两回事。官方文档专门做了对比：Mini App 是你托管的网页，在 WebView 里按需打开，可以联网、可以用键盘；小组件是消息的一部分，随聊天滚动一直可见，没有网络。复杂功能，官方建议仍然用 <code>openTelegramLink</code> 跳到机器人或 Mini App。</p>
+<h2 id="二、为什么这对智能体有意思"><a href="#二、为什么这对智能体有意思" class="headerlink" title="二、为什么这对智能体有意思"></a>二、为什么这对智能体有意思</h2><p>智能体在聊天里的回复，大多是文字。文字适合解释，不适合让人做决定。一个需要确认的操作，比如“按这个方案派单吗”“这笔付款确认吗”，用户往往要回一句“好”，再由模型去理解这句“好”指的是什么。</p>
+<p>小组件的模型恰好把这一步结构化了：</p>
+<ol>
+<li><strong>智能体在后端生成一张卡片。</strong> 卡片上写清楚方案、金额、对象，带一个“确认”按钮。</li>
+<li><strong>按钮只发一个短请求。</strong> 比如 <code>approve:1042</code>。小组件本身没有权限做任何事，也拿不到网络。</li>
+<li><strong>后端决定是否执行。</strong> 收到请求的是机器人，它去核对这个用户是谁、这单是否还有效，再决定执行，然后把卡片状态改成“已确认，执行中”或“已过期”。</li>
+</ol>
+<p>这正是我在<a href="/2026/11/10/agent-stop-points/">《给编程智能体放权之前，先想清楚它在哪里必须停下》</a>里说的那种停点：人确认的是一个具体、可读的对象，而不是一段自由文本；真正有副作用的动作，留在能做校验和审计的后端。小组件的设计把这件事从“建议”变成了平台约束：前端想绕也绕不过去，因为它根本不能写状态、不能联网。</p>
+<p>付款流程更能看出这种分工。官方文档写明，小组件可以通过 Telegram 内置的 TON 钱包请求付款或签名：点击时请求机器人，机器人返回一笔新生成的交易，小组件再交给钱包窗口，由用户在气泡<strong>之外</strong>的系统窗口里看到金额和收款方并确认。之后机器人收到交易哈希，文档要求它到链上核对发送方、收款方、金额和结果，而不是只凭哈希就相信。即使你用不到钱包，这个顺序也值得照抄：<strong>前端发起，后端出具，系统界面确认，后端再核对结果。</strong></p>
+<h2 id="三、几个容易忽略的限制"><a href="#三、几个容易忽略的限制" class="headerlink" title="三、几个容易忽略的限制"></a>三、几个容易忽略的限制</h2><p>一个新功能刚出来，最容易被高估。官方文档里有几处限制，决定了它现在能做什么：</p>
+<ul>
+<li><strong>生产环境只开放了一部分。</strong> 目前正式环境里，小组件只能出现在用户与机器人的私聊中，而且机器人发出的小组件消息自动受保护、不能转发。群组、内联模式、转发，都还只在测试服务器上可用。想做“群里一起投票”的智能体，眼下还不能上线。</li>
+<li><strong>请求有频率上限。</strong> 每个用户对每个机器人，5 秒内最多 5 个请求，后台请求也算在内。后台请求只在私聊原消息可见时发出，出现时一次，之后最多每 5 秒一次。它适合刷新眼前这张卡，不适合当成实时通道。</li>
+<li><strong>状态更新算发消息。</strong> 一次 <code>editMessageWidgetData</code> 计为机器人的一条发送；共享小组件每秒最多改一次。很多人同时操作时，文档建议在自己这边合并，最多每秒写一次。</li>
+<li><strong>没有无障碍语义。</strong> 当前版本里 <code>aria-*</code> 属性保留但不生效。文档建议把关键信息也写进消息说明文字（caption），不支持小组件的客户端也会显示这段文字。</li>
+<li><strong>代码和共享状态要当成公开的。</strong> 文档明确说：转发会把代码和共享状态带到任何聊天；在群里，聊天状态对所有成员可见；不要往小组件里放任何秘密。</li>
+</ul>
+<p>另外要注意，它是 Telegram 一家的协议。官方开源了 <code>widget-sandbox</code>（截至核验时最早的标签是 v0.1.0，文档建议固定使用 v0.1.1 这样的标签而不是分支），但这不等于出现了一个跨平台标准。</p>
+<h2 id="四、即使不用-Telegram，也可以借鉴的四条"><a href="#四、即使不用-Telegram，也可以借鉴的四条" class="headerlink" title="四、即使不用 Telegram，也可以借鉴的四条"></a>四、即使不用 Telegram，也可以借鉴的四条</h2><p>我更看重它背后的接口设计，而不是某个平台的新按钮。把它抽象一下，任何在对话里做智能体的产品都可以对照：</p>
+<ol>
+<li><strong>让确认对象可见、可读。</strong> 需要人拍板的地方，给一张写清楚“做什么、对谁、多少钱、何时过期”的卡片，而不是让模型去理解“好的”“行”。</li>
+<li><strong>前端只发意图，不持有权限。</strong> 按钮发出的是短小、可枚举的请求，比如 <code>approve:&lt;id&gt;</code>；后端负责鉴权、校验和执行。即使界面被篡改，能做的也只是“请求”。</li>
+<li><strong>界面代码发出后不变，变化都走状态。</strong> 这样历史消息里的卡片不会因为你改了模板而突然变成另一套逻辑；要新布局，就发新消息。审计时，看到的就是当时用户看到的。</li>
+<li><strong>每一种结果都要画出来。</strong> 文档的设计指南要求展示“发送中”、机器人的回答和每一种错误码。智能体的操作尤其需要：超时、过期、被拒绝，都应该有明确的状态，而不是让卡片停在一个看似还能点的样子。</li>
+</ol>
+<h2 id="五、一个最小示例"><a href="#五、一个最小示例" class="headerlink" title="五、一个最小示例"></a>五、一个最小示例</h2><p>下面是按官方文档拼出的最小形态，只用于说明结构，作者没有实际运行。机器人发出一张订单卡片，带一个确认按钮：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST https://api.telegram.org/bot&lt;token&gt;/sendWidget</span><br><span class="line">&#123;</span><br><span class="line">  &quot;chat_id&quot;: 111111111,</span><br><span class="line">  &quot;allow_queries&quot;: true,</span><br><span class="line">  &quot;caption&quot;: &quot;订单 #1042：确认后派单&quot;,</span><br><span class="line">  &quot;html&quot;: &quot;&lt;h3&gt;订单 #1042&lt;/h3&gt;&lt;p&gt;维修：厨房水管&lt;/p&gt;&lt;button onclick=\&quot;TelegramWidget.request(&#x27;approve:1042&#x27;)\&quot;&gt;确认派单&lt;/button&gt;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用户点按钮后，机器人会收到一个 <code>widget_query</code> 更新，里面有是谁点的和 <code>approve:1042</code>。机器人核对后先用 <code>answerWidgetQuery</code> 回复，再用 <code>editMessageWidgetData</code> 把这条消息的状态改成“已派单”。真正派单的动作，发生在机器人后端，而不是在小组件里。</p>
+<p>注意两个细节：没有 <code>allow_queries</code> 时，小组件的所有请求都会被拒绝；而 <code>caption</code> 不只是装饰，它是聊天列表、通知、搜索和旧版客户端看到的内容。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>智能体的界面，不一定非要是一个单独的应用。很多时候，用户需要的只是一张能看懂、能点一下、点完能看到结果的卡片，而且这张卡片不能越权。</p>
+<p>Telegram 这次给出的答案很克制：4KB、离线、不能输入、不能自己改状态。正是这些限制，让它更适合承载“人确认、后端执行”这一步。它现在还只在私聊里正式可用，离成熟还远；但“代码固定、状态归后端、前端只发请求”这条原则，今天就可以放进你自己的智能体产品里。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>Telegram，<a target="_blank" rel="noopener" href="https://core.telegram.org/bots/api-changelog">Bot API changelog：Bot API 10.4（2026-11-09）</a></li>
+<li>Telegram，<a target="_blank" rel="noopener" href="https://core.telegram.org/bots/widgets">Telegram Widgets 开发文档</a></li>
+<li>TelegramMessenger，<a target="_blank" rel="noopener" href="https://github.com/TelegramMessenger/widget-sandbox">widget-sandbox</a> 及其 <a target="_blank" rel="noopener" href="https://github.com/TelegramMessenger/widget-sandbox/blob/main/docs/tgw-format.md">tgw-format 文档</a></li>
+<li>Digital Trends，<a target="_blank" rel="noopener" href="https://www.digitaltrends.com/phones/telegram-is-turning-chat-messages-into-mini-apps-because-apparently-switching-apps-is-so-last-year/">Telegram is turning chat messages into mini-apps…</a>（2026-11-10，媒体报道）</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">13 <p>Articles</p></a></li>
+                    <li><a href="/categories">3 <p>Categories</p></a></li>
+                    <li><a href="/tags">19 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%83%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">一、它到底是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E5%AF%B9%E6%99%BA%E8%83%BD%E4%BD%93%E6%9C%89%E6%84%8F%E6%80%9D"><span class="toc-number">2.</span> <span class="toc-text">二、为什么这对智能体有意思</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%87%A0%E4%B8%AA%E5%AE%B9%E6%98%93%E5%BF%BD%E7%95%A5%E7%9A%84%E9%99%90%E5%88%B6"><span class="toc-number">3.</span> <span class="toc-text">三、几个容易忽略的限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%8D%B3%E4%BD%BF%E4%B8%8D%E7%94%A8-Telegram%EF%BC%8C%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%80%9F%E9%89%B4%E7%9A%84%E5%9B%9B%E6%9D%A1"><span class="toc-number">4.</span> <span class="toc-text">四、即使不用 Telegram，也可以借鉴的四条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%80%E4%B8%AA%E6%9C%80%E5%B0%8F%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">五、一个最小示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
