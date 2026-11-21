@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>开源浏览器智能体，先分清谁在规划、谁在点击，以及成绩怎么测 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+资料核验：2026 年 11 月 21 日约 17:50—18:20（上海时间），依据 Karpo 官方发布博文、machinepulse-ai&amp;#x2F;karpo-browser 与 mach,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">开源浏览器智能体，先分清谁在规划、谁在点击，以及成绩怎么测</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/AI智能体"><b>「
+                    </b>AI智能体<b> 」</b></a>
+                
+                十一月 21, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/11/21/karpo-browser-plan-click-eval/" title="开源浏览器智能体，先分清谁在规划、谁在点击，以及成绩怎么测" class="">开源浏览器智能体，先分清谁在规划、谁在点击，以及成绩怎么测</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    6.5k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    6 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/AI%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag">AI智能体</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>资料核验：2026 年 11 月 21 日约 17:50—18:20（上海时间），依据 <a target="_blank" rel="noopener" href="https://karpo.ai/blog/karpo-browser">Karpo 官方发布博文</a>、<a target="_blank" rel="noopener" href="https://github.com/machinepulse-ai/karpo-browser">machinepulse-ai&#x2F;karpo-browser</a> 与 <a target="_blank" rel="noopener" href="https://github.com/machinepulse-ai/karpo-decision">machinepulse-ai&#x2F;karpo-decision</a> 当时的 GitHub 元数据、Apache-2.0 许可证和 README，以及 <a target="_blank" rel="noopener" href="https://huggingface.co/MachinePulseAI/karpo-decision-27B-act">Karpo Decision 27B Act 模型卡</a> 和 <a target="_blank" rel="noopener" href="https://karpo.ai/benchmarks/browserbench">Karpo BrowserBench 页面</a>。仓库、模型卡和评测数字都会变化，细节请以各官方页面最新文本为准。文中的准确率、耗时和费用均来自官方自述或官方写明的评测说明，作者没有安装、运行或复现这些工具与评测，也不构成选型或安全背书。</p>
+</blockquote>
+<p>“让智能体自己打开网页把事办完”，是现在很好卖的一句话。读到发布稿里的准确率和每项任务费用，人很容易把三件事当成一件事：谁在做计划，谁在页面上点选，以及这个数字到底是在什么口径下测出来的。</p>
+<p>这和本博客谈<a href="/2026/11/19/aitoearn-claimed-vs-available/">开源项目要分清“宣称支持”和“默认可用”</a>是同一类问题，只是对象从平台清单换成了浏览器智能体的任务拆分和评测口径。它也和<a href="/2026/11/10/agent-stop-points/">给编程智能体放权之前，先想清楚它在哪里必须停下</a>有关，但本文不展开权限清单，只看官方文档把规划和点击分开之后，成绩与边界应该怎么读。</p>
+<h2 id="一、先分清谁在规划，谁在点击"><a href="#一、先分清谁在规划，谁在点击" class="headerlink" title="一、先分清谁在规划，谁在点击"></a>一、先分清谁在规划，谁在点击</h2><p>2026 年 11 月 21 日，Karpo 发布了开源项目 <a target="_blank" rel="noopener" href="https://github.com/machinepulse-ai/karpo-browser">karpo-browser</a>，并同时放出页面操作模型 <a target="_blank" rel="noopener" href="https://huggingface.co/MachinePulseAI/karpo-decision-27B-act">Karpo Decision 27B Act</a>。当天约 17:50 用 GitHub 接口读取的元数据是：karpo-browser 为公开仓库，许可证 Apache-2.0，语言 TypeScript，星标 0，fork 0；仓库创建于 2026 年 11 月 21 日 01:43（上海时间），最近一次推送在当天 05:09，当时能读到的提交说明是 <code>karpo-browser 0.1.0</code>。配套推理代码仓库 <a target="_blank" rel="noopener" href="https://github.com/machinepulse-ai/karpo-decision">karpo-decision</a> 同样是 Apache-2.0，当时星标 29。星标会继续变化，请以仓库页面当时的数字为准。</p>
+<p>它要处理的，是浏览器智能体里最常见的一种做法：让同一个通用大模型决定每一个点击、输入和滚动。karpo-browser 把工作拆成两层。规划层被叫做 System 2，由 Claude Code、Codex 或开发者自己的智能体承担：把用户任务拆成目标，写出可以填进表单的值，阅读页面，比较选项，并在目标完成后作答。操作层被叫做 System 1，由决策模型承担：它看到的是截图、编号后的页面元素、当前目标和最近几步的变化，然后在给定选项里选一步。官方说明是一次前向计算、不生成长文本。</p>
+<p>官方 README 把一次运行的结束状态写得很清楚。<code>done</code> 只表示 System 1 判断目标已经达到，还要由 System 2 对照页面再检查；<code>needs_approval</code> 表示下一步涉及付款、预订或难以撤回的操作；此外还有缺值、站点无法提供、被拦截、循环和超时等状态。MCP 接口也按这个分工来：<code>run_browser_agent</code> 把目标和可填写的值交给 System 1，<code>read_page</code> 把编号后的页面交回给规划模型，必要时还可以由规划模型手工点击或输入。</p>
+<p>官方模型卡还给出了一组他们自己跑基准时的分工数字：在最终配置的 3 次全量任务运行中，System 1 承担了约 78% 的页面操作（不含打开网址），却只占用每项任务约 14% 的时间和约 13% 的模型费用。这些数字说明的是他们那次评测里两层模型分别干了多少活，不能单独证明换一套网站或换一个规划模型后，费用结构仍然相同。</p>
+<h2 id="二、发布稿里的准确率，要先问是不是排行榜成绩"><a href="#二、发布稿里的准确率，要先问是不是排行榜成绩" class="headerlink" title="二、发布稿里的准确率，要先问是不是排行榜成绩"></a>二、发布稿里的准确率，要先问是不是排行榜成绩</h2><p>官方博文和模型卡都把这样一个结果放在最前面：在 Browserbase Benchmark v2 的 38 个核心任务上，karpo-browser 用 DeepSeek V4.1 Flash 做 System 2、用 Karpo Decision 27B Act 做 System 1，8 次运行的平均任务准确率是 84%，平均智能体运行时间 218 秒，模型费用估计为每项任务 0.096 美元。</p>
+<p>把这组数字当成“已经打上官方排行榜的成绩”，并不符合他们自己的说明。模型卡写得很直接：这些是他们自己的运行，不是榜上的记录；他们统计的是智能体自身的运行时间，而榜上每条记录是单次运行。评测程序用的是 Stagehand 在 2026 年 11 月 10 日的开源评估代码，外加接入 karpo-browser 的补丁，默认评判模型是 Gemini 3.5 Flash；他们写明，并未核实榜上记录是否使用同一版本的评判程序和评判模型。计时只包含智能体运行时间，不含评分，单项限额 450 秒；他们也写明，没有找到榜方关于计时边界的说明。</p>
+<p>费用同样要拆开看。0.096 美元里，System 2 按当天 OpenRouter 公开价格乘以实际 token 计算，System 1 则是按“同等规模 Qwen 模型的公开输入价”每百万 token 0.06 美元来估的——因为 Karpo Decision 27B Act 没有公开 API。模型卡写明，按实际 GPU 时间计算，模型费用会落到每项任务 0.11 到 0.14 美元。Browserbase 云浏览器费用大约每项任务 0.33 到 0.38 美元，以及评分费用，都不包含在这个数字里。</p>
+<p>还有一个容易被标题数字盖住的细节。官方材料里，102 项全部任务的汇总并不只给出一个数。博文写过三组运行的平均准确率 88.9%；模型卡把“最终配置、平均耗时最短的那一组三次运行”写成 86%，又写 8 次全量运行平均通过 88.8 项，最准的一组两次平均约 89%。38 个核心任务的 8 次结果，通过数从 29 到 35 不等，也就是大约 76% 到 92%。更稳妥的读法是：先看他们公布的是哪一组运行、是核心集还是全集，再看平均值背后的波动，而不是只记住最显眼的 84%。</p>
+<p>模型卡还加了一句限制：评测中的 DeepSeek V4.1 Flash 是 10 月 17 日的版本并打开了图像输入，karpo-browser 的运行框架也在这套任务上做过调整，因此“不能把它看成与榜上其他 DeepSeek V4.1 Flash 记录的受控对比”。官方自己把这句话写出来，比任何外部评论都更值得先读。</p>
+<h2 id="三、任务做完了，不代表每一步决策都选对"><a href="#三、任务做完了，不代表每一步决策都选对" class="headerlink" title="三、任务做完了，不代表每一步决策都选对"></a>三、任务做完了，不代表每一步决策都选对</h2><p>在线基准回答的是：在真实网站上，这件任务有没有做完。可是任务失败时，人们还想知道是哪一步点错了。Karpo 为此做了 <a target="_blank" rel="noopener" href="https://karpo.ai/benchmarks/browserbench">Karpo BrowserBench</a>（KBB）：用录好的真实页面逐步回放，让不同模型面对同一组固定输入，逐步打分。官方页面写明，KBB 1.0 覆盖 787 条任务、23,075 步，来自 584 个网站；一条指令只有每一步都选对，才算完成，平均 7.6 步。</p>
+<p>在线任务完成率，和逐步决策正确率，不是同一个指标。官方给出的 2026 年 11 月 17 日私有分割快照是：Karpo Decision 27B Act 的指令完成率是 35.5%，逐步准确率 78.5%；当时榜上四个通用大模型的指令完成率是 38.1% 到 41.0%。也就是说，在他们自己的逐步基准上，这个专为网页操作微调的模型，完成率并没有高于这几个通用模型。模型卡也承认：榜上其他决策模型往往只读页面文本，而它和通用大模型一样会看截图，对那些决策模型的领先，有一部分来自输入不同。</p>
+<p>所以，把“更快、更便宜”直接读成“逐步决策也更准”，并不符合当前公开的 KBB 数字。更稳妥的用法是把两类评测分开：在线基准看任务能不能做完，逐步基准看在固定页面上会不会选错；再把费用、延迟和完成率放到一起看，而不是只比较最容易传播的那个百分数。</p>
+<h2 id="四、文档里的边界，也不宜直接当成已经拦住的闸门"><a href="#四、文档里的边界，也不宜直接当成已经拦住的闸门" class="headerlink" title="四、文档里的边界，也不宜直接当成已经拦住的闸门"></a>四、文档里的边界，也不宜直接当成已经拦住的闸门</h2><p>规划和使用操作模型分开之后，付款、登录和密钥仍然要单独看。</p>
+<p>官方 README 把 <code>needs_approval</code> 解释为：下一步涉及付款、预订或难以撤回的操作，规划层只有在任务允许时才继续。博文写得更具体：对付款或预订这类动作，审批边界取决于 System 1 在目标权限不足时选择 <code>NEEDS_APPROVAL</code>。换句话说，这是模型按目标描述做出的状态判断，而不是文档里已经写死、与模型无关的硬拦截。如果规划层使用 Codex，README 还提到：Codex 会在每个会操作页面的工具调用前询问。这是另一层来自客户端的确认，和 System 1 自己报出的状态不是一回事。</p>
+<p>密钥的说法也要对照着读。README 写：用 <code>--secret</code> 或 <code>run()</code> 里的 <code>secrets</code> 提供的值，会按名字被输入到页面上，不发送给任何模型，随后在 System 1 读到的内容里也会被遮罩。官方博文则补充：运行框架会把密钥的名字作为文本传给模型；向页面填入密钥后，不再把截图发给 System 1，但 System 2 在启用图像输入时仍可能收到截图。更稳妥的理解是：官方保证的是密钥的值不进入模型，不是“名字和填入后的页面图像对所有模型都不可见”。</p>
+<p>安装路径也值得先核验。README 给出了 <code>npm install -g karpo-browser</code>，并挂了 npm 徽章。2026 年 11 月 21 日核验时，<a target="_blank" rel="noopener" href="https://registry.npmjs.org/karpo-browser">npm 官方注册表</a> 和 unpkg 对该包名的访问都返回 404；仓库里的 <code>package.json</code> 版本是 0.1.0。这不一定意味着项目不可用，只说明在发布当天，文档里的全局安装命令还不能被当成已经上架的安装路径。要从源码使用，应回到仓库说明，而不是默认 npm 徽章已经指向一个可下载的包。</p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>浏览器智能体要不要用，先不必被一次发布稿里的准确率带着走。更值得先问清楚的，是这三层：任务是如何拆给规划模型和页面操作模型的；公开成绩是在线任务完成率还是逐步决策正确率，以及它是不是排行榜上的正式记录；付款、登录和密钥在文档里是靠模型申报状态、客户端确认，还是与模型无关的硬限制。把这三层分开，数字才比较好读。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li>Karpo：<a target="_blank" rel="noopener" href="https://karpo.ai/blog/karpo-browser">Introducing karpo-browser</a>、<a target="_blank" rel="noopener" href="https://karpo.ai/benchmarks/browserbench">Karpo BrowserBench</a></li>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/machinepulse-ai/karpo-browser">machinepulse-ai&#x2F;karpo-browser</a>、<a target="_blank" rel="noopener" href="https://github.com/machinepulse-ai/karpo-decision">machinepulse-ai&#x2F;karpo-decision</a></li>
+<li>Hugging Face：<a target="_blank" rel="noopener" href="https://huggingface.co/MachinePulseAI/karpo-decision-27B-act">MachinePulseAI&#x2F;karpo-decision-27B-act</a></li>
+<li>npm 注册表核验（2026-11-21，返回 404）：<a target="_blank" rel="noopener" href="https://registry.npmjs.org/karpo-browser">registry.npmjs.org&#x2F;karpo-browser</a></li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">19 <p>Articles</p></a></li>
+                    <li><a href="/categories">5 <p>Categories</p></a></li>
+                    <li><a href="/tags">30 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E5%88%86%E6%B8%85%E8%B0%81%E5%9C%A8%E8%A7%84%E5%88%92%EF%BC%8C%E8%B0%81%E5%9C%A8%E7%82%B9%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">一、先分清谁在规划，谁在点击</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8F%91%E5%B8%83%E7%A8%BF%E9%87%8C%E7%9A%84%E5%87%86%E7%A1%AE%E7%8E%87%EF%BC%8C%E8%A6%81%E5%85%88%E9%97%AE%E6%98%AF%E4%B8%8D%E6%98%AF%E6%8E%92%E8%A1%8C%E6%A6%9C%E6%88%90%E7%BB%A9"><span class="toc-number">2.</span> <span class="toc-text">二、发布稿里的准确率，要先问是不是排行榜成绩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BB%BB%E5%8A%A1%E5%81%9A%E5%AE%8C%E4%BA%86%EF%BC%8C%E4%B8%8D%E4%BB%A3%E8%A1%A8%E6%AF%8F%E4%B8%80%E6%AD%A5%E5%86%B3%E7%AD%96%E9%83%BD%E9%80%89%E5%AF%B9"><span class="toc-number">3.</span> <span class="toc-text">三、任务做完了，不代表每一步决策都选对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%96%87%E6%A1%A3%E9%87%8C%E7%9A%84%E8%BE%B9%E7%95%8C%EF%BC%8C%E4%B9%9F%E4%B8%8D%E5%AE%9C%E7%9B%B4%E6%8E%A5%E5%BD%93%E6%88%90%E5%B7%B2%E7%BB%8F%E6%8B%A6%E4%BD%8F%E7%9A%84%E9%97%B8%E9%97%A8"><span class="toc-number">4.</span> <span class="toc-text">四、文档里的边界，也不宜直接当成已经拦住的闸门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2"><span class="toc-number">5.</span> <span class="toc-text">写在后面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">6.</span> <span class="toc-text">参考来源</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
