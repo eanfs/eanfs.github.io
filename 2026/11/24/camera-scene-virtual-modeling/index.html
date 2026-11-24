@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>用多路摄像头给场景做虚拟建模，先分清鸟瞰、占用和延迟数字测的是什么 - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+资料核验：2026 年 11 月 24 日约 22:20—23:30（上海时间）。方法文献主要依据 Philion 与 Fidler 的 Lift, Splat, Shoot（ECCV 2020，,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">用多路摄像头给场景做虚拟建模，先分清鸟瞰、占用和延迟数字测的是什么</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/视觉感知"><b>「
+                    </b>视觉感知<b> 」</b></a>
+                
+                十一月 24, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/11/24/camera-scene-virtual-modeling/" title="用多路摄像头给场景做虚拟建模，先分清鸟瞰、占用和延迟数字测的是什么" class="">用多路摄像头给场景做虚拟建模，先分清鸟瞰、占用和延迟数字测的是什么</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.9k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%9C%BA%E6%99%AF%E8%A1%A8%E5%BE%81/" rel="tag">场景表征</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5/" rel="tag">视觉感知</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>资料核验：2026 年 11 月 24 日约 22:20—23:30（上海时间）。方法文献主要依据 Philion 与 Fidler 的 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2008.05711">Lift, Splat, Shoot</a>（ECCV 2020，<a target="_blank" rel="noopener" href="https://nv-tlabs.github.io/lift-splat-shoot">项目页</a>），以及 Li 等的 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.17270">BEVFormer</a>（ECCV 2022，<a target="_blank" rel="noopener" href="https://github.com/fundamentalvision/BEVFormer">代码仓库</a>）。公开系统案例主要依据 <a target="_blank" rel="noopener" href="https://elonmuskarchive.org/video/tesla-ai-day-2021-08-19">2021 AI Day 演讲记录</a>、<a target="_blank" rel="noopener" href="https://stockanalysis.com/stocks/tsla/transcripts/32847-ai-day-2022/">2022 AI Day 演讲记录</a>、<a target="_blank" rel="noopener" href="https://stockanalysis.com/stocks/tsla/transcripts/24777-autonomy-investor-day-2019/">2019 Autonomy Day 演讲记录</a>、特斯拉硬件团队的 <a target="_blank" rel="noopener" href="https://ksra.fr/wp-content/uploads/2020/10/talpes2020.pdf">IEEE Micro 2020 论文</a>、<a target="_blank" rel="noopener" href="https://tier4.co.jp/en/updates/technology/20260908-reference-e2e-model">TIER IV 关于 METEOR 的技术说明</a>、<a target="_blank" rel="noopener" href="https://github.com/tier4/METEOR">tier4&#x2F;METEOR 仓库 README</a> 与 <a target="_blank" rel="noopener" href="https://huggingface.co/AutowareFoundation/meteor">Hugging Face 模型卡</a>，并对照 <a target="_blank" rel="noopener" href="https://blog.comma.ai/0112release/">comma.ai 0.11.2 发布说明</a>、<a target="_blank" rel="noopener" href="https://github.com/OpenDriveLab/UniAD">OpenDriveLab&#x2F;UniAD</a> 与 <a target="_blank" rel="noopener" href="https://github.com/hustvl/VAD">hustvl&#x2F;VAD</a>。论文、仓库和演讲文本都会更新，参数量与延迟请以各页面当时的文本为准。作者没有训练或复现这些模型，也没有在开发板上实测延迟，文中数字全部来自原文或项目自己的测量说明，不构成性能对比实验。</p>
+</blockquote>
+<p>多路摄像头拍到的是一组二维视频。要在计算机里“看到”周围的空间，通常还得把这些像素变成一种可计算的场景模型：可能是一张鸟瞰网格，可能是一块三维占用体积，也可能是一组空间里的向量。这件事常被放进更大的系统里讨论，但建模方法本身可以单独看清楚：像素怎样被举到三维，不同相机如何融成同一个坐标系，时间信息怎样对齐，以及公开材料里那些毫秒数字到底量的是哪一步。</p>
+<p>这和本博客谈<a href="/2026/11/24/fast-anything-port-vs-prove/">用编程智能体改写慢函数，先分清“能搬到 Rust”和“能证明行为一致”</a>类似：写出一种看起来对的表示，和证明它在空间、时间和遮挡上真的一致，并不是同一层。</p>
+<h2 id="一、先分清三种常被通称的“场景模型”"><a href="#一、先分清三种常被通称的“场景模型”" class="headerlink" title="一、先分清三种常被通称的“场景模型”"></a>一、先分清三种常被通称的“场景模型”</h2><p>公开讨论里，“用摄像头做虚拟建模”至少对应三种并不等价的数据结构。</p>
+<p>第一种是鸟瞰表示，也就是 Bird’s-Eye-View，简称 BEV。它把多路图像变换到一个与地面平行的网格里，格子上可以放车道、人行横道、物体位置等。Philion 与 Fidler 在 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2008.05711">Lift, Splat, Shoot</a> 里把目标写成：从任意数量的摄像头图像，直接抽出场景在鸟瞰坐标系中的栅格表示。它适合表达“在地面上往下看”的布局，但默认把世界压到了一个平面网格上，高度和悬挂在空中的结构，并不是这种表示的一等公民。</p>
+<p>第二种是三维占用。对车辆周围每一个三维位置，模型预测该处是否被物体占据，有时还附带语义（路缘、车辆、行人、碎片）和运动，也就是占用流。体积占用不再预先把世界压扁，因此更能表达遮挡后面还有没有东西、一个物体在高度上怎样伸展。它通常也更贵：同样覆盖范围下，体素数量会按深度增加。</p>
+<p>第三种是矢量空间或查询式表示。这里不一定先铺一张密网格，而是用一组空间位置上的特征向量来描述场景。2021 年 AI Day 上，Karpathy 把多路摄像头特征经过变换器“重新表示到输出空间里的矢量空间”，再送入时序模块和任务头。2022 年介绍占用网络时，Duan 也说网络在矢量空间里直接生成统一的体积占用，并用三维查询去任意位置读取更细的位置和语义。网格和查询可以同时存在：网格给出固定分辨率的占用，查询用来补更高分辨率。不宜把“矢量空间”理解成占用的别名，也不宜把它理解成已经有了一张完整的密集体素地图。</p>
+<p>这三种表示可以出现在同一个系统里。TIER IV 的 <a target="_blank" rel="noopener" href="https://github.com/tier4/METEOR">METEOR</a> 就把鸟瞰车道分割、三维检测、三维语义占用和占用流写成一次前向的不同输出。关键是：有一个占用头，并不自动等于有一个在时间上稳定、在遮挡后仍一致的世界模型。输出名单相近，只说明任务设置相近。</p>
+<h2 id="二、像素是怎样被举到同一个三维坐标系里的"><a href="#二、像素是怎样被举到同一个三维坐标系里的" class="headerlink" title="二、像素是怎样被举到同一个三维坐标系里的"></a>二、像素是怎样被举到同一个三维坐标系里的</h2><p>要把多路二维图像融进同一个场景模型，公开方法大致走两条路。一条先估计深度，再按相机几何把特征“举”起来；另一条用查询去“问”图像里和某个三维位置相关的区域。两条路都要先知道相机怎么装、怎么成像。</p>
+<p>Lift, Splat, Shoot 把第一条路写得很清楚。因为单目像素的深度本身是模糊的，它不为每个像素只选一个深度，而是学习一个离散深度分布，在所有可能的深度上生成特征，相当于把每张图“举起”成一个视锥里的特征体；然后再把各路相机的视锥“溅射”到同一张鸟瞰网格上做汇聚。外参和内参定义了参考坐标到像素坐标的映射，训练和测试都不要求深度传感器。METEOR 的官方说明把多相机特征按像素深度分布举到鸟瞰空间，明确写在这条谱系里，并补充了用激光雷达深度做监督、以及用自车运动对齐历史鸟瞰特征的时序融合。需要分开的是：激光雷达在 METEOR 里被用于自动标注和深度监督；官方同时写明，参考模型部署时以环视摄像头为输入，激光雷达不是必需输入。</p>
+<p>BEVFormer 代表第二条路。它在鸟瞰平面上预置网格形状的查询，用空间交叉注意力让每个查询到各路相机的相关区域提取特征，再用时序自注意力循环融合历史鸟瞰信息。论文把这套统一的鸟瞰表示用于三维检测和地图分割，并在 nuScenes 测试集上报告了当时的检测成绩；消融和可视化还显示，加入时序后，对低可见度或被遮挡物体的召回会更好。这里的“虚拟模型”首先是那张可被多个任务头共享的鸟瞰特征，而不是某一个检测框列表。</p>
+<p>特斯拉 2022 年公开的占用网络，更接近查询式的三维版本。Duan 的说明是：先按标定校正各路图像，用骨干网络提取图像特征，再构造一组三维位置查询，把图像特征当作键和值送入注意力模块，得到高维空间特征；这些特征再用车辆里程计在时间上对齐，经过反卷积输出固定大小的占用和占用流体素网格。他们还提到，固定网格对某些用途可能不够精细，因此会再保留逐体素特征，配合多层感知机和三维查询，在任意位置读取位置和语义。输入也不是典型的 8 位 RGB，而是 12 位原始光子计数图像；多出的 4 位被说成有 16 倍动态范围，并且不再把图像信号处理器放在这条回路里，以降低延迟。</p>
+<p>时序是建模里另一个容易被忽略的维度。BEVFormer 用历史鸟瞰做循环融合；METEOR 的架构说明里也有按自车运动对齐过去特征。但 <a target="_blank" rel="noopener" href="https://huggingface.co/AutowareFoundation/meteor">Hugging Face 上的 METEOR 模型卡</a> 写明：检查点里虽然有时序记忆，导出的部署模型把这段历史“烤掉”了，实际部署是单帧的，并不使用过去的画面。同一套方法，训练时的结构和拿来做推理的导出图，不必相同。谈“它有没有时序模型”，要看你指的是论文里的网络，还是当前发布的推理引擎。</p>
+<h2 id="三、两个公开案例：同一类表示，并不在同一套约束里运行"><a href="#三、两个公开案例：同一类表示，并不在同一套约束里运行" class="headerlink" title="三、两个公开案例：同一类表示，并不在同一套约束里运行"></a>三、两个公开案例：同一类表示，并不在同一套约束里运行</h2><p>特斯拉 2021 到 2022 年的公开演讲，适合当作“多任务视觉建模如何被讲出来”的案例，而不是一张可以沿用到今天的结构图。2021 年的 HydraNet 先是共享骨干加多个图像任务头，后来再把多路特征表示到矢量空间并做时序融合。2022 年的占用网络则被说成：接收全部八路摄像头视频，直接输出统一的体积占用、语义和占用流；因为有视频上下文，它被描述为能够预测当前被挡住的障碍。Elluswamy 还谈到可见性掩膜，以及在遮挡后面生成所谓的“幽灵物体”。Duan 给出的运行节奏是：这套网络当时跑在所有配备 FSD 计算机的车上，借助专用加速器“大约每 10 毫秒运行一次”。必须把范围说死：这是 2022 年这一个占用网络的运行节奏，不是整套视觉流水线的端到端延迟，也不是 2026 年模型仍然按 10 毫秒更新的证明。2021 年的 HydraNet 图和 2022 年的占用图，同样不宜叠成“当前模型”。</p>
+<p>METEOR 适合当作“同一类表示被写成可下载模型”的案例。2026 年 9 月 8 日的<a target="_blank" rel="noopener" href="https://tier4.co.jp/en/updates/technology/20260908-reference-e2e-model">官方说明</a>写的是：参考模型不依赖高精地图，只靠环视摄像头视频，由一个网络同时做鸟瞰感知和轨迹等输出；数据采集车有八路摄像头，模型输入与这套配置一致。车端实现走 TensorRT，可部署到 NVIDIA Jetson Orin。官方正文对延迟写得比较谨慎：在单块 Orin GPU 上确认能以“实用的延迟”运行，具体数字仍在持续改进。更细的数字出现在仓库和模型卡里：约 5400 万参数，一次前向给出 12 项任务；在 Jetson AGX Orin 上，项目自己测到的 INT8 推理中位数约为稀疏版 67.4 毫秒、稠密版 75.4 毫秒，这是推理本身，演示里的渲染还会另占时间。模型卡还写明，绝对精度来自内部验证集，这次发布没有给出，因为无法与公开基准直接比较。</p>
+<p>这两套公开数字不能直接相减。一个是 2022 年演讲里某个占用网络的更新节奏，硬件是车规专用加速器；一个是 2026 年参考模型在 Orin 上、含多项输出的推理中位数。输入分辨率、是否单帧、是否包含后处理，都不在同一张对照表里。把它们写成“谁更快”，并没有可核对的公分母。</p>
+<p>实时推理的约束，公开材料里还能再往下看一层。2019 年 Autonomy Day 上，Bannon 介绍专用加速器时说：每枚加速器有 32MB 片上缓存，用来暂存中间结果、减少芯片内外的数据搬运；他们选用 8 位整数乘法以降低功耗，指令集里包含 DMA，编译器会自动插入这些搬运，让数据在计算需要时到达。IEEE Micro 2020 的论文重复了 32MB 缓存和每芯片约 72 TOPS 这些数字。这些是“怎样把已经设计好的网络及时算完”的工程选择，并不能单独说明场景模型在几何上有多准确。comma.ai 在 <a target="_blank" rel="noopener" href="https://blog.comma.ai/0112release/">0.11.2</a> 里则把更大的视觉骨干和约 40 亿参数的 world model 一起发布；后者被用于扩大训练和视频生成质量，是另一种“虚拟世界”：它建模的是可模拟的未来画面，而不是一张公开的鸟瞰或占用网格。同一份发布说明里，车上驾驶大模型的官方参数表合计约 3.83 亿（其中视觉部分约 3.49 亿），不能和这约 40 亿的训练用 world model 混成一个数字。参数量也说明不了它采用了哪一种场景表示。</p>
+<p>研究代码里，<a target="_blank" rel="noopener" href="https://github.com/OpenDriveLab/UniAD">UniAD</a> 把感知到占用、规划放进一个面向规划的框架，<a target="_blank" rel="noopener" href="https://github.com/hustvl/VAD">VAD</a> 则把场景写成矢量表示。它们的公开成绩主要出现在 nuScenes 等数据集，以及后来接入仿真的闭环评测。对本文来说，它们的价值是把“场景被建成什么”写清楚了：一块占用、一组矢量、一张可被多个任务共享的中间特征。它们不是用来证明某一种表示已经在所有传感器配置上通用。</p>
+<h2 id="四、表示名字相同，并不等于建成了同一个世界"><a href="#四、表示名字相同，并不等于建成了同一个世界" class="headerlink" title="四、表示名字相同，并不等于建成了同一个世界"></a>四、表示名字相同，并不等于建成了同一个世界</h2><p>下面这一节是本文的判断，不是上述论文或演讲里的原话。已核验的是各文本当时怎么写；推论和尚未执行的设想会单独标明。</p>
+<p>我认为最容易混掉的，不是“有没有占用网络”，而是三种常常被收成一句的东西：输出头的名字、把像素举到三维的方法，以及这个表示在时间和遮挡上是否自洽。</p>
+<p>第一，鸟瞰网格、体积占用和矢量查询，回答的不是同一个几何问题。鸟瞰擅长地面布局，占用擅长“这个三维格子里有没有东西”，查询式表示则允许在任意位置取样。一个系统同时输出这三者，说明它把多个任务接到了同一组特征上；它并不自动保证这些输出在同一位置上互相一致。例如鸟瞰里的车道与占用里的路缘，是否对得上，公开演示往往只展示并排可视化，并不等于给出了对齐误差。</p>
+<p>第二，时序和遮挡，是“看起来像三维”和“真的在维护一个空间模型”之间的缝。特斯拉 2022 年把视频上下文和可见性掩膜写成占用模型的一部分，并讨论遮挡后的物体。BEVFormer 的论文也用时序来解释被遮挡物体的召回。相比之下，METEOR 当前发布的部署导出被写成单帧。若只比较输出名单，两者都很像；若问推理时有没有把过去的画面计入当前的空间估计，公开材料给出的答案并不相同。单帧模型当然仍可能通过网络容量“记住”几何先验，但这和显式对齐历史特征，不是同一机制。</p>
+<p>第三，延迟数字量的是计算预算，不是模型是否自洽。10 毫秒和 67 毫秒都可以是真实测量，但只有在输入、输出、硬件和是否包含后处理都对齐之后，才能比较。官方博客写“实用延迟”、仓库给出中位数，也是两种不同的披露方式：前者更保守，后者更具体，却仍是项目自己的测量。没有复现之前，不宜把其中任何一个写成已经到手的基准。</p>
+<p>一个可以直接验证、但本文尚未执行的做法是：按 METEOR 仓库写明的 Orin INT8 路径，只复核 67.4 毫秒和 75.4 毫秒能否在同样条件下得到同一量级的结果，并分清这是纯推理时间还是含渲染的演示帧率；再在同一段连续画面上，观察单帧导出版本的占用是否会在遮挡和再出现时抖动。它仍然证明不了表示在所有场景上的几何精度，但能把“发布的是什么图”和“延迟测的是哪一步”核对清楚。</p>
+<p>用摄像头给场景做虚拟建模，核心不是先发明一种新的输出名字。公开材料已经提供了几条可核对的线索：像素可以按深度分布举起，也可以由空间查询去取；鸟瞰、占用和矢量并不是同一种模型；有没有把历史帧对齐进来，会改变这个模型到底在维护什么。先把表示、举方式和延迟口径分开，再去读下一份结构图或毫秒数字，才不容易把可视化效果读成已经建成的世界。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li>Philion, Fidler：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2008.05711">Lift, Splat, Shoot</a>，ECCV 2020；<a target="_blank" rel="noopener" href="https://nv-tlabs.github.io/lift-splat-shoot">项目页与代码</a></li>
+<li>Li 等：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.17270">BEVFormer</a>，ECCV 2022；<a target="_blank" rel="noopener" href="https://github.com/fundamentalvision/BEVFormer">fundamentalvision&#x2F;BEVFormer</a></li>
+<li>特斯拉演讲记录：<a target="_blank" rel="noopener" href="https://stockanalysis.com/stocks/tsla/transcripts/24777-autonomy-investor-day-2019/">2019 Autonomy Day</a>、<a target="_blank" rel="noopener" href="https://elonmuskarchive.org/video/tesla-ai-day-2021-08-19">2021 AI Day</a>、<a target="_blank" rel="noopener" href="https://stockanalysis.com/stocks/tsla/transcripts/32847-ai-day-2022/">2022 AI Day</a>；对应视频：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Ucp0TTmvqOE">2019</a>、<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=j0z4FweCy4M">2021</a>、<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ODSJsviD_SU">2022</a></li>
+<li>硬件论文：Talpes 等，<a target="_blank" rel="noopener" href="https://ksra.fr/wp-content/uploads/2020/10/talpes2020.pdf">Compute Solution for Tesla’s Full Self-Driving Computer</a>，IEEE Micro，2020</li>
+<li>METEOR：<a target="_blank" rel="noopener" href="https://tier4.co.jp/en/updates/technology/20260908-reference-e2e-model">TIER IV 技术说明</a>（2026-09-08）、<a target="_blank" rel="noopener" href="https://github.com/tier4/METEOR">tier4&#x2F;METEOR</a>、<a target="_blank" rel="noopener" href="https://huggingface.co/AutowareFoundation/meteor">Hugging Face 模型卡</a></li>
+<li>其他对照：<a target="_blank" rel="noopener" href="https://blog.comma.ai/0112release/">comma.ai 0.11.2 发布说明</a>、<a target="_blank" rel="noopener" href="https://github.com/OpenDriveLab/UniAD">OpenDriveLab&#x2F;UniAD</a>、<a target="_blank" rel="noopener" href="https://github.com/hustvl/VAD">hustvl&#x2F;VAD</a></li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">22 <p>Articles</p></a></li>
+                    <li><a href="/categories">6 <p>Categories</p></a></li>
+                    <li><a href="/tags">32 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E5%88%86%E6%B8%85%E4%B8%89%E7%A7%8D%E5%B8%B8%E8%A2%AB%E9%80%9A%E7%A7%B0%E7%9A%84%E2%80%9C%E5%9C%BA%E6%99%AF%E6%A8%A1%E5%9E%8B%E2%80%9D"><span class="toc-number">1.</span> <span class="toc-text">一、先分清三种常被通称的“场景模型”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%83%8F%E7%B4%A0%E6%98%AF%E6%80%8E%E6%A0%B7%E8%A2%AB%E4%B8%BE%E5%88%B0%E5%90%8C%E4%B8%80%E4%B8%AA%E4%B8%89%E7%BB%B4%E5%9D%90%E6%A0%87%E7%B3%BB%E9%87%8C%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">二、像素是怎样被举到同一个三维坐标系里的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%A4%E4%B8%AA%E5%85%AC%E5%BC%80%E6%A1%88%E4%BE%8B%EF%BC%9A%E5%90%8C%E4%B8%80%E7%B1%BB%E8%A1%A8%E7%A4%BA%EF%BC%8C%E5%B9%B6%E4%B8%8D%E5%9C%A8%E5%90%8C%E4%B8%80%E5%A5%97%E7%BA%A6%E6%9D%9F%E9%87%8C%E8%BF%90%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">三、两个公开案例：同一类表示，并不在同一套约束里运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%A1%A8%E7%A4%BA%E5%90%8D%E5%AD%97%E7%9B%B8%E5%90%8C%EF%BC%8C%E5%B9%B6%E4%B8%8D%E7%AD%89%E4%BA%8E%E5%BB%BA%E6%88%90%E4%BA%86%E5%90%8C%E4%B8%80%E4%B8%AA%E4%B8%96%E7%95%8C"><span class="toc-number">4.</span> <span class="toc-text">四、表示名字相同，并不等于建成了同一个世界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">参考来源</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
