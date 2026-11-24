@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>用编程智能体改写慢函数，先分清“能搬到 Rust”和“能证明行为一致” - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+资料核验：2026 年 11 月 24 日约 17:50—18:15（上海时间），依据 EL4CTEO&amp;#x2F;fast-anything 当时的 GitHub 元数据、LICENSE、READ,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">用编程智能体改写慢函数，先分清“能搬到 Rust”和“能证明行为一致”</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/AI智能体"><b>「
+                    </b>AI智能体<b> 」</b></a>
+                
+                十一月 24, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/11/24/fast-anything-port-vs-prove/" title="用编程智能体改写慢函数，先分清“能搬到 Rust”和“能证明行为一致”" class="">用编程智能体改写慢函数，先分清“能搬到 Rust”和“能证明行为一致”</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    6 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/AI%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag">AI智能体</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag">编程智能体</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>资料核验：2026 年 11 月 24 日约 17:50—18:15（上海时间），依据 <a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything">EL4CTEO&#x2F;fast-anything</a> 当时的 GitHub 元数据、<code>LICENSE</code>、<code>README.md</code>、<code>Cargo.toml</code>、<a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything/releases/tag/v0.8.6">v0.8.6</a> 的 Release 说明、<code>CHANGELOG.md</code>、<code>skills/fast-anything/SKILL.md</code>，以及源码 <code>src/main.rs</code>、<code>src/pipeline.rs</code>、<code>src/hotspot.rs</code>、<code>src/python/runner.py</code>、<code>src/native.rs</code>，并对照当时的 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/@el4cteo/fast-anything">npm 包页面</a> 与 <a target="_blank" rel="noopener" href="https://crates.io/crates/fast-anything">crates.io 页面</a>。仓库、星标、版本和文档都会更新，计数与安装方式请以各官方页面与仓库文件的最新文本为准。本文只比较这些公开文本当时怎么写，作者没有安装、运行或测试该工具，也没有复现官方示例中的加速数字，不构成选型背书、效果承诺或性能结论。</p>
+</blockquote>
+<p>编程助手已经很会写出一段能编译的 Rust。下一步常常是把整个程序交给它，等一份看起来更快的新代码。这时人很容易把两件事当成一件事：智能体写出了可替换的实现，以及这段替换在真实调用上仍然和原来一样。</p>
+<p>这和本博客谈<a href="/2026/11/10/agent-stop-points/">给编程智能体放权之前，先想清楚它在哪里必须停下</a>有关，但本文不展开通用的权限分级，只看一套开源工具怎样把“改写范围”和“启用条件”拆开。它也和<a href="/2026/11/21/karpo-browser-plan-click-eval/">开源浏览器智能体，先分清谁在规划、谁在点击，以及成绩怎么测</a>类似：找出该做什么、写出代码、以及用什么标准决定能不能换上，并不是同一层。</p>
+<h2 id="一、它要搬的是可移植的热点函数，不是整个程序"><a href="#一、它要搬的是可移植的热点函数，不是整个程序" class="headerlink" title="一、它要搬的是可移植的热点函数，不是整个程序"></a>一、它要搬的是可移植的热点函数，不是整个程序</h2><p>2026 年 11 月 24 日约 18:00，用 GitHub 接口读取 <a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything">EL4CTEO&#x2F;fast-anything</a> 的元数据：公开仓库，主要语言 Rust，许可证 MIT，星标 3,378，fork 227。仓库创建于 2026 年 11 月 21 日 22:40（上海时间）；当时 <code>main</code> 上能读到的最新提交是 <code>ccf46b49da</code>（当天 08:18，上海时间），说明为暂存 npm 包。同一天 08:12 发布了正式版本 <a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything/releases/tag/v0.8.6">v0.8.6</a>。项目主页指向 npm 包 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/@el4cteo/fast-anything">@el4cteo&#x2F;fast-anything</a>；<a target="_blank" rel="noopener" href="https://crates.io/crates/fast-anything">crates.io</a> 当时列出的版本也是 0.8.6，许可证同样是 MIT。星标会继续变化，请以仓库页面当时的数字为准。</p>
+<p>仓库很新，从创建到 0.8.6 只有大约两天半，版本号也跳得很快。讨论当前能力时，应以仓库文件、Release 说明和注册表页面的最新文本为准，不宜把某一天的示例数字当成稳定基准。</p>
+<p>README 的标题句是：不要把整个程序改写成 Rust，只改那 5% 慢的部分。它把流程拆成几步，也可以一条命令跑完：</p>
+<ul>
+<li><code>scan</code>：给应用做性能分析，按“耗时占比 × 可移植性”给函数排序；</li>
+<li><code>port</code>：再跑一遍应用，最多记录 500 次真实调用，并生成一个只含这一函数的 Rust crate 和 <code>TASK.md</code>；</li>
+<li><code>verify</code>：用 release 模式构建移植结果，回放全部已记录调用；</li>
+<li><code>enable</code> &#x2F; <code>disable</code>：用一段带标记的代码把 Rust 换进去或换回来，官方说明是可以按字节原样移除的；</li>
+<li><code>bench</code>：交错运行，比较整个应用在原实现和 Rust 之间的耗时。</li>
+</ul>
+<p><code>--agent</code> 可以是 <code>claude</code>、<code>codex</code>，或任何从标准输入读提示词的命令；不指定智能体时，把 <code>TASK.md</code> 交给自己使用的工具即可。官方还提供 Claude Code 插件、内置 MCP 服务器（README 写了 8 个工具）和一份 skill，用来把这套循环教给其他智能体。</p>
+<p>语言支持以当时 README 表格为准：Python 3.10+（PyO3），JavaScript &#x2F; TypeScript（Node 22+、Bun、Deno 2+，napi-rs），Ruby 3.3+（通过 Fiddle 调用 C ABI），Java 22+ 与 Kotlin&#x2F;JVM（FFM），Go 1.22+，PHP 8.1+（需打开 FFI 扩展），C &#x2F; C++，C# &#x2F; .NET 8+，以及 R 4.0+。它要搬的，是接收普通数据（数字、字符串、列表、字典、定类型数组等）的顶层、确定性函数。<code>scan</code> 会写出其他函数暂时不能搬的原因。源码把“值得搬”写成同时满足三项：可移植、没有被外层可移植调用者覆盖、并且占这次运行至少 2%。</p>
+<p>它还明确偏向搬最外层的热点循环，而不是循环里面那个小函数，这样应用进入 Rust 一次，而不是进出成千上万次。README 举的对照是：如果只移植内层的 <code>levenshtein</code>，官方表格里的加速会变成 35× 和 1.9×。这是项目自己的说明，不是本文的复现。</p>
+<p>扫描阶段还有一条和验收直接有关的限制。源码把“做 I&#x2F;O”“不确定”“写全局或静态状态”等写成会传递给调用者的阻断项，并注释说：<code>verify</code> 只比较返回结果，如果辅助函数做了这些事却被一起搬进去，一份跳过副作用的移植仍可能通过回放。2026 年 11 月 23 日的提交说明也写了：辅助函数做 I&#x2F;O 的函数，本身也不可移植。</p>
+<h2 id="二、能不能启用，不由智能体宣布“写好了”来决定"><a href="#二、能不能启用，不由智能体宣布“写好了”来决定" class="headerlink" title="二、能不能启用，不由智能体宣布“写好了”来决定"></a>二、能不能启用，不由智能体宣布“写好了”来决定</h2><p>这是这套工具更值得看的一层。智能体负责写 Rust；默认情况下，写完并不能直接换上。</p>
+<p><code>verify</code> 要先做 release 构建，再回放记录下来的真实调用。README 还写了：在这些调用之外，工具会派生额外用例，交给原实现作答，包括 NaN、正负无穷、-0.0、0 和 ±1、非 ASCII 文本、空输入、最多放大到 16 倍的输入，以及缩小后的输入。官方叙述里有一个示例：有一份“看起来是对的”移植按字节而不是按字符做比较，500 次真实调用里有 148 次抓住了它。这是项目自己的说明，作者没有复现这次失败。</p>
+<p>Python 回放里的相等判断，比 README 那句“浮点在 1e-9 内视为相同”更细。<code>src/python/runner.py</code> 里的 <code>same()</code> 写明：浮点数用相对误差 1e-9、绝对误差 1e-12 比较，NaN 与 NaN 视为相同；但整数 <code>3</code> 和浮点数 <code>3.0</code> 不相等，因为打印结果不同；列表和元组也不相等，因为哈希行为不同。对走 C 桥接的语言，<code>src/native.rs</code> 里用的是：完全相等，或绝对误差不超过 <code>max(1e-12, 1e-9 * max(|x|, |y|))</code>。这些是当时源码里的比较规则，不代表所有语言、所有类型都按同一套实现。</p>
+<p><code>enable</code> 的默认门槛写在 <code>src/pipeline.rs</code>：还没通过 <code>verify</code> 不能启用；原文件在记录之后改过，或 Rust 源码在上次通过之后又改过，都要重新验证；如果每次调用反而比原实现更慢，默认也不会启用，并提示去移植它的调用者，减少跨越边界的次数。已经启用的移植如果后来没通过验证，会被自动换回原实现。环境变量 <code>FAST_ANYTHING_DISABLE=1</code> 可以在单次运行里强制走原实现。这些默认限制都可以用 <code>enable --force</code> 绕过——也就是说，机械门闩并不是不能打开，只是打开要人明确说。</p>
+<h2 id="三、回放契约证明了什么，以及它没证明什么"><a href="#三、回放契约证明了什么，以及它没证明什么" class="headerlink" title="三、回放契约证明了什么，以及它没证明什么"></a>三、回放契约证明了什么，以及它没证明什么</h2><p>下面这一节是本文的判断，不是项目文档里的原话。已核验的是规则当时怎么写；推论和尚未执行的设想会单独标明。</p>
+<p>先说我认为它做对的地方。许多“让智能体改写代码”的流程里，测试也是同一个智能体写的。测试和实现一起错，仍然可以显示全绿。fast-anything 把验收数据从另一条路上拿来：真实运行中的调用记录，再加上由原实现作答的边界用例，并在 skill 里写明不要改这些记录。启用权也不在对话里，而在回放是否全部通过、每次调用是否真的更快。就设计而言，这更接近“先有行为契约，再允许替换”，而不是“先相信模型已经写对了”。</p>
+<p>接下来必须把契约的边界说清楚，否则很容易把“这次回放通过”读成“两个函数在所有输入上都等价”。</p>
+<p>第一，记录来自你实际跑过的那次工作负载。官方 skill 也提醒：扫描要用有代表性的真实负载，而不是测试套件。没出现过的分支、很少走到的错误路径、更大或更畸形的输入，并不自动包含在这 500 次里。派生用例扩大了覆盖，但仍然是从已记录输入变出来的，不是对全部输入空间的证明。</p>
+<p>第二，源码自己已经写了：验证比较的是返回值。被它拒绝搬运的 I&#x2F;O、全局状态和不确定性，并不是因为这些东西不重要，而恰恰是因为现有回放看不见它们。如果扫描漏掉了这类副作用，一次“结果一致”的回放，证明不了文件、网络或共享状态也一致。</p>
+<p>第三，官方性能数字全部来自 README 的示例表，标注运行在 i5-10500、Windows 11 上，C 和 C++ 则在 4 核的 GitHub Actions Linux runner 上，并说明可以从 <code>examples/</code> 复现。表格里 Python 模糊去重（700 个名字）从 4.91 秒降到 42 毫秒（116×）；Java 的同类例子整应用只有 3×，函数本身 11×，其余是 JVM 启动。作者没有在自己的机器上跑这些例子，也没有核对表中数字。即使例子能复现，它证明的也是这类可隔离的纯函数热点，不能外推到任意业务程序。</p>
+<p>一个可以直接验证、但本文尚未执行的做法是：先按官方步骤跑 <code>examples/fuzzy-dedupe</code>，只核对手册表格是否能得到同一量级的结果；再做一次只移植内层 <code>levenshtein</code> 的对照，看交叉调用成本是否明显吃掉加速；最后故意写一份按字节而不是按字符比较的错误移植，看 <code>verify</code> 会不会拒掉。在有自己的记录之前，不宜把手册表格当成已经到手的收益。</p>
+<p>对想试用的人，我更看重这三条可操作的问题，而不是星标数字：这次扫描认为最值得搬的函数，是不是你自己也认为最慢的那段，阻断原因写得清不清楚；<code>verify</code> 用的记录，是不是来自你关心的那次负载，失败时能不能看到具体是哪一次调用不一致；以及启用之后，能不能用 <code>disable</code> 或 <code>FAST_ANYTHING_DISABLE=1</code> 立刻退回。项目还很新，接口和语言支持都可能在几天内变化，这些步骤反而比版本号更稳定。</p>
+<p>用编程智能体去“改成 Rust”，容易变成一次范围不受限的重写。fast-anything 把范围收成可移植的热点函数，又把启用权交给带记录的回放。它能证明的，是这些记录和派生用例上结果一致，而且这次调用更快；它不能自动证明程序在所有输入上等价，也不能看见返回值之外的副作用。先把这两层分开，再决定要不要让智能体改下一处。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything">EL4CTEO&#x2F;fast-anything</a></li>
+<li>Release：<a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything/releases/tag/v0.8.6">v0.8.6</a>（发布于 2026-11-24 08:12，上海时间）</li>
+<li>注册表：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/@el4cteo/fast-anything">npm @el4cteo&#x2F;fast-anything</a>、<a target="_blank" rel="noopener" href="https://crates.io/crates/fast-anything">crates.io&#x2F;crates&#x2F;fast-anything</a></li>
+<li>许可证：仓库内 <a target="_blank" rel="noopener" href="https://github.com/EL4CTEO/fast-anything/blob/main/LICENSE">LICENSE</a>（MIT）</li>
+<li>关键源码（核验时所见 v0.8.6）：<code>src/pipeline.rs</code>、<code>src/hotspot.rs</code>、<code>src/main.rs</code>、<code>src/python/runner.py</code>、<code>src/native.rs</code>、<code>skills/fast-anything/SKILL.md</code></li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">21 <p>Articles</p></a></li>
+                    <li><a href="/categories">5 <p>Categories</p></a></li>
+                    <li><a href="/tags">30 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%83%E8%A6%81%E6%90%AC%E7%9A%84%E6%98%AF%E5%8F%AF%E7%A7%BB%E6%A4%8D%E7%9A%84%E7%83%AD%E7%82%B9%E5%87%BD%E6%95%B0%EF%BC%8C%E4%B8%8D%E6%98%AF%E6%95%B4%E4%B8%AA%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">一、它要搬的是可移植的热点函数，不是整个程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%83%BD%E4%B8%8D%E8%83%BD%E5%90%AF%E7%94%A8%EF%BC%8C%E4%B8%8D%E7%94%B1%E6%99%BA%E8%83%BD%E4%BD%93%E5%AE%A3%E5%B8%83%E2%80%9C%E5%86%99%E5%A5%BD%E4%BA%86%E2%80%9D%E6%9D%A5%E5%86%B3%E5%AE%9A"><span class="toc-number">2.</span> <span class="toc-text">二、能不能启用，不由智能体宣布“写好了”来决定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%9E%E6%94%BE%E5%A5%91%E7%BA%A6%E8%AF%81%E6%98%8E%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%AE%83%E6%B2%A1%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">三、回放契约证明了什么，以及它没证明什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">参考来源</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
