@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>让智能体接手打开拉取请求之后的工作，先分清“能修绿”和“能当作合并依据” - 大晨小昕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+资料核验：2026 年 11 月 27 日约 17:50—18:20（新加坡时间），依据 Anthropic 2026 年 11 月 23 日的官方文章 Introducing Claude Sh,"> 
+    <meta name="author" content="大晨"> 
+    <link rel="alternative" href="atom.xml" title="大晨小昕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+    
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+
+    
+    <script>var musiclist = ""</script>
+    
+<script src="/js/loadaplayer.js"></script>
+
+    <!-- 引用依赖 -->
+    
+<link rel="stylesheet" href="/aplayer/dist/APlayer.min.css">
+
+    
+<script src="/aplayer/dist/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
+
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">大晨小昕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://eanfs.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">让智能体接手打开拉取请求之后的工作，先分清“能修绿”和“能当作合并依据”</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url('/img/cover.jpg') ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/AI智能体"><b>「
+                    </b>AI智能体<b> 」</b></a>
+                
+                十一月 27, 2026
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2026/11/27/claude-ship-green-vs-approve/" title="让智能体接手打开拉取请求之后的工作，先分清“能修绿”和“能当作合并依据”" class="">让智能体接手打开拉取请求之后的工作，先分清“能修绿”和“能当作合并依据”</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    10k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    9 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/AI%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag">AI智能体</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/GitHub/" rel="tag">GitHub</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%AF%84%E5%AE%A1/" rel="tag">代码评审</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>资料核验：2026 年 11 月 27 日约 17:50—18:20（新加坡时间），依据 Anthropic 2026 年 11 月 23 日的官方文章 <a target="_blank" rel="noopener" href="https://claude.com/resources/articles/introducing-claude-ship">Introducing Claude Ship</a>，以及当时能读到的官方文档：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/claude-ship">Claude Ship</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/code-review">Code Review</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/pr-steward">PR Steward</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/pr-steward-security">What PR Steward can access</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/approvals">Claude Approvals</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/approvals-github-rules">Claude Approvals and your GitHub rules</a>，并对照 <a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a> 与 <a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-code-action">anthropics&#x2F;claude-code-action</a> 当时的 GitHub 元数据和 Releases。产品功能、计划范围、计费和仓库数字都会变化，细节请以各官方页面与仓库的最新文本为准。本文只比较这些公开文本当时怎么写，作者没有开通相关计划、没有安装或配置这些产品，也没有在任何仓库里运行它们，不构成选型、安全审计或上线验收。</p>
+</blockquote>
+<p>打开一条拉取请求之后，剩下的工作常常被说成一件事：有人看过，检查绿了，可以合并。于是，当一套智能体宣称自己能“评审、修复，并按策略决定什么可以合并”，听的人很容易把它理解成另一句：机器人已经签过字，这条改动也就有了合并依据。这是两件事情。</p>
+<p>2026 年 11 月 23 日，Anthropic 在官方文章里发布了 Claude Ship（测试版）。它把打开拉取请求之后的工作拆成三个角色：Code Review 找问题，PR Steward 推修复，Claude Approvals 按仓库里的策略文件报告还缺谁批准。文档写得很清楚：它们可以一起把一条拉取请求送过评审、修复和一次批准判断，但“什么能合并，由你的设置和 GitHub 的分支规则决定”。这和本博客谈<a href="/2026/11/22/app-store-scan-vs-human-checks/">用 AI 搭出来的应用要提审，先分清扫描能证明什么</a>类似，对象从应用商店换成了仓库里的合并；也和<a href="/2026/11/10/agent-stop-points/">给编程智能体放权之前，先想清楚它在哪里必须停下</a>有关，但本文不展开通用的权限分级，只看这份刚公开的文档，怎样把“能把检查修绿”和“能当作合并依据”分开。</p>
+<h2 id="一、官方把评审、修复、批准写成三个角色，各证明什么"><a href="#一、官方把评审、修复、批准写成三个角色，各证明什么" class="headerlink" title="一、官方把评审、修复、批准写成三个角色，各证明什么"></a>一、官方把评审、修复、批准写成三个角色，各证明什么</h2><p>Claude Ship 面向 Claude 的 Team 和 Enterprise 计划，用于 GitHub 上的仓库。文档写：Code Review 已正式提供；PR Steward 和 Claude Approvals 处于公开测试。启用了 Zero Data Retention、HIPAA 配置或客户托管加密密钥的组织不能使用。公告和文档都把它的目标写成：让代码能写多快，后面的流程也能有多快。这句话是产品定位，不是对某一支团队、某一类改动已经成立的结果。</p>
+<p>三个角色在文档里的分工，其实已经比这句定位更有用。</p>
+<p>Code Review 阅读改动和周围代码，把发现写成行内评论，并按严重程度排序。官方概述还写：它会收集发现、做对抗式核验、再分类，然后发到拉取请求上。仓库可以选用 Quick、Standard 或 Deep 三种深度。自动评审通常在打开或推送到拉取请求时开始，草稿和来自 fork 的请求除外；用评论触发时，发令的人需要对该仓库有写权限。它遵循的说明来自基础分支或默认分支上的 <code>REVIEW.md</code>，而不是这条拉取请求自己改出来的副本。也就是说，评审智能体读到的“标准”，以已经在默认线上的文本为准。</p>
+<p>这些加在一起，证明的是：系统能对这次改动给出一份带严重程度的意见，并且这份意见经过了它自己的核验步骤。它并不证明意见已经穷尽缺陷。Claude Ship 文档用注释写明：它使用人工智能，可能漏掉缺陷、安全漏洞或其他问题。</p>
+<p>PR Steward 的工作是另一件。它在云会话里处理失败的检查、合并冲突和评审意见，并把修复推回去。对失败检查，文档的限定是：原因位于这条拉取请求改动过的代码时，它才尝试修复。对人的评审意见，它尝试做小而具体的修改并回复；若请求很大或属于设计问题，可以只回复、不推送。对 Code Review，它处理被标为 Important 的发现；对其他评审机器人，处理 lint 发现和缺陷。对 Claude Approvals 检查，若检查还在等一次提交就能补上的事项，例如未关闭的 Code Review 发现，它会去处理；若检查在等人的批准，它就留下。打开、重新打开，或把草稿标为待评审时，它可以开始工作；仓库负责人也可以改成主要按人的要求启动。它默认跳过草稿、来自 fork 的请求、机器人打开的请求，以及作者没有写权限的请求。要让它在某一条上停下，文档写的是去掉 <code>claude-pr-steward-watching</code> 标签，或评论 <code>@claude stop</code>。</p>
+<p>到这里，PR Steward 证明的是：它能在拉取请求上继续推提交，试图把检查和冲突处理到通过。文档把它的职责写成“让拉取请求保持绿色”，同时又反复写下一句：Steward 在设计上不批准、不合并拉取请求。后面会看到，这句话是产品意图和一部分服务端拒绝，不是仓库规则已经替你设好的硬边界。</p>
+<p>Claude Approvals 则是一条 GitHub 检查。它读取仓库里的策略文件 <code>.claude/approvals.yml</code>，找出适用规则，统计还缺谁批准，并在检查标题里写出来，例如还在等几个人看。策略可以按路径规定要几个人批准，也可以规定 Claude 在哪些地方可以发出批准评审。官方把它比作“更聪明的 CODEOWNERS”。示例策略里，<code>claude: comments</code> 表示 Claude 自己不批准，<code>seats: 2</code> 表示要两个人，其中作者可以占一个名额。规则还可以带条件，条件能读拉取请求上的事实，以及分类器的回答；文档明确写：条件不能读 CI 结果，因此 CI 应继续作为 GitHub 里单独的必需检查。</p>
+<p>把三个角色并排看，会得到一个不宜跳过的判断。评审意见、修绿提交和批准检查，产出的是三种不同的证据。官方把它们拆开写，本身就说明：其中任何一项成立，都不自动导出另外两项。</p>
+<p>公告里还提到 Claude Code 团队自己的数字：在“Claude 的评审只是更完整流程中的一层”的前提下，2026 年 6 月到 9 月，已合并的拉取请求增加了一倍以上，被回退的比例下降超过 40%。这是 Anthropic 对自身团队的陈述，不是对任意仓库打开这些功能之后的独立评测。少了“更完整流程中的其他层”，并不能把这组数字一起带走。</p>
+<p>文档还指出另一条路径：在自己的 GitHub Actions 或 GitLab CI&#x2F;CD 里运行 Claude Code。这和上面这套托管智能体不是同一件事。2026 年 11 月 27 日约 17:50，用 GitHub 接口读取 <a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-code-action">anthropics&#x2F;claude-code-action</a>：公开仓库，主要语言 TypeScript，许可证 MIT，创建于 2025 年 5 月 19 日 23:26（新加坡时间）。当时星标 10,098，fork 2,304，open issues 计数为 969（按 GitHub 惯例可能包含未关闭的拉取请求）。GitHub Releases 当时较新的版本标签是 <code>v1.0.290</code>（发布于 2026 年 11 月 25 日 09:35，新加坡时间），<code>main</code> 上能读到的较新提交是 <code>4411a9e9b028</code>（2026 年 11 月 25 日 09:33，新加坡时间）。动作文档写：工作流跑在你自己的 runner 上。安装官方 Claude GitHub App 时，你接受的是整份权限集合，GitHub 不允许只勾其中一部分；若组织只想给这个 Action 使用 Contents、Issues 和 Pull requests，需要另建自定义 GitHub App，而且自定义应用只覆盖这个 Action，Code Review 和网页里的自动修复仍要求官方应用。星标和权限集合都会变化，请以当时页面为准。不要把“能在 CI 里发评审意见或推提交”理解成：上一节里的批准检查，已经替你做了合并判断。</p>
+<h2 id="二、“设计上不批准、不合并”，硬边界其实在仓库规则里"><a href="#二、“设计上不批准、不合并”，硬边界其实在仓库规则里" class="headerlink" title="二、“设计上不批准、不合并”，硬边界其实在仓库规则里"></a>二、“设计上不批准、不合并”，硬边界其实在仓库规则里</h2><p>PR Steward 以 Claude GitHub App 的身份行动。访问说明写：一次会话从这条拉取请求所属的仓库开始，对它读写；在 github.com 上，GitHub 搜索还可能返回组织为 PR Steward 另外加入的仓库，会话也可以抓取 github.com 上的公开仓库。权限方面，它对 contents、pull requests 和 issues 读写；若安装时还授予了，也对 checks、statuses 有读权限，对 Actions 有写权限。在 github.com 上，安装还可以授予 workflows 的写权限，这时 PR Steward 能够推送对工作流文件的修改。应用令牌默认放在会话沙箱之外，<code>gh</code> 和 <code>git</code> 请求经 Anthropic 的服务补上令牌。会话在 auto 模式下启动，权限询问会被拒绝。指令文件读默认分支。</p>
+<p>这些是“它能碰到什么”。更值得读完的，是文档接着写的批准与合并限制。</p>
+<p>在 Anthropic 托管环境里，服务会拒绝一次 PR Steward 会话以该 GitHub App 身份发出的部分请求：批准拉取请求；更改分支保护、规则集或状态，或写入检查运行；删除分支；推送标签。另一些请求则放行，交给 GitHub 的分支规则处理，包括：合并、打开自动合并、强制推送；向这条拉取请求以外的分支推送；驳回评审。文档还写：要对 PR Steward 推上去的提交强制执行评审，应在分支规则里要求评审，并且不要把 Claude GitHub App 放进各规则集的绕过名单；在经典分支保护里，也不要把它放进“允许指定参与者绕过必需的拉取请求”名单。</p>
+<p>关于合并、打开自动合并和强制推送，文档写了两道检查会作用在 Claude 运行的命令上。权限规则会拒绝这类操作的常用命令；auto 模式的检查再判断没有被规则匹配到的命令。紧接着有一句不宜改写得更软的限定：“规则匹配的是命令文本，检查则是模型的判断，因此换一种写法的命令可能通过这两道检查。”</p>
+<p>于是，“设计上不批准、不合并”证明的是：产品意图如此，并且托管服务会直接拒绝若干请求。它并不证明：一次会话在任何写法、任何仓库规则下都做不到合并或强制推送。硬边界如果存在，是 GitHub 的分支规则、必需检查，以及应用是否被放进绕过名单。把这句话当成已经生效的仓库策略，会把产品说明误认成控制面。</p>
+<p>开发者在 Claude Code 里使用的 <code>/ship</code>，官方文章写成：推送改动、打开拉取请求、做评审，并处理反馈和失败检查，以帮助它达到可合并。能合并什么，取决于这个开发者的权限和仓库的分支规则。也就是说，连这条更个人化的命令，官方也没有把它写成可以绕过仓库规则的合并开关。</p>
+<h2 id="三、批准检查通过了，还要看它当时是不是在拦合并"><a href="#三、批准检查通过了，还要看它当时是不是在拦合并" class="headerlink" title="三、批准检查通过了，还要看它当时是不是在拦合并"></a>三、批准检查通过了，还要看它当时是不是在拦合并</h2><p>Claude Approvals 检查要成为合并门闩，本身需要两个条件同时成立：策略被执行，并且你在 GitHub 里把它设成了必需检查。缺任何一项，检查标题里即使出现“还在等人”，也不等于合并会被拦住。</p>
+<p>文档把观察模式写得很清楚。示例策略以 <code>mode: observe</code> 开头；检查标题若以 <code>(observe mode)</code> 起头，表示这次运行并没有执行策略，只是报告“若执行会怎样判断”。官方建议先在观察模式里建立信心，再把 Claude Approvals 设成分支保护里的绿灯。观察模式不是免费预览：分类器运行，以及策略要求的 Code Review，在观察模式里也会计费。</p>
+<p>即使已经执行策略，文档也列出了“除作者外没有人看过，甚至没有人看过，仍然可能合并”的几种写法。检查不是必需项，或仍在观察模式，就不拦合并。<code>seats: 1</code> 时，作者可以占掉那个名额；<code>seats: 0</code> 时，机器人撰写的拉取请求可以在没有人看过的情况下合并。<code>from</code> 名单若接纳机器人，或一个由脚本、智能体驱动的机器用户被当成“人”，名额也可以被填满。没有被任何规则覆盖的文件，GitHub 可能把中性结果计为通过。规则的条件若读分类器的回答，而分类器又可能被这条拉取请求里的文本带偏，要求也可能被降低。直接推到默认分支的提交不会出现这条检查，所以文档要求：默认分支上的改动应先走拉取请求。</p>
+<p>批准检查和 GitHub 自己的“必需批准”也不是同一把锁。文档写：GitHub 可以把 Claude 发出的批准评审计为一次必需批准。若策略里写了 <code>claude: approves</code>，这条规则本身并不会启动 Code Review，于是 Claude 可以批准一份没有任何评审的改动。若既要求 Claude Approvals 检查，又在 GitHub 里再要求一次批准，还可能出现相反的堵塞：检查已经通过，但 GitHub 仍在等那次可能已被算进去、或没被算进去的批准。官方的处理建议是：在把 Approvals 设为必需检查的地方，GitHub 侧的必需批准不要超过一次，更多的人数写在策略的 <code>seats</code> 里。</p>
+<p>自动合并和合并队列把这件事推得更远。Claude Ship 文档用警告写：若使用 GitHub 自动合并或合并队列，而策略又不要求人的批准，改动可以在没有任何人操作的情况下合并。进入队列通常发生在必需检查通过之后，但拉取请求也可能在检查还在跑时入队；合并队列自己创建的提交，Approvals 一般不再评估，只标成通过。若应用缺少 Merge queues 权限，队列里的提交甚至不会出现这条检查，必需检查反而会把条目卡住。这些都不是“检查曾经绿过”四个字能概括的。</p>
+<p>策略文件本身也是仓库里的普通文件。能把文件合并进默认分支的人，就能打开或改写 Approvals；仓库管理员可以在分支规则里取消把这条检查设为必需；能绕过所有要求该检查的规则的人，可以越过它合并。Claude 组织的 Owner 可以在组织或仓库关掉 Approvals。还要注意反向作用：一旦默认分支上出现策略文件，自动的 Code Review 在观察模式和执行模式下都可能停止，除非匹配规则写明 <code>claude/code_review</code>。想继续自动评审，需要像示例那样把它写进 <code>advisory</code>。关掉功能时，文档要求先关 Approvals，再关 PR Steward，最后关 Code Review，因为策略仍可能在 Code Review 已关闭时启动计费评审。</p>
+<p>所以，一次绿色的 Claude Approvals 检查，证明的是：在当时那份策略、那种模式、那组 GitHub 规则下，检查得出了“通过”或“若执行则会通过”。它不自动证明：有一个作者之外的人看过这次改动，也不自动证明这次通过正在阻止合并。</p>
+<h2 id="四、几个可以直接核对、但本文尚未执行的做法"><a href="#四、几个可以直接核对、但本文尚未执行的做法" class="headerlink" title="四、几个可以直接核对、但本文尚未执行的做法"></a>四、几个可以直接核对、但本文尚未执行的做法</h2><p>本文没有在任何仓库里打开这些功能。若你打算试，下面这些问题都可以对着官方页面和仓库设置逐项核对，并不需要先接受“打开就能更快合并”这句话。</p>
+<p>第一，三个角色是不是被当成了同一个开关。Code Review 的意见、PR Steward 的修绿提交、Approvals 的检查，哪一项被你们的合并规则真正要求？PR Steward 是否被写成可以自己批准或合并？Claude GitHub App 是否在分支规则的绕过名单上？</p>
+<p>第二，批准检查当时是不是门闩。策略是观察模式还是执行模式？GitHub 有没有把 Claude Approvals 设为必需检查？默认分支是否禁止直接推送？策略是 <code>claude: comments</code> 还是 <code>claude: approves</code>？<code>seats</code> 是否允许作者或机器人单独填满？规则的条件有没有读分类器，从而可能被拉取请求文本带偏？</p>
+<p>第三，权限和范围是不是比你想安装的功能更大。官方 GitHub App 是多功能共用的一份权限集合，安装时不能只接受其中一部分，其中包含对 Actions、workflows、仓库创建和仓库 hooks 的写权限。若只想在自己的 CI 里跑 Claude Code Action，文档给出的路径是另建只含 Contents、Issues 和 Pull requests 的自定义应用。PR Steward 若被授予 workflows 写权限，还可以修改工作流文件；令牌也不在会话沙箱里。这些都应在安装和规则里单独查看，而不是假定“只用到评审”。</p>
+<p>对想把打开拉取请求之后的工作交给智能体的人，我更看重这三条可操作的界限。评审意见是发现，不是放行。修绿是推进，不是授权。批准检查是策略评估，只有在它被执行、并且被设成必需检查时，才可能成为门闩；即便如此，还要看名额怎么算、GitHub 是否把 Claude 的批准算作一次必需批准，以及自动合并会不会在没有人动手时把代码送进去。先把这三层证据分开，再决定哪一层必须留下给人。</p>
+<p>给智能体接手打开拉取请求之后的流程，听起来像已经把评审、修复和合并收进了同一套可以交给机器的手续。Claude Ship 的文档表明，它确实可以把这三步做成三个会自动上手的角色；但它自己也写明，可能漏掉问题，修复者在设计上不负责批准，批准检查也不会仅凭一次绿色结果就改变仓库规则。先分清“能修绿”和“能当作合并依据”，再决定要不要让自动合并接上最后那一下。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li>官方发布：<a target="_blank" rel="noopener" href="https://claude.com/resources/articles/introducing-claude-ship">Introducing Claude Ship</a>（Anthropic，2026-11-23）</li>
+<li>产品概述：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/claude-ship">Claude Ship</a></li>
+<li>评审：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/code-review">Code Review</a></li>
+<li>修复：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/pr-steward">PR Steward</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/pr-steward-security">What PR Steward can access</a></li>
+<li>批准：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/approvals">Claude Approvals</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/approvals-github-rules">Claude Approvals and your GitHub rules</a></li>
+<li>自行托管的 CI 路径：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-code-action">anthropics&#x2F;claude-code-action</a>（MIT；核验时较新标签 <code>v1.0.290</code>）</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+                        
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d=''
+        data-p='https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token'
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://s2.ax1x.com/2019/09/19/nLtSiD.png" height=300 width=300></img>
+                    <p>大晨</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        
+                            
+                            
+                            
+                        
+                        
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">24 <p>Articles</p></a></li>
+                    <li><a href="/categories">6 <p>Categories</p></a></li>
+                    <li><a href="/tags">35 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%98%E6%96%B9%E6%8A%8A%E8%AF%84%E5%AE%A1%E3%80%81%E4%BF%AE%E5%A4%8D%E3%80%81%E6%89%B9%E5%87%86%E5%86%99%E6%88%90%E4%B8%89%E4%B8%AA%E8%A7%92%E8%89%B2%EF%BC%8C%E5%90%84%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">一、官方把评审、修复、批准写成三个角色，各证明什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E2%80%9C%E8%AE%BE%E8%AE%A1%E4%B8%8A%E4%B8%8D%E6%89%B9%E5%87%86%E3%80%81%E4%B8%8D%E5%90%88%E5%B9%B6%E2%80%9D%EF%BC%8C%E7%A1%AC%E8%BE%B9%E7%95%8C%E5%85%B6%E5%AE%9E%E5%9C%A8%E4%BB%93%E5%BA%93%E8%A7%84%E5%88%99%E9%87%8C"><span class="toc-number">2.</span> <span class="toc-text">二、“设计上不批准、不合并”，硬边界其实在仓库规则里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%89%B9%E5%87%86%E6%A3%80%E6%9F%A5%E9%80%9A%E8%BF%87%E4%BA%86%EF%BC%8C%E8%BF%98%E8%A6%81%E7%9C%8B%E5%AE%83%E5%BD%93%E6%97%B6%E6%98%AF%E4%B8%8D%E6%98%AF%E5%9C%A8%E6%8B%A6%E5%90%88%E5%B9%B6"><span class="toc-number">3.</span> <span class="toc-text">三、批准检查通过了，还要看它当时是不是在拦合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%87%A0%E4%B8%AA%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E6%A0%B8%E5%AF%B9%E3%80%81%E4%BD%86%E6%9C%AC%E6%96%87%E5%B0%9A%E6%9C%AA%E6%89%A7%E8%A1%8C%E7%9A%84%E5%81%9A%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">四、几个可以直接核对、但本文尚未执行的做法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">参考来源</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2026
+        <span class="gradient-text">
+            大晨
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.9.4" target="_blank" rel="noopener">v1.4.9.4</a></small>
+        
+        </br>
+        
+        <span class="gradient-text">
+            <a href="https://beian.miit.gov.cn/" title="beian.miit.gov.cn" target="_blank" rel="noopener">beian.miit.gov.cn</a>
+        </span>
+        
+        
+        </br>
+        <span style="display: inline-block;"> <img src=/null></span>
+        
+        <span class="gradient-text">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602009049" title="www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049" target="_blank" rel="noopener">www.beian.gov.cn&#x2F;portal&#x2F;registerSystemInfo?recordcode&#x3D;44010602009049</a>
+        </span>
+        
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+ 
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+  
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+ 
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+ 
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+ 
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+  
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+   
+<script src="/js/busuanzi.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    if ($('span[id^="busuanzi_"]').length) {
+      initialBusuanzi();
+    }
+  });
+</script>
+ 
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<script>
+  function initialTyped() {
+    var typedTextEl = $('.typed-text');
+    if (typedTextEl && typedTextEl.length > 0) {
+      var typed = new Typed('.typed-text', {
+        strings: ['Think like an artist, develop like an artisan', '艺术家思维去思考问题，工匠创造精神去开发'],
+        typeSpeed: 90,
+        loop: true,
+        loopCount: Infinity,
+        backSpeed: 20,
+      });
+    }
+  }
+
+  if ($('.article-header') && $('.article-header').length) {
+    $(document).ready(function () {
+      initialTyped();
+    });
+  }
+</script>
+
+
+
+
+<!-- 引用依赖 -->
+<script>document.write(aplayerconf)</script>
+
+
+
+
+</html>
